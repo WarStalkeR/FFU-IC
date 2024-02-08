@@ -12,22 +12,22 @@ namespace FFU_Industrial_Capacity {
 		public int Version => 1;
         public bool IsUiOnly => false;
         public FFU_IC_Mod() {
-			Log.Info($"{Name}: Created!");
+            ModLog.Info($"Created!");
         }
         public void ChangeConfigs(Lyst<IConfig> configs) {
-            Log.Info($"{Name}: No configurable features.");
+            ModLog.Info($"No configurable features.");
         }
         public void Initialize(DependencyResolver resolver, bool gameWasLoaded) {
         }
         public void RegisterPrototypes(ProtoRegistrator registrator) {
-            Log.Info($"{Name}: Registering prototypes...");
+            ModLog.Info($"Registering prototypes...");
             registrator.RegisterData<FFU_IC_Mod_Vehicles>();
-            registrator.RegisterData<FFU_IC_Mod_Research>();
+            //registrator.RegisterData<FFU_IC_Mod_Research>();
             //registrator.RegisterData<FFU_IC_Mod_Zero_Fix>();
-            Log.Info($"{Name}: Prototypes registered!");
+            ModLog.Info($"Prototypes registered!");
         }
         public void RegisterDependencies(DependencyResolverBuilder depBuilder, ProtosDb protosDb, bool gameWasLoaded) {
-            Log.Info($"{Name}: No specific dependencies.");
+            ModLog.Info($"No specific dependencies.");
         }
     }
 }

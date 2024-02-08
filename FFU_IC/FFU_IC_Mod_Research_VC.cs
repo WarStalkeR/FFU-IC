@@ -26,11 +26,11 @@ namespace FFU_Industrial_Capacity {
             registrator.ResearchNodeProtoBuilder.Start("Vehicles management", Ids.Research.VehicleCapIncrease)
                 .Description(vehCapDesc)
                 .AddVehicleCapIncrease(vehCapLimit, vehCapIcon)
-                .BuildAndAdd();
+            .BuildAndAdd();
             registrator.ResearchNodeProtoBuilder.Start("Vehicles management II", Ids.Research.VehicleCapIncrease2)
                 .Description(vehCapDesc)
                 .AddVehicleCapIncrease(vehCapLimit, vehCapIcon)
-                .BuildAndAdd();
+            .BuildAndAdd();
             registrator.ResearchNodeProtoBuilder.Start("Vehicles management III", Ids.Research.VehicleCapIncrease3)
                 .Description(vehCapDesc)
                 .AddVehicleCapIncrease(vehCapLimit, vehCapIcon)
@@ -39,19 +39,19 @@ namespace FFU_Industrial_Capacity {
                 .AddLayoutEntityToUnlock(Ids.Buildings.BarrierCross)
                 .AddLayoutEntityToUnlock(Ids.Buildings.BarrierEnding)
                 .AddLayoutEntityToUnlock(Ids.Buildings.BarrierTee)
-                .BuildAndAdd();
+            .BuildAndAdd();
             registrator.ResearchNodeProtoBuilder.Start("Vehicles management IV", Ids.Research.VehicleCapIncrease4)
                 .Description(vehCapDesc)
                 .AddVehicleCapIncrease(vehCapLimit, vehCapIcon)
-                .BuildAndAdd();
+            .BuildAndAdd();
             registrator.ResearchNodeProtoBuilder.Start("Vehicles management V", Ids.Research.VehicleCapIncrease5)
                 .Description(vehCapDesc)
                 .AddVehicleCapIncrease(vehCapLimit, vehCapIcon)
-                .BuildAndAdd();
+            .BuildAndAdd();
             registrator.ResearchNodeProtoBuilder.Start("Vehicles management VI", Ids.Research.VehicleCapIncrease6)
                 .Description(vehCapDesc)
                 .AddVehicleCapIncrease(vehCapLimit, vehCapIcon)
-                .BuildAndAdd();
+            .BuildAndAdd();
 
             NodeSetPosition(Ids.Research.VehicleCapIncrease, new Vector2i(24, 22));
             NodeSetPosition(Ids.Research.VehicleCapIncrease2, new Vector2i(36, 24));
