@@ -1,7 +1,5 @@
 ﻿using Mafi;
 using Mafi.Collections;
-using Mafi.Base;
-using Mafi.Core;
 using Mafi.Core.Mods;
 using Mafi.Core.Game;
 using Mafi.Core.Prototypes;
