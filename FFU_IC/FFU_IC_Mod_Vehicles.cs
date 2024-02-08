@@ -10,7 +10,7 @@ using System.Reflection;
 
 namespace FFU_Industrial_Capacity {
 	internal partial class FFU_IC_Mod_Vehicles : IModData {
-        // Constant Definitions
+        // Modification Definitions
         public const int ceilMin = 2;
         Percent NoFuelMaxSpeedPerc = 40.Percent();
         public readonly Dictionary<string, int> TruckCapacity = 
@@ -39,7 +39,7 @@ namespace FFU_Industrial_Capacity {
         };
 
         // Localization Definitions
-        public readonly Dictionary<string, string[]> TruckLockStrings = 
+        public readonly Dictionary<string, string[]> TruckLocStrings = 
             new Dictionary<string, string[]>() {
             { "T1", new string[] { "Heavy duty pickup truck with max capacity of {0}. It can go under transports that are at height {1} or higher.", "truck description, for instance {0}=20,{1}=2" }},
             { "T2", new string[] { "Large industrial truck with max capacity of {0}. It can go under transports if they are at height {1} or higher.", "vehicle description, for instance {0}=20,{1}=2" }},
@@ -127,10 +127,10 @@ namespace FFU_Industrial_Capacity {
             SetVehicleDriveData(refTruckT2, TruckDriveData["T2"]);
             SetVehicleDriveData(refTruckT3A, TruckDriveData["T3"]);
             SetVehicleDriveData(refTruckT3B, TruckDriveData["T3"]);
-            SetVehicleDescription(refTruckT1, TruckLockStrings["T1"], true);
-            SetVehicleDescription(refTruckT2, TruckLockStrings["T2"], true);
-            SetVehicleDescription(refTruckT3A, TruckLockStrings["T3A"], false);
-            SetVehicleDescription(refTruckT3B, TruckLockStrings["T3B"], false);
+            SetVehicleDescription(refTruckT1, TruckLocStrings["T1"], true);
+            SetVehicleDescription(refTruckT2, TruckLocStrings["T2"], true);
+            SetVehicleDescription(refTruckT3A, TruckLocStrings["T3A"], false);
+            SetVehicleDescription(refTruckT3B, TruckLocStrings["T3B"], false);
 
             // Excavator Modifications
             SetVehicleCapacity(refExcavT1, ExcavCapacity["T1"]);
