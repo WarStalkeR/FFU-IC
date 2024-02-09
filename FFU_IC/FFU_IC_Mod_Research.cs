@@ -9,21 +9,29 @@ using System.Reflection;
 namespace FFU_Industrial_Capacity {
 	internal partial class FFU_IC_Mod_Research : IResearchNodesData, IModData {
         // Modification Definitions
-        public const int vehLimit = 40;
+        public readonly Dictionary<string, int> TechVars =
+            new Dictionary<string, int>() {
+            { "TechVC1", 40 },
+            { "TechVC2", 40 },
+            { "TechVC3", 40 },
+            { "TechVC4", 40 },
+            { "TechVC5", 40 },
+            { "TechVC6", 40 },
+        };
 
         // Localization Definitions
         public readonly Dictionary<string, string[]> UnitLocStrings =
             new Dictionary<string, string[]>() {
-            { "VehCap", new string[] { "VehicleLimitIncrease", "+{0} VEHICLE CAP", "+{0} VEHICLES CAP", "vehicles cap increase, all caps" }}
+            { "TechVC", new string[] { "VehicleLimitIncrease", "+{0} VEHICLE CAP", "+{0} VEHICLES CAP", "vehicles cap increase, all caps" }}
         };
         public readonly Dictionary<string, string[]> TechLocStrings =
             new Dictionary<string, string[]>() {
-            { "VehCap", new string[] { "Increases vehicle limit by {0}.", "{0}=25" }}
+            { "TechVC", new string[] { "Increases vehicle limit by {0}.", "{0}=25" }}
         };
 
         // Reflection Helpers
-        ResearchNodeProto ResearchRef(ProtoRegistrator pReg, ResearchNodeProto.ID rNodeID) => pReg.PrototypesDb.Get<ResearchNodeProto>(rNodeID).Value;
-        void SetTechVehicleCapacity(ResearchNodeProto refReserach, int newVehCap) {
+        public ResearchNodeProto ResearchRef(ProtoRegistrator pReg, ResearchNodeProto.ID refID) => pReg.PrototypesDb.Get<ResearchNodeProto>(refID).Value;
+        public void SetTechVehicleCapacity(ResearchNodeProto refReserach, int newVehCap) {
             refReserach.Units.ForEach(refUnit => {
                 if (refUnit is VehicleLimitIncreaseUnlock) {
                     VehicleLimitIncreaseUnlock refUnitVehCap = (VehicleLimitIncreaseUnlock)refUnit;
@@ -33,28 +41,27 @@ namespace FFU_Industrial_Capacity {
                 }
             });
         }
-        void SetTechUnitTitle(ResearchNodeProto refReserach, string[] strSet) {
+        public void SetTechUnitTitle<T>(ResearchNodeProto refReserach, string[] strSet, int refVal) {
             refReserach.Units.ForEach(refUnit => {
-                if (refUnit is VehicleLimitIncreaseUnlock) {
-                    int currLimit = (refUnit as VehicleLimitIncreaseUnlock).LimitIncrease;
-                    TypeInfo typeUnit = typeof(VehicleLimitIncreaseUnlock).GetTypeInfo();
+                if (refUnit is T) {
+                    TypeInfo typeUnit = typeof(T).GetTypeInfo();
                     FieldInfo fieldTitle = typeUnit.GetDeclaredField("<Title>k__BackingField");
                     if (fieldTitle != null) {
                         LocStr1Plural techLoc = Loc.Str1Plural(strSet[0], strSet[1], strSet[2], strSet[3]);
-                        LocStrFormatted techVehCapTitle = techLoc.Format(currLimit.ToString(), currLimit);
+                        LocStrFormatted techVehCapTitle = techLoc.Format(refVal.ToString(), refVal);
                         fieldTitle.SetValue(refUnit, techVehCapTitle);
                     }
                 }
             });
         }
-        void SetTechDescription(ResearchNodeProto refReserach, string[] strSet, int refVal = 0) {
-            LocStr1 techLocStr = Loc.Str1(refReserach.Id.ToString() + "__desc", strSet[0], strSet[1]);
-            LocStr newDesc = LocalizationManager.CreateAlreadyLocalizedStr(refReserach.Id.ToString() + "_formatted", techLocStr.Format(refVal.ToString()).Value);
+        public void SetTechDescription(ResearchNodeProto refReserach, string[] strSet, int refVal) {
+            LocStr1 locStr = Loc.Str1(refReserach.Id.Value + "__desc", strSet[0], strSet[1]);
+            LocStr locDesc = LocalizationManager.CreateAlreadyLocalizedStr(refReserach.Id.Value + "_formatted", locStr.Format(refVal.ToString()).Value);
             TypeInfo typeProto = typeof(Mafi.Core.Prototypes.Proto).GetTypeInfo();
             FieldInfo fieldStrings = typeProto.GetDeclaredField("<Strings>k__BackingField");
             if (fieldStrings != null) {
                 Mafi.Core.Prototypes.Proto.Str currStr = (Mafi.Core.Prototypes.Proto.Str)fieldStrings.GetValue(refReserach);
-                Mafi.Core.Prototypes.Proto.Str newStr = new Mafi.Core.Prototypes.Proto.Str(currStr.Name, newDesc);
+                Mafi.Core.Prototypes.Proto.Str newStr = new Mafi.Core.Prototypes.Proto.Str(currStr.Name, locDesc);
                 fieldStrings.SetValue(refReserach, newStr);
                 FieldInfo fieldDesc = typeof(ResearchNodeProto).GetField("ResolvedDescription", BindingFlags.Instance | BindingFlags.Public);
                 fieldDesc.SetValue(refReserach, refReserach.Strings.DescShort);
@@ -71,24 +78,24 @@ namespace FFU_Industrial_Capacity {
             ResearchNodeProto techVehCap6 = ResearchRef(registrator, Ids.Research.VehicleCapIncrease6);
 
             // Vehicle Capacity Modifications
-            SetTechVehicleCapacity(techVehCap1, vehLimit);
-            SetTechVehicleCapacity(techVehCap2, vehLimit);
-            SetTechVehicleCapacity(techVehCap3, vehLimit);
-            SetTechVehicleCapacity(techVehCap4, vehLimit);
-            SetTechVehicleCapacity(techVehCap5, vehLimit);
-            SetTechVehicleCapacity(techVehCap6, vehLimit);
-            SetTechUnitTitle(techVehCap1, UnitLocStrings["VehCap"]);
-            SetTechUnitTitle(techVehCap2, UnitLocStrings["VehCap"]);
-            SetTechUnitTitle(techVehCap3, UnitLocStrings["VehCap"]);
-            SetTechUnitTitle(techVehCap4, UnitLocStrings["VehCap"]);
-            SetTechUnitTitle(techVehCap5, UnitLocStrings["VehCap"]);
-            SetTechUnitTitle(techVehCap6, UnitLocStrings["VehCap"]);
-            SetTechDescription(techVehCap1, TechLocStrings["VehCap"], vehLimit);
-            SetTechDescription(techVehCap2, TechLocStrings["VehCap"], vehLimit);
-            SetTechDescription(techVehCap3, TechLocStrings["VehCap"], vehLimit);
-            SetTechDescription(techVehCap4, TechLocStrings["VehCap"], vehLimit);
-            SetTechDescription(techVehCap5, TechLocStrings["VehCap"], vehLimit);
-            SetTechDescription(techVehCap6, TechLocStrings["VehCap"], vehLimit);
+            SetTechVehicleCapacity(techVehCap1, TechVars["TechVC1"]);
+            SetTechVehicleCapacity(techVehCap2, TechVars["TechVC2"]);
+            SetTechVehicleCapacity(techVehCap3, TechVars["TechVC3"]);
+            SetTechVehicleCapacity(techVehCap4, TechVars["TechVC4"]);
+            SetTechVehicleCapacity(techVehCap5, TechVars["TechVC5"]);
+            SetTechVehicleCapacity(techVehCap6, TechVars["TechVC6"]);
+            SetTechUnitTitle<VehicleLimitIncreaseUnlock>(techVehCap1, UnitLocStrings["TechVC"], TechVars["TechVC1"]);
+            SetTechUnitTitle<VehicleLimitIncreaseUnlock>(techVehCap2, UnitLocStrings["TechVC"], TechVars["TechVC2"]);
+            SetTechUnitTitle<VehicleLimitIncreaseUnlock>(techVehCap3, UnitLocStrings["TechVC"], TechVars["TechVC3"]);
+            SetTechUnitTitle<VehicleLimitIncreaseUnlock>(techVehCap4, UnitLocStrings["TechVC"], TechVars["TechVC4"]);
+            SetTechUnitTitle<VehicleLimitIncreaseUnlock>(techVehCap5, UnitLocStrings["TechVC"], TechVars["TechVC5"]);
+            SetTechUnitTitle<VehicleLimitIncreaseUnlock>(techVehCap6, UnitLocStrings["TechVC"], TechVars["TechVC6"]);
+            SetTechDescription(techVehCap1, TechLocStrings["TechVC"], TechVars["TechVC1"]);
+            SetTechDescription(techVehCap2, TechLocStrings["TechVC"], TechVars["TechVC2"]);
+            SetTechDescription(techVehCap3, TechLocStrings["TechVC"], TechVars["TechVC3"]);
+            SetTechDescription(techVehCap4, TechLocStrings["TechVC"], TechVars["TechVC4"]);
+            SetTechDescription(techVehCap5, TechLocStrings["TechVC"], TechVars["TechVC5"]);
+            SetTechDescription(techVehCap6, TechLocStrings["TechVC"], TechVars["TechVC6"]);
         }
     }
 }

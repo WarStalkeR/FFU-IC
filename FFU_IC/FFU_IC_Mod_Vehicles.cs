@@ -54,51 +54,50 @@ namespace FFU_Industrial_Capacity {
         };
 
         // Reflection Helpers
-        TruckProto TruckRef(ProtoRegistrator pReg, DynamicEntityProto.ID rTruckID) => pReg.PrototypesDb.Get<TruckProto>(rTruckID).Value;
-        ExcavatorProto ExcavRef(ProtoRegistrator pReg, DynamicEntityProto.ID rExcavID) => pReg.PrototypesDb.Get<ExcavatorProto>(rExcavID).Value;
-        void SetVehicleCapacity(TruckProto refTruck, int newCap) {
-            ModLog.Info($"{refTruck.Id} Capacity: {refTruck.CapacityBase} -> {newCap}");
+        public TruckProto TruckRef(ProtoRegistrator pReg, DynamicEntityProto.ID refID) => pReg.PrototypesDb.Get<TruckProto>(refID).Value;
+        public ExcavatorProto ExcavRef(ProtoRegistrator pReg, DynamicEntityProto.ID refID) => pReg.PrototypesDb.Get<ExcavatorProto>(refID).Value;
+        public void SetVehicleCapacity(TruckProto refTruck, int newTruckCap) {
+            ModLog.Info($"{refTruck.Id} Capacity: {refTruck.CapacityBase} -> {newTruckCap}");
             FieldInfo fieldCapBase = typeof(TruckProto).GetField("CapacityBase", BindingFlags.Instance | BindingFlags.Public);
-            fieldCapBase.SetValue(refTruck, new Quantity(newCap));
+            fieldCapBase.SetValue(refTruck, new Quantity(newTruckCap));
         }
-        void SetVehicleCapacity(ExcavatorProto refExcav, int newCap) {
-            ModLog.Info($"{refExcav.Id} Capacity: {refExcav.Capacity} -> {newCap}");
+        public void SetVehicleCapacity(ExcavatorProto refExcav, int newShovelCap) {
+            ModLog.Info($"{refExcav.Id} Capacity: {refExcav.Capacity} -> {newShovelCap}");
             FieldInfo fieldCapBase = typeof(ExcavatorProto).GetField("Capacity", BindingFlags.Instance | BindingFlags.Public);
-            fieldCapBase.SetValue(refExcav, new Quantity(newCap));
+            fieldCapBase.SetValue(refExcav, new Quantity(newShovelCap));
         }
-        void SetVehicleDriveData(TruckProto refTruck, double[] speedSet) {
+        public void SetVehicleDriveData(TruckProto refTruck, double[] speedSet) {
             ModLog.Info($"{refTruck.Id} Speed F/B: {refTruck.DrivingData.MaxForwardsSpeed}/{refTruck.DrivingData.MaxBackwardsSpeed} -> {speedSet[0]}/{speedSet[1]}");
             FieldInfo fieldDriveData = typeof(DrivingEntityProto).GetField("DrivingData", BindingFlags.Instance | BindingFlags.Public);
             fieldDriveData.SetValue(refTruck, new DrivingData(speedSet[0].Tiles(), speedSet[1].Tiles(), speedSet[2].Percent(), speedSet[3].Tiles(), speedSet[4].Tiles(), 
             speedSet[5].Degrees(), speedSet[6].Degrees(), speedSet[7].ToFix32(), speedSet[8].Tiles(), speedSet[9].Tiles(), NoFuelMaxSpeedPerc));
         }
-        void SetVehicleDriveData(ExcavatorProto refExcav, double[] speedSet) {
+        public void SetVehicleDriveData(ExcavatorProto refExcav, double[] speedSet) {
             ModLog.Info($"{refExcav.Id} Speed F/B: {refExcav.DrivingData.MaxForwardsSpeed}/{refExcav.DrivingData.MaxBackwardsSpeed} -> {speedSet[0]}/{speedSet[1]}");
             FieldInfo fieldDriveData = typeof(DrivingEntityProto).GetField("DrivingData", BindingFlags.Instance | BindingFlags.Public);
             fieldDriveData.SetValue(refExcav, new DrivingData(speedSet[0].Tiles(), speedSet[1].Tiles(), speedSet[2].Percent(), speedSet[3].Tiles(), speedSet[4].Tiles(),
             speedSet[5].Degrees(), speedSet[6].Degrees(), speedSet[7].ToFix32(), RelTile1f.Zero, RelTile1f.Zero, NoFuelMaxSpeedPerc));
         }
-        void SetVehicleDescription(TruckProto refTruck, string[] strSet, bool canGoUnder) {
-            LocStr newDesc = new LocStr();
+        public void SetVehicleDescription(TruckProto refTruck, string[] strSet, bool canGoUnder) {
+            LocStr locDesc;
             if (canGoUnder) {
-                LocStr2 truckLocStr = Loc.Str2(refTruck.Id.ToString() + "__desc", strSet[0], strSet[1]);
-                newDesc = LocalizationManager.CreateAlreadyLocalizedStr(refTruck.Id.ToString() + "_formatted", truckLocStr.Format(refTruck.CapacityBase.ToString(), ceilMin.ToString()).Value);
-            }
-            else {
-                LocStr1 truckLocStr = Loc.Str1(refTruck.Id.ToString() + "__desc", strSet[0], strSet[1]);
-                newDesc = LocalizationManager.CreateAlreadyLocalizedStr(refTruck.Id.ToString() + "_formatted", truckLocStr.Format(refTruck.CapacityBase.ToString()).Value);
+                LocStr2 locStr = Loc.Str2(refTruck.Id.Value + "__desc", strSet[0], strSet[1]);
+                locDesc = LocalizationManager.CreateAlreadyLocalizedStr(refTruck.Id.Value + "_formatted", locStr.Format(refTruck.CapacityBase.ToString(), ceilMin.ToString()).Value);
+            } else {
+                LocStr1 locStr = Loc.Str1(refTruck.Id.Value + "__desc", strSet[0], strSet[1]);
+                locDesc = LocalizationManager.CreateAlreadyLocalizedStr(refTruck.Id.Value + "_formatted", locStr.Format(refTruck.CapacityBase.ToString()).Value);
             }
             TypeInfo typeProto = typeof(Mafi.Core.Prototypes.Proto).GetTypeInfo();
             FieldInfo fieldStrings = typeProto.GetDeclaredField("<Strings>k__BackingField");
             if (fieldStrings != null) {
                 Mafi.Core.Prototypes.Proto.Str currStr = (Mafi.Core.Prototypes.Proto.Str)fieldStrings.GetValue(refTruck);
-                Mafi.Core.Prototypes.Proto.Str newStr = new Mafi.Core.Prototypes.Proto.Str(currStr.Name, newDesc);
+                Mafi.Core.Prototypes.Proto.Str newStr = new Mafi.Core.Prototypes.Proto.Str(currStr.Name, locDesc);
                 fieldStrings.SetValue(refTruck, newStr);
             }
         }
-        void SetVehicleDescription(ExcavatorProto refExcav, string[] strSet) {
-            LocStr1 excavLocStr = Loc.Str1(refExcav.Id.ToString() + "__desc", strSet[0], strSet[1]);
-            LocStr newDesc = LocalizationManager.CreateAlreadyLocalizedStr(refExcav.Id.ToString() + "_formatted", excavLocStr.Format(refExcav.Capacity.ToString()).Value);
+        public void SetVehicleDescription(ExcavatorProto refExcav, string[] strSet) {
+            LocStr1 locStr = Loc.Str1(refExcav.Id.Value + "__desc", strSet[0], strSet[1]);
+            LocStr newDesc = LocalizationManager.CreateAlreadyLocalizedStr(refExcav.Id.Value + "_formatted", locStr.Format(refExcav.Capacity.ToString()).Value);
             TypeInfo typeProto = typeof(Mafi.Core.Prototypes.Proto).GetTypeInfo();
             FieldInfo fieldStrings = typeProto.GetDeclaredField("<Strings>k__BackingField");
             if (fieldStrings != null) {

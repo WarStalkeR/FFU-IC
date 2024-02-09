@@ -19,7 +19,7 @@ namespace FFU_Industrial_Capacity {
         }
         public void RegisterPrototypes(ProtoRegistrator registrator) {
             ModLog.Info($"Registering prototypes...");
-            //registrator.RegisterData<FFU_IC_Mod_Storages>();
+            registrator.RegisterData<FFU_IC_Mod_Storages>();
             registrator.RegisterData<FFU_IC_Mod_Vehicles>();
             registrator.RegisterData<FFU_IC_Mod_Research>();
             ModLog.Info($"Prototypes registered!");
