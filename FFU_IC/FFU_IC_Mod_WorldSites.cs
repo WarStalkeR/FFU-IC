@@ -5,24 +5,30 @@ using Mafi.Core.World.Entities;
 
 namespace FFU_Industrial_Capacity {
 	internal partial class FFU_IC_Mod_WorldSites : IModData {
+        // Modification Variables
+        ProtoRegistrator protoReg = null;
+
         // Modification Definitions
 
         // Localization Definitions
 
         // Reflection Helpers
-        public WorldMapMineProto WorldMineRef(ProtoRegistrator pReg, EntityProto.ID refID) => pReg.PrototypesDb.Get<WorldMapMineProto>(refID).Value;
+        public WorldMapMineProto WorldMineRef(EntityProto.ID refID) => protoReg.PrototypesDb.Get<WorldMapMineProto>(refID).Value;
 
         public void RegisterData(ProtoRegistrator registrator) {
+            // Variables Initialization
+            protoReg = registrator;
+
             // World Mine References
-            WorldMapMineProto oilRig1 = WorldMineRef(registrator, Ids.World.OilRigCost1);
-            WorldMapMineProto oilRig2 = WorldMineRef(registrator, Ids.World.OilRigCost2);
-            WorldMapMineProto oilRig3 = WorldMineRef(registrator, Ids.World.OilRigCost3);
-            WorldMapMineProto waterWell = WorldMineRef(registrator, Ids.World.WaterWell);
-            WorldMapMineProto mineSulfur = WorldMineRef(registrator, Ids.World.SulfurMine);
-            WorldMapMineProto mineCoal = WorldMineRef(registrator, Ids.World.CoalMine);
-            WorldMapMineProto mineQuartz = WorldMineRef(registrator, Ids.World.QuartzMine);
-            WorldMapMineProto mineUranium = WorldMineRef(registrator, Ids.World.UraniumMine);
-            WorldMapMineProto mineLimestone = WorldMineRef(registrator, Ids.World.LimestoneMine);
+            WorldMapMineProto oilRig1 = WorldMineRef(Ids.World.OilRigCost1);
+            WorldMapMineProto oilRig2 = WorldMineRef(Ids.World.OilRigCost2);
+            WorldMapMineProto oilRig3 = WorldMineRef(Ids.World.OilRigCost3);
+            WorldMapMineProto waterWell = WorldMineRef(Ids.World.WaterWell);
+            WorldMapMineProto mineSulfur = WorldMineRef(Ids.World.SulfurMine);
+            WorldMapMineProto mineCoal = WorldMineRef(Ids.World.CoalMine);
+            WorldMapMineProto mineQuartz = WorldMineRef(Ids.World.QuartzMine);
+            WorldMapMineProto mineUranium = WorldMineRef(Ids.World.UraniumMine);
+            WorldMapMineProto mineLimestone = WorldMineRef(Ids.World.LimestoneMine);
 
         }
     }

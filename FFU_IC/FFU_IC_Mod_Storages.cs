@@ -12,7 +12,8 @@ using System.Reflection;
 namespace FFU_Industrial_Capacity {
 	internal partial class FFU_IC_Mod_Storages : IModData {
         // Modification Variables
-        public bool usePower;
+        ProtoRegistrator protoReg = null;
+        public bool usePower = false;
 
         // Modification Definitions
         public readonly Dictionary<string, int> StorageCapacity =
@@ -35,9 +36,9 @@ namespace FFU_Industrial_Capacity {
         };
 
         // Reflection Helpers
-        public StorageProto StorageRef(ProtoRegistrator pReg, StaticEntityProto.ID refID) => pReg.PrototypesDb.Get<StorageProto>(refID).Value;
-        public ThermalStorageProto ThermalRef(ProtoRegistrator pReg, StaticEntityProto.ID refID) => pReg.PrototypesDb.Get<ThermalStorageProto>(refID).Value;
-        public NuclearWasteStorageProto NuclearRef(ProtoRegistrator pReg, StaticEntityProto.ID refID) => pReg.PrototypesDb.Get<NuclearWasteStorageProto>(refID).Value;
+        public StorageProto StorageRef(StaticEntityProto.ID refID) => protoReg.PrototypesDb.Get<StorageProto>(refID).Value;
+        public ThermalStorageProto ThermalRef(StaticEntityProto.ID refID) => protoReg.PrototypesDb.Get<ThermalStorageProto>(refID).Value;
+        public NuclearWasteStorageProto NuclearRef(StaticEntityProto.ID refID) => protoReg.PrototypesDb.Get<NuclearWasteStorageProto>(refID).Value;
         public void SetStorageCapacity(StorageProto refStorage, int newMaterialCap) {
             ModLog.Info($"{refStorage.Id} Capacity: {refStorage.Capacity} -> {newMaterialCap}");
             FieldInfo fieldStorage = typeof(StorageBaseProto).GetField("Capacity", BindingFlags.Instance | BindingFlags.Public);
@@ -72,24 +73,25 @@ namespace FFU_Industrial_Capacity {
 
         public void RegisterData(ProtoRegistrator registrator) {
             // Variables Initialization
-            usePower = registrator.DifficultyConfig.PowerSetting == 
+            protoReg = registrator;
+            usePower = protoReg.DifficultyConfig.PowerSetting != 
                 GameDifficultyConfig.LogisticsPowerSetting.DoNotConsume;
 
             // Storage References
-            StorageProto refSolidT1 = StorageRef(registrator, Ids.Buildings.StorageUnit);
-            StorageProto refSolidT2 = StorageRef(registrator, Ids.Buildings.StorageUnitT2);
-            StorageProto refSolidT3 = StorageRef(registrator, Ids.Buildings.StorageUnitT3);
-            StorageProto refSolidT4 = StorageRef(registrator, Ids.Buildings.StorageUnitT4);
-            StorageProto refLooseT1 = StorageRef(registrator, Ids.Buildings.StorageLoose);
-            StorageProto refLooseT2 = StorageRef(registrator, Ids.Buildings.StorageLooseT2);
-            StorageProto refLooseT3 = StorageRef(registrator, Ids.Buildings.StorageLooseT3);
-            StorageProto refLooseT4 = StorageRef(registrator, Ids.Buildings.StorageLooseT4);
-            StorageProto refFluidT1 = StorageRef(registrator, Ids.Buildings.StorageFluid);
-            StorageProto refFluidT2 = StorageRef(registrator, Ids.Buildings.StorageFluidT2);
-            StorageProto refFluidT3 = StorageRef(registrator, Ids.Buildings.StorageFluidT3);
-            StorageProto refFluidT4 = StorageRef(registrator, Ids.Buildings.StorageFluidT4);
-            ThermalStorageProto refThermal = ThermalRef(registrator, Ids.Buildings.ThermalStorage);
-            NuclearWasteStorageProto refNuclear = NuclearRef(registrator, Ids.Buildings.NuclearWasteStorage);
+            StorageProto refSolidT1 = StorageRef(Ids.Buildings.StorageUnit);
+            StorageProto refSolidT2 = StorageRef(Ids.Buildings.StorageUnitT2);
+            StorageProto refSolidT3 = StorageRef(Ids.Buildings.StorageUnitT3);
+            StorageProto refSolidT4 = StorageRef(Ids.Buildings.StorageUnitT4);
+            StorageProto refLooseT1 = StorageRef(Ids.Buildings.StorageLoose);
+            StorageProto refLooseT2 = StorageRef(Ids.Buildings.StorageLooseT2);
+            StorageProto refLooseT3 = StorageRef(Ids.Buildings.StorageLooseT3);
+            StorageProto refLooseT4 = StorageRef(Ids.Buildings.StorageLooseT4);
+            StorageProto refFluidT1 = StorageRef(Ids.Buildings.StorageFluid);
+            StorageProto refFluidT2 = StorageRef(Ids.Buildings.StorageFluidT2);
+            StorageProto refFluidT3 = StorageRef(Ids.Buildings.StorageFluidT3);
+            StorageProto refFluidT4 = StorageRef(Ids.Buildings.StorageFluidT4);
+            ThermalStorageProto refThermal = ThermalRef(Ids.Buildings.ThermalStorage);
+            NuclearWasteStorageProto refNuclear = NuclearRef(Ids.Buildings.NuclearWasteStorage);
 
             // Solid Storage Modifications
             SetStorageCapacity(refSolidT1, StorageCapacity["DefaultT1"]);

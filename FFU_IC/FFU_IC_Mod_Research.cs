@@ -8,6 +8,9 @@ using System.Reflection;
 
 namespace FFU_Industrial_Capacity {
 	internal partial class FFU_IC_Mod_Research : IResearchNodesData, IModData {
+        // Modification Variables
+        ProtoRegistrator protoReg = null;
+
         // Modification Definitions
         public readonly Dictionary<string, int> TechVars =
             new Dictionary<string, int>() {
@@ -30,7 +33,7 @@ namespace FFU_Industrial_Capacity {
         };
 
         // Reflection Helpers
-        public ResearchNodeProto ResearchRef(ProtoRegistrator pReg, ResearchNodeProto.ID refID) => pReg.PrototypesDb.Get<ResearchNodeProto>(refID).Value;
+        public ResearchNodeProto ResearchRef(ResearchNodeProto.ID refID) => protoReg.PrototypesDb.Get<ResearchNodeProto>(refID).Value;
         public void SetTechVehicleCapacity(ResearchNodeProto refReserach, int newVehCap) {
             refReserach.Units.ForEach(refUnit => {
                 if (refUnit is VehicleLimitIncreaseUnlock) {
@@ -69,13 +72,16 @@ namespace FFU_Industrial_Capacity {
         }
 
         public void RegisterData(ProtoRegistrator registrator) {
+            // Variables Initialization
+            protoReg = registrator;
+
             // Technology References
-            ResearchNodeProto techVehCap1 = ResearchRef(registrator, Ids.Research.VehicleCapIncrease);
-            ResearchNodeProto techVehCap2 = ResearchRef(registrator, Ids.Research.VehicleCapIncrease2);
-            ResearchNodeProto techVehCap3 = ResearchRef(registrator, Ids.Research.VehicleCapIncrease3);
-            ResearchNodeProto techVehCap4 = ResearchRef(registrator, Ids.Research.VehicleCapIncrease4);
-            ResearchNodeProto techVehCap5 = ResearchRef(registrator, Ids.Research.VehicleCapIncrease5);
-            ResearchNodeProto techVehCap6 = ResearchRef(registrator, Ids.Research.VehicleCapIncrease6);
+            ResearchNodeProto techVehCap1 = ResearchRef(Ids.Research.VehicleCapIncrease);
+            ResearchNodeProto techVehCap2 = ResearchRef(Ids.Research.VehicleCapIncrease2);
+            ResearchNodeProto techVehCap3 = ResearchRef(Ids.Research.VehicleCapIncrease3);
+            ResearchNodeProto techVehCap4 = ResearchRef(Ids.Research.VehicleCapIncrease4);
+            ResearchNodeProto techVehCap5 = ResearchRef(Ids.Research.VehicleCapIncrease5);
+            ResearchNodeProto techVehCap6 = ResearchRef(Ids.Research.VehicleCapIncrease6);
 
             // Vehicle Capacity Modifications
             SetTechVehicleCapacity(techVehCap1, TechVars["TechVC1"]);

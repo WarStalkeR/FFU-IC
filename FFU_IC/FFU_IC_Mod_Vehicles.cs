@@ -10,6 +10,9 @@ using System.Reflection;
 
 namespace FFU_Industrial_Capacity {
 	internal partial class FFU_IC_Mod_Vehicles : IModData {
+        // Modification Variables
+        ProtoRegistrator protoReg = null;
+
         // Modification Definitions
         public const int ceilMin = 2;
         Percent NoFuelMaxSpeedPerc = 40.Percent();
@@ -54,8 +57,8 @@ namespace FFU_Industrial_Capacity {
         };
 
         // Reflection Helpers
-        public TruckProto TruckRef(ProtoRegistrator pReg, DynamicEntityProto.ID refID) => pReg.PrototypesDb.Get<TruckProto>(refID).Value;
-        public ExcavatorProto ExcavRef(ProtoRegistrator pReg, DynamicEntityProto.ID refID) => pReg.PrototypesDb.Get<ExcavatorProto>(refID).Value;
+        public TruckProto TruckRef(DynamicEntityProto.ID refID) => protoReg.PrototypesDb.Get<TruckProto>(refID).Value;
+        public ExcavatorProto ExcavRef(DynamicEntityProto.ID refID) => protoReg.PrototypesDb.Get<ExcavatorProto>(refID).Value;
         public void SetVehicleCapacity(TruckProto refTruck, int newTruckCap) {
             ModLog.Info($"{refTruck.Id} Capacity: {refTruck.CapacityBase} -> {newTruckCap}");
             FieldInfo fieldCapBase = typeof(TruckProto).GetField("CapacityBase", BindingFlags.Instance | BindingFlags.Public);
@@ -108,14 +111,17 @@ namespace FFU_Industrial_Capacity {
         }
 
         public void RegisterData(ProtoRegistrator registrator) {
+            // Variables Initialization
+            protoReg = registrator;
+
             // Vehicle References
-            TruckProto refTruckT1 = TruckRef(registrator, Ids.Vehicles.TruckT1.Id);
-            TruckProto refTruckT2 = TruckRef(registrator, Ids.Vehicles.TruckT2.Id);
-            TruckProto refTruckT3A = TruckRef(registrator, Ids.Vehicles.TruckT3Loose.Id);
-            TruckProto refTruckT3B = TruckRef(registrator, Ids.Vehicles.TruckT3Fluid.Id);
-            ExcavatorProto refExcavT1 = ExcavRef(registrator, Ids.Vehicles.ExcavatorT1);
-            ExcavatorProto refExcavT2 = ExcavRef(registrator, Ids.Vehicles.ExcavatorT2);
-            ExcavatorProto refExcavT3 = ExcavRef(registrator, Ids.Vehicles.ExcavatorT3);
+            TruckProto refTruckT1 = TruckRef(Ids.Vehicles.TruckT1.Id);
+            TruckProto refTruckT2 = TruckRef(Ids.Vehicles.TruckT2.Id);
+            TruckProto refTruckT3A = TruckRef(Ids.Vehicles.TruckT3Loose.Id);
+            TruckProto refTruckT3B = TruckRef(Ids.Vehicles.TruckT3Fluid.Id);
+            ExcavatorProto refExcavT1 = ExcavRef(Ids.Vehicles.ExcavatorT1);
+            ExcavatorProto refExcavT2 = ExcavRef(Ids.Vehicles.ExcavatorT2);
+            ExcavatorProto refExcavT3 = ExcavRef(Ids.Vehicles.ExcavatorT3);
 
             // Truck Modifications
             SetVehicleCapacity(refTruckT1, TruckCapacity["T1"]);
