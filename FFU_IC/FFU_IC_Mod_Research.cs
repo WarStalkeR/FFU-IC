@@ -16,7 +16,7 @@ namespace FFU_Industrial_Capacity {
             { "TechVC3", 40 },
             { "TechVC4", 40 },
             { "TechVC5", 40 },
-            { "TechVC6", 40 },
+            { "TechVC6", 40 }
         };
 
         // Localization Definitions

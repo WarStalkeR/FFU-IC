@@ -1,11 +1,10 @@
 ﻿using Mafi.Base;
-using Mafi.Core.Buildings.Storages;
 using Mafi.Core.Entities;
 using Mafi.Core.Mods;
 using Mafi.Core.World.Entities;
 
 namespace FFU_Industrial_Capacity {
-	internal partial class FFU_IC_Mod_WorldMines : IModData {
+	internal partial class FFU_IC_Mod_WorldSites : IModData {
         // Modification Definitions
 
         // Localization Definitions

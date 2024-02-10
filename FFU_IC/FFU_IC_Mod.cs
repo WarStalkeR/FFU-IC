@@ -22,7 +22,8 @@ namespace FFU_Industrial_Capacity {
             registrator.RegisterData<FFU_IC_Mod_Storages>();
             registrator.RegisterData<FFU_IC_Mod_Vehicles>();
             registrator.RegisterData<FFU_IC_Mod_Research>();
-            //registrator.RegisterData<FFU_IC_Mod_WorldMines>();
+            registrator.RegisterData<FFU_IC_Mod_WorldSites>();
+            // registrator.RegisterData<FFU_IC_Mod_Machinery>();
             ModLog.Info($"Prototypes registered!");
         }
         public void RegisterDependencies(DependencyResolverBuilder depBuilder, ProtosDb protosDb, bool gameWasLoaded) {

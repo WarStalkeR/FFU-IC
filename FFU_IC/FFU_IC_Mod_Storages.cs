@@ -12,7 +12,7 @@ using System.Reflection;
 namespace FFU_Industrial_Capacity {
 	internal partial class FFU_IC_Mod_Storages : IModData {
         // Modification Variables
-        public bool usePower = true;
+        public bool usePower;
 
         // Modification Definitions
         public readonly Dictionary<string, int> StorageCapacity =
@@ -31,7 +31,7 @@ namespace FFU_Industrial_Capacity {
             new Dictionary<string, string[]>() {
             { "Solid", new string[] { "StorageSolidFormattedBase__desc", "Stores up to {0} units of a solid product.", "description for storage" }},
             { "Loose", new string[] { "StorageLooseFormattedBase__desc", "Stores up to {0} units of a loose product.", "description for storage" }},
-            { "Fluid", new string[] { "StorageFluidFormattedBase__desc", "Stores up to {0} units of a liquid or gas product.", "description for storage" }},
+            { "Fluid", new string[] { "StorageFluidFormattedBase__desc", "Stores up to {0} units of a liquid or gas product.", "description for storage" }}
         };
 
         // Reflection Helpers
