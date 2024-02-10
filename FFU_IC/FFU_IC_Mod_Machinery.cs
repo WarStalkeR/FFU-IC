@@ -18,6 +18,7 @@ namespace FFU_Industrial_Capacity {
     internal partial class FFU_IC_Mod_Machinery : IModData {
         // Modification Variables
         ProtoRegistrator protoReg = null;
+        public static readonly RecipeProto.ID CopperSmeltingArcHalf = new RecipeProto.ID("CopperSmeltingArcHalf");
 
         // Modification Definitions
         public readonly Dictionary<string, string[]> LayoutStrings =
@@ -100,6 +101,18 @@ namespace FFU_Industrial_Capacity {
 
             // Machinery Modifications
             SetMachineLayout(furnace, LayoutStrings["ArcFurnaceT1"], LayoutMap["ArcFurnaceT1"]);
+
+            // New Recipes Addition
+            protoReg.RecipeProtoBuilder
+            .Start("Copper smelting (arc half)", CopperSmeltingArcHalf, furnace)
+            .AddInput(12, Ids.Products.CopperOreCrushed, "*", false)
+            .AddInput(2, Ids.Products.Sand, "*", false)
+            .AddInput(1, Ids.Products.Graphite, "*", false)
+            .SetDuration(30.Seconds())
+            .AddOutput(16, Ids.Products.MoltenCopper, "*", false, false)
+            .AddOutput(6, Ids.Products.Slag, "*", false, false)
+            .AddOutput(6, Ids.Products.Exhaust, "E", false, false)
+            .BuildAndAdd();
         }
     }
 }
