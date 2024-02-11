@@ -12,7 +12,7 @@ using System.Reflection;
 namespace FFU_Industrial_Capacity {
 	internal partial class FFU_IC_Mod_Storages : IModData {
         // Modification Variables
-        ProtoRegistrator protoReg = null;
+        ProtoRegistrator pReg = null;
         public bool usePower = false;
 
         // Modification Definitions
@@ -24,7 +24,7 @@ namespace FFU_Industrial_Capacity {
             { "DefaultT4", 27000 },
             { "RadWaste", 12000 },
             { "RetWaste", 3000 },
-            { "Thermal", 15000 }
+            { "Thermal", 15000 },
         };
 
         // Localization Definitions
@@ -32,24 +32,24 @@ namespace FFU_Industrial_Capacity {
             new Dictionary<string, string[]>() {
             { "Solid", new string[] { "StorageSolidFormattedBase__desc", "Stores up to {0} units of a solid product.", "description for storage" }},
             { "Loose", new string[] { "StorageLooseFormattedBase__desc", "Stores up to {0} units of a loose product.", "description for storage" }},
-            { "Fluid", new string[] { "StorageFluidFormattedBase__desc", "Stores up to {0} units of a liquid or gas product.", "description for storage" }}
+            { "Fluid", new string[] { "StorageFluidFormattedBase__desc", "Stores up to {0} units of a liquid or gas product.", "description for storage" }},
         };
 
         // Reflection Helpers
-        public StorageProto StorageRef(StaticEntityProto.ID refID) => protoReg.PrototypesDb.Get<StorageProto>(refID).Value;
-        public ThermalStorageProto ThermalRef(StaticEntityProto.ID refID) => protoReg.PrototypesDb.Get<ThermalStorageProto>(refID).Value;
-        public NuclearWasteStorageProto NuclearRef(StaticEntityProto.ID refID) => protoReg.PrototypesDb.Get<NuclearWasteStorageProto>(refID).Value;
         public void SetStorageCapacity(StorageProto refStorage, int newMaterialCap) {
+            if (refStorage == null) { ModLog.Warning($"SetStorageCapacity: 'refStorage' is undefined!"); return; }
             ModLog.Info($"{refStorage.Id} Capacity: {refStorage.Capacity} -> {newMaterialCap}");
             FieldInfo fieldStorage = typeof(StorageBaseProto).GetField("Capacity", BindingFlags.Instance | BindingFlags.Public);
             fieldStorage.SetValue(refStorage, new Quantity(newMaterialCap));
         }
         public void SetStorageCapacity(ThermalStorageProto refThermal, int newThermalCap) {
+            if (refThermal == null) { ModLog.Warning($"SetStorageCapacity: 'refThermal' is undefined!"); return; }
             ModLog.Info($"{refThermal.Id} Capacity: {refThermal.Capacity} -> {newThermalCap}");
             FieldInfo fieldThermal = typeof(ThermalStorageProto).GetField("Capacity", BindingFlags.Instance | BindingFlags.Public);
             fieldThermal.SetValue(refThermal, new Quantity(newThermalCap));
         }
         public void SetStorageCapacity(NuclearWasteStorageProto refNuclear, int newNuclearCap, int newRetiredCap) {
+            if (refNuclear == null) { ModLog.Warning($"SetStorageCapacity: 'refNuclear' is undefined!"); return; }
             ModLog.Info($"{refNuclear.Id} Capacity: {refNuclear.Capacity}/{refNuclear.RetiredWasteCapacity} -> {newNuclearCap}/{newRetiredCap}");
             FieldInfo fieldNuclear = typeof(StorageBaseProto).GetField("Capacity", BindingFlags.Instance | BindingFlags.Public);
             FieldInfo fieldRetried = typeof(NuclearWasteStorageProto).GetField("RetiredWasteCapacity", BindingFlags.Instance | BindingFlags.Public);
@@ -57,6 +57,8 @@ namespace FFU_Industrial_Capacity {
             fieldRetried.SetValue(refNuclear, new Quantity(newRetiredCap));
         }
         public void SetStorageDescription(StorageProto refStorage, string[] strSet) {
+            if (refStorage == null) { ModLog.Warning($"SetStorageDescription: 'refStorage' is undefined!"); return; }
+            if (strSet == null) { ModLog.Warning($"SetStorageDescription: 'strSet' is undefined!"); return; }
             LocStr1 locStr = Loc.Str1(strSet[0], strSet[1], strSet[2]);
             LocStr locDesc = LocalizationManager.CreateAlreadyLocalizedStr(refStorage.Id.Value + 
                 "__desc", locStr.Format(refStorage.Capacity.ToString()).ToString() + (usePower ? " " +
@@ -65,6 +67,7 @@ namespace FFU_Industrial_Capacity {
             TypeInfo typeProto = typeof(Mafi.Core.Prototypes.Proto).GetTypeInfo();
             FieldInfo fieldStrings = typeProto.GetDeclaredField("<Strings>k__BackingField");
             if (fieldStrings != null) {
+                ModLog.Info($"{refStorage.Id} description changed.");
                 Mafi.Core.Prototypes.Proto.Str currStr = (Mafi.Core.Prototypes.Proto.Str)fieldStrings.GetValue(refStorage);
                 Mafi.Core.Prototypes.Proto.Str newStr = new Mafi.Core.Prototypes.Proto.Str(currStr.Name, locDesc);
                 fieldStrings.SetValue(refStorage, newStr);
@@ -73,25 +76,25 @@ namespace FFU_Industrial_Capacity {
 
         public void RegisterData(ProtoRegistrator registrator) {
             // Variables Initialization
-            protoReg = registrator;
-            usePower = protoReg.DifficultyConfig.PowerSetting != 
+            pReg = registrator;
+            usePower = pReg.DifficultyConfig.PowerSetting != 
                 GameDifficultyConfig.LogisticsPowerSetting.DoNotConsume;
 
             // Storage References
-            StorageProto refSolidT1 = StorageRef(Ids.Buildings.StorageUnit);
-            StorageProto refSolidT2 = StorageRef(Ids.Buildings.StorageUnitT2);
-            StorageProto refSolidT3 = StorageRef(Ids.Buildings.StorageUnitT3);
-            StorageProto refSolidT4 = StorageRef(Ids.Buildings.StorageUnitT4);
-            StorageProto refLooseT1 = StorageRef(Ids.Buildings.StorageLoose);
-            StorageProto refLooseT2 = StorageRef(Ids.Buildings.StorageLooseT2);
-            StorageProto refLooseT3 = StorageRef(Ids.Buildings.StorageLooseT3);
-            StorageProto refLooseT4 = StorageRef(Ids.Buildings.StorageLooseT4);
-            StorageProto refFluidT1 = StorageRef(Ids.Buildings.StorageFluid);
-            StorageProto refFluidT2 = StorageRef(Ids.Buildings.StorageFluidT2);
-            StorageProto refFluidT3 = StorageRef(Ids.Buildings.StorageFluidT3);
-            StorageProto refFluidT4 = StorageRef(Ids.Buildings.StorageFluidT4);
-            ThermalStorageProto refThermal = ThermalRef(Ids.Buildings.ThermalStorage);
-            NuclearWasteStorageProto refNuclear = NuclearRef(Ids.Buildings.NuclearWasteStorage);
+            StorageProto refSolidT1 = FFU_IC_IDs.StorageRef(pReg, Ids.Buildings.StorageUnit);
+            StorageProto refSolidT2 = FFU_IC_IDs.StorageRef(pReg, Ids.Buildings.StorageUnitT2);
+            StorageProto refSolidT3 = FFU_IC_IDs.StorageRef(pReg, Ids.Buildings.StorageUnitT3);
+            StorageProto refSolidT4 = FFU_IC_IDs.StorageRef(pReg, Ids.Buildings.StorageUnitT4);
+            StorageProto refLooseT1 = FFU_IC_IDs.StorageRef(pReg, Ids.Buildings.StorageLoose);
+            StorageProto refLooseT2 = FFU_IC_IDs.StorageRef(pReg, Ids.Buildings.StorageLooseT2);
+            StorageProto refLooseT3 = FFU_IC_IDs.StorageRef(pReg, Ids.Buildings.StorageLooseT3);
+            StorageProto refLooseT4 = FFU_IC_IDs.StorageRef(pReg, Ids.Buildings.StorageLooseT4);
+            StorageProto refFluidT1 = FFU_IC_IDs.StorageRef(pReg, Ids.Buildings.StorageFluid);
+            StorageProto refFluidT2 = FFU_IC_IDs.StorageRef(pReg, Ids.Buildings.StorageFluidT2);
+            StorageProto refFluidT3 = FFU_IC_IDs.StorageRef(pReg, Ids.Buildings.StorageFluidT3);
+            StorageProto refFluidT4 = FFU_IC_IDs.StorageRef(pReg, Ids.Buildings.StorageFluidT4);
+            ThermalStorageProto refThermal = FFU_IC_IDs.ThermalRef(pReg, Ids.Buildings.ThermalStorage);
+            NuclearWasteStorageProto refNuclear = FFU_IC_IDs.NuclearRef(pReg, Ids.Buildings.NuclearWasteStorage);
 
             // Solid Storage Modifications
             SetStorageCapacity(refSolidT1, StorageCapacity["DefaultT1"]);

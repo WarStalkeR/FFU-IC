@@ -11,7 +11,7 @@ using System.Reflection;
 namespace FFU_Industrial_Capacity {
 	internal partial class FFU_IC_Mod_Vehicles : IModData {
         // Modification Variables
-        ProtoRegistrator protoReg = null;
+        ProtoRegistrator pReg = null;
 
         // Modification Definitions
         public const int ceilMin = 2;
@@ -20,25 +20,25 @@ namespace FFU_Industrial_Capacity {
             new Dictionary<string, int>() {
             { "T1", 100 },
             { "T2", 300 },
-            { "T3", 900 }
+            { "T3", 900 },
         };
         public readonly Dictionary<string, int> ExcavCapacity = 
             new Dictionary<string, int>() {
             { "T1", 25 },
             { "T2", 75 },
-            { "T3", 225 }
+            { "T3", 225 },
         };
         public readonly Dictionary<string, double[]> TruckDriveData =
             new Dictionary<string, double[]>() {
             { "T1", new double[] { 2.0, 1.2, 50, 0.06, 0.09, 60, 20, 2.5, 1.25, 1.25 }},
             { "T2", new double[] { 2.5, 1.4, 50, 0.06, 0.09, 60, 20, 2.5, 1.5, 1.5 }},
-            { "T3", new double[] { 1.5, 1.0, 50, 0.02, 0.06, 60, 15, 3.0, 1.5, 1.5 }}
+            { "T3", new double[] { 1.5, 1.0, 50, 0.02, 0.06, 60, 15, 3.0, 1.5, 1.5 }},
         };
         public readonly Dictionary<string, double[]> ExcavDriveData =
             new Dictionary<string, double[]>() {
             { "T1", new double[] { 1.2, 0.8, 50, 0.04, 0.06, 10, 2, 2 }},
             { "T2", new double[] { 0.8, 0.6, 50, 0.025, 0.05, 8, 1, 2.5 }},
-            { "T3", new double[] { 0.5, 0.4, 40, 0.015, 0.03, 4.0, 0.4, 3 }}
+            { "T3", new double[] { 0.5, 0.4, 40, 0.015, 0.03, 4.0, 0.4, 3 }},
         };
 
         // Localization Definitions
@@ -47,41 +47,47 @@ namespace FFU_Industrial_Capacity {
             { "T1", new string[] { "Heavy duty pickup truck with max capacity of {0}. It can go under transports that are at height {1} or higher.", "truck description, for instance {0}=20,{1}=2" }},
             { "T2", new string[] { "Large industrial truck with max capacity of {0}. It can go under transports if they are at height {1} or higher.", "vehicle description, for instance {0}=20,{1}=2" }},
             { "T3A", new string[] { "Large hauling truck with max capacity of {0}. This type can transport only loose products (coal for instance). It cannot go under transports.", "vehicle description, for instance {0}=150" }},
-            { "T3B", new string[] { "Large hauling truck with max capacity of {0}. This type can transport only liquid or gas products. It cannot go under transports.", "vehicle description, for instance {0}=150" }}
+            { "T3B", new string[] { "Large hauling truck with max capacity of {0}. This type can transport only liquid or gas products. It cannot go under transports.", "vehicle description, for instance {0}=150" }},
         };
         public readonly Dictionary<string, string[]> ExcavLocStrings =
             new Dictionary<string, string[]>() {
             { "T1", new string[] { "Suitable for mining any terrain with max bucket capacity of {0}. It is too tall and it cannot go under transports, use ramps to cross them.", "vehicle description, for instance {0}=6" }},
             { "T2", new string[] { "This is a serious mining machine with max bucket capacity of {0}! It is too tall and it cannot go under transports, use ramps to cross them.", "vehicle description, for instance {0}=18" }},
-            { "T3", new string[] { "Extremely large excavator that can mine any terrain with ease. It has bucket capacity of {0}. It cannot go under transports due to its size, use ramps to cross them.", "vehicle description, for instance {0}=60" }}
+            { "T3", new string[] { "Extremely large excavator that can mine any terrain with ease. It has bucket capacity of {0}. It cannot go under transports due to its size, use ramps to cross them.", "vehicle description, for instance {0}=60" }},
         };
 
         // Reflection Helpers
-        public TruckProto TruckRef(DynamicEntityProto.ID refID) => protoReg.PrototypesDb.Get<TruckProto>(refID).Value;
-        public ExcavatorProto ExcavRef(DynamicEntityProto.ID refID) => protoReg.PrototypesDb.Get<ExcavatorProto>(refID).Value;
         public void SetVehicleCapacity(TruckProto refTruck, int newTruckCap) {
+            if (refTruck == null) { ModLog.Warning($"SetVehicleCapacity: 'refTruck' is undefined!"); return; }
             ModLog.Info($"{refTruck.Id} Capacity: {refTruck.CapacityBase} -> {newTruckCap}");
             FieldInfo fieldCapBase = typeof(TruckProto).GetField("CapacityBase", BindingFlags.Instance | BindingFlags.Public);
             fieldCapBase.SetValue(refTruck, new Quantity(newTruckCap));
         }
         public void SetVehicleCapacity(ExcavatorProto refExcav, int newShovelCap) {
+            if (refExcav == null) { ModLog.Warning($"SetVehicleCapacity: 'refExcav' is undefined!"); return; }
             ModLog.Info($"{refExcav.Id} Capacity: {refExcav.Capacity} -> {newShovelCap}");
             FieldInfo fieldCapBase = typeof(ExcavatorProto).GetField("Capacity", BindingFlags.Instance | BindingFlags.Public);
             fieldCapBase.SetValue(refExcav, new Quantity(newShovelCap));
         }
         public void SetVehicleDriveData(TruckProto refTruck, double[] speedSet) {
+            if (refTruck == null) { ModLog.Warning($"SetVehicleDriveData: 'refTruck' is undefined!"); return; }
+            if (speedSet == null) { ModLog.Warning($"SetVehicleDriveData: 'speedSet' is undefined!"); return; }
             ModLog.Info($"{refTruck.Id} Speed F/B: {refTruck.DrivingData.MaxForwardsSpeed}/{refTruck.DrivingData.MaxBackwardsSpeed} -> {speedSet[0]}/{speedSet[1]}");
             FieldInfo fieldDriveData = typeof(DrivingEntityProto).GetField("DrivingData", BindingFlags.Instance | BindingFlags.Public);
             fieldDriveData.SetValue(refTruck, new DrivingData(speedSet[0].Tiles(), speedSet[1].Tiles(), speedSet[2].Percent(), speedSet[3].Tiles(), speedSet[4].Tiles(), 
             speedSet[5].Degrees(), speedSet[6].Degrees(), speedSet[7].ToFix32(), speedSet[8].Tiles(), speedSet[9].Tiles(), NoFuelMaxSpeedPerc));
         }
         public void SetVehicleDriveData(ExcavatorProto refExcav, double[] speedSet) {
+            if (refExcav == null) { ModLog.Warning($"SetVehicleDriveData: 'refExcav' is undefined!"); return; }
+            if (speedSet == null) { ModLog.Warning($"SetVehicleDriveData: 'speedSet' is undefined!"); return; }
             ModLog.Info($"{refExcav.Id} Speed F/B: {refExcav.DrivingData.MaxForwardsSpeed}/{refExcav.DrivingData.MaxBackwardsSpeed} -> {speedSet[0]}/{speedSet[1]}");
             FieldInfo fieldDriveData = typeof(DrivingEntityProto).GetField("DrivingData", BindingFlags.Instance | BindingFlags.Public);
             fieldDriveData.SetValue(refExcav, new DrivingData(speedSet[0].Tiles(), speedSet[1].Tiles(), speedSet[2].Percent(), speedSet[3].Tiles(), speedSet[4].Tiles(),
             speedSet[5].Degrees(), speedSet[6].Degrees(), speedSet[7].ToFix32(), RelTile1f.Zero, RelTile1f.Zero, NoFuelMaxSpeedPerc));
         }
         public void SetVehicleDescription(TruckProto refTruck, string[] strSet, bool canGoUnder) {
+            if (refTruck == null) { ModLog.Warning($"SetVehicleDescription: 'refTruck' is undefined!"); return; }
+            if (strSet == null) { ModLog.Warning($"SetVehicleDescription: 'strSet' is undefined!"); return; }
             LocStr locDesc;
             if (canGoUnder) {
                 LocStr2 locStr = Loc.Str2(refTruck.Id.Value + "__desc", strSet[0], strSet[1]);
@@ -93,17 +99,21 @@ namespace FFU_Industrial_Capacity {
             TypeInfo typeProto = typeof(Mafi.Core.Prototypes.Proto).GetTypeInfo();
             FieldInfo fieldStrings = typeProto.GetDeclaredField("<Strings>k__BackingField");
             if (fieldStrings != null) {
+                ModLog.Info($"{refTruck.Id} description changed.");
                 Mafi.Core.Prototypes.Proto.Str currStr = (Mafi.Core.Prototypes.Proto.Str)fieldStrings.GetValue(refTruck);
                 Mafi.Core.Prototypes.Proto.Str newStr = new Mafi.Core.Prototypes.Proto.Str(currStr.Name, locDesc);
                 fieldStrings.SetValue(refTruck, newStr);
             }
         }
         public void SetVehicleDescription(ExcavatorProto refExcav, string[] strSet) {
+            if (refExcav == null) { ModLog.Warning($"SetVehicleDescription: 'refExcav' is undefined!"); return; }
+            if (strSet == null) { ModLog.Warning($"SetVehicleDescription: 'strSet' is undefined!"); return; }
             LocStr1 locStr = Loc.Str1(refExcav.Id.Value + "__desc", strSet[0], strSet[1]);
             LocStr newDesc = LocalizationManager.CreateAlreadyLocalizedStr(refExcav.Id.Value + "_formatted", locStr.Format(refExcav.Capacity.ToString()).Value);
             TypeInfo typeProto = typeof(Mafi.Core.Prototypes.Proto).GetTypeInfo();
             FieldInfo fieldStrings = typeProto.GetDeclaredField("<Strings>k__BackingField");
             if (fieldStrings != null) {
+                ModLog.Info($"{refExcav.Id} description changed.");
                 Mafi.Core.Prototypes.Proto.Str currStr = (Mafi.Core.Prototypes.Proto.Str)fieldStrings.GetValue(refExcav);
                 Mafi.Core.Prototypes.Proto.Str newStr = new Mafi.Core.Prototypes.Proto.Str(currStr.Name, newDesc);
                 fieldStrings.SetValue(refExcav, newStr);
@@ -112,16 +122,16 @@ namespace FFU_Industrial_Capacity {
 
         public void RegisterData(ProtoRegistrator registrator) {
             // Variables Initialization
-            protoReg = registrator;
+            pReg = registrator;
 
             // Vehicle References
-            TruckProto refTruckT1 = TruckRef(Ids.Vehicles.TruckT1.Id);
-            TruckProto refTruckT2 = TruckRef(Ids.Vehicles.TruckT2.Id);
-            TruckProto refTruckT3A = TruckRef(Ids.Vehicles.TruckT3Loose.Id);
-            TruckProto refTruckT3B = TruckRef(Ids.Vehicles.TruckT3Fluid.Id);
-            ExcavatorProto refExcavT1 = ExcavRef(Ids.Vehicles.ExcavatorT1);
-            ExcavatorProto refExcavT2 = ExcavRef(Ids.Vehicles.ExcavatorT2);
-            ExcavatorProto refExcavT3 = ExcavRef(Ids.Vehicles.ExcavatorT3);
+            TruckProto refTruckT1 = FFU_IC_IDs.TruckRef(pReg, Ids.Vehicles.TruckT1.Id);
+            TruckProto refTruckT2 = FFU_IC_IDs.TruckRef(pReg, Ids.Vehicles.TruckT2.Id);
+            TruckProto refTruckT3A = FFU_IC_IDs.TruckRef(pReg, Ids.Vehicles.TruckT3Loose.Id);
+            TruckProto refTruckT3B = FFU_IC_IDs.TruckRef(pReg, Ids.Vehicles.TruckT3Fluid.Id);
+            ExcavatorProto refExcavT1 = FFU_IC_IDs.ExcavRef(pReg, Ids.Vehicles.ExcavatorT1);
+            ExcavatorProto refExcavT2 = FFU_IC_IDs.ExcavRef(pReg, Ids.Vehicles.ExcavatorT2);
+            ExcavatorProto refExcavT3 = FFU_IC_IDs.ExcavRef(pReg, Ids.Vehicles.ExcavatorT3);
 
             // Truck Modifications
             SetVehicleCapacity(refTruckT1, TruckCapacity["T1"]);

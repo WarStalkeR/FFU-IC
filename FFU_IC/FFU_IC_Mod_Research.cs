@@ -9,7 +9,7 @@ using System.Reflection;
 namespace FFU_Industrial_Capacity {
 	internal partial class FFU_IC_Mod_Research : IResearchNodesData, IModData {
         // Modification Variables
-        ProtoRegistrator protoReg = null;
+        ProtoRegistrator pReg = null;
 
         // Modification Definitions
         public readonly Dictionary<string, int> TechVars =
@@ -19,22 +19,22 @@ namespace FFU_Industrial_Capacity {
             { "TechVC3", 40 },
             { "TechVC4", 40 },
             { "TechVC5", 40 },
-            { "TechVC6", 40 }
+            { "TechVC6", 40 },
         };
 
         // Localization Definitions
         public readonly Dictionary<string, string[]> UnitLocStrings =
             new Dictionary<string, string[]>() {
-            { "TechVC", new string[] { "VehicleLimitIncrease", "+{0} VEHICLE CAP", "+{0} VEHICLES CAP", "vehicles cap increase, all caps" }}
+            { "TechVC", new string[] { "VehicleLimitIncrease", "+{0} VEHICLE CAP", "+{0} VEHICLES CAP", "vehicles cap increase, all caps" }},
         };
         public readonly Dictionary<string, string[]> TechLocStrings =
             new Dictionary<string, string[]>() {
-            { "TechVC", new string[] { "Increases vehicle limit by {0}.", "{0}=25" }}
+            { "TechVC", new string[] { "Increases vehicle limit by {0}.", "{0}=25" }},
         };
 
         // Reflection Helpers
-        public ResearchNodeProto ResearchRef(ResearchNodeProto.ID refID) => protoReg.PrototypesDb.Get<ResearchNodeProto>(refID).Value;
         public void SetTechVehicleCapacity(ResearchNodeProto refReserach, int newVehCap) {
+            if (refReserach == null) { ModLog.Warning($"SetTechVehicleCapacity: 'refReserach' is undefined!"); return; }
             refReserach.Units.ForEach(refUnit => {
                 if (refUnit is VehicleLimitIncreaseUnlock) {
                     VehicleLimitIncreaseUnlock refUnitVehCap = (VehicleLimitIncreaseUnlock)refUnit;
@@ -45,11 +45,14 @@ namespace FFU_Industrial_Capacity {
             });
         }
         public void SetTechUnitTitle<T>(ResearchNodeProto refReserach, string[] strSet, int refVal) {
+            if (refReserach == null) { ModLog.Warning($"SetTechUnitTitle: 'refReserach' is undefined!"); return; }
+            if (strSet == null) { ModLog.Warning($"SetTechUnitTitle: 'strSet' is undefined!"); return; }
             refReserach.Units.ForEach(refUnit => {
                 if (refUnit is T) {
                     TypeInfo typeUnit = typeof(T).GetTypeInfo();
                     FieldInfo fieldTitle = typeUnit.GetDeclaredField("<Title>k__BackingField");
                     if (fieldTitle != null) {
+                        ModLog.Info($"{refReserach.Id} unit title changed.");
                         LocStr1Plural techLoc = Loc.Str1Plural(strSet[0], strSet[1], strSet[2], strSet[3]);
                         LocStrFormatted techVehCapTitle = techLoc.Format(refVal.ToString(), refVal);
                         fieldTitle.SetValue(refUnit, techVehCapTitle);
@@ -58,11 +61,14 @@ namespace FFU_Industrial_Capacity {
             });
         }
         public void SetTechDescription(ResearchNodeProto refReserach, string[] strSet, int refVal) {
+            if (refReserach == null) { ModLog.Warning($"SetTechDescription: 'refReserach' is undefined!"); return; }
+            if (strSet == null) { ModLog.Warning($"SetTechDescription: 'strSet' is undefined!"); return; }
             LocStr1 locStr = Loc.Str1(refReserach.Id.Value + "__desc", strSet[0], strSet[1]);
             LocStr locDesc = LocalizationManager.CreateAlreadyLocalizedStr(refReserach.Id.Value + "_formatted", locStr.Format(refVal.ToString()).Value);
             TypeInfo typeProto = typeof(Mafi.Core.Prototypes.Proto).GetTypeInfo();
             FieldInfo fieldStrings = typeProto.GetDeclaredField("<Strings>k__BackingField");
             if (fieldStrings != null) {
+                ModLog.Info($"{refReserach.Id} description changed.");
                 Mafi.Core.Prototypes.Proto.Str currStr = (Mafi.Core.Prototypes.Proto.Str)fieldStrings.GetValue(refReserach);
                 Mafi.Core.Prototypes.Proto.Str newStr = new Mafi.Core.Prototypes.Proto.Str(currStr.Name, locDesc);
                 fieldStrings.SetValue(refReserach, newStr);
@@ -73,15 +79,15 @@ namespace FFU_Industrial_Capacity {
 
         public void RegisterData(ProtoRegistrator registrator) {
             // Variables Initialization
-            protoReg = registrator;
+            pReg = registrator;
 
             // Technology References
-            ResearchNodeProto techVehCap1 = ResearchRef(Ids.Research.VehicleCapIncrease);
-            ResearchNodeProto techVehCap2 = ResearchRef(Ids.Research.VehicleCapIncrease2);
-            ResearchNodeProto techVehCap3 = ResearchRef(Ids.Research.VehicleCapIncrease3);
-            ResearchNodeProto techVehCap4 = ResearchRef(Ids.Research.VehicleCapIncrease4);
-            ResearchNodeProto techVehCap5 = ResearchRef(Ids.Research.VehicleCapIncrease5);
-            ResearchNodeProto techVehCap6 = ResearchRef(Ids.Research.VehicleCapIncrease6);
+            ResearchNodeProto techVehCap1 = FFU_IC_IDs.ResearchRef(pReg, Ids.Research.VehicleCapIncrease);
+            ResearchNodeProto techVehCap2 = FFU_IC_IDs.ResearchRef(pReg, Ids.Research.VehicleCapIncrease2);
+            ResearchNodeProto techVehCap3 = FFU_IC_IDs.ResearchRef(pReg, Ids.Research.VehicleCapIncrease3);
+            ResearchNodeProto techVehCap4 = FFU_IC_IDs.ResearchRef(pReg, Ids.Research.VehicleCapIncrease4);
+            ResearchNodeProto techVehCap5 = FFU_IC_IDs.ResearchRef(pReg, Ids.Research.VehicleCapIncrease5);
+            ResearchNodeProto techVehCap6 = FFU_IC_IDs.ResearchRef(pReg, Ids.Research.VehicleCapIncrease6);
 
             // Vehicle Capacity Modifications
             SetTechVehicleCapacity(techVehCap1, TechVars["TechVC1"]);
