@@ -47,6 +47,7 @@ namespace FFU_Industrial_Capacity {
                     fieldLimit.SetValue(refUnit, newVehCap);
                 }
             });
+            FFU_IC_IDs.SyncProtoMod(refReserach);
         }
         public void SetTechUnitTitle<T>(ResearchNodeProto refReserach, string[] strSet, int refVal) {
             if (refReserach == null) { ModLog.Warning($"SetTechUnitTitle: 'refReserach' is undefined!"); return; }
@@ -63,6 +64,7 @@ namespace FFU_Industrial_Capacity {
                     }
                 }
             });
+            FFU_IC_IDs.SyncProtoMod(refReserach);
         }
         public void SetTechDescription(ResearchNodeProto refReserach, string[] strSet, int refVal) {
             if (refReserach == null) { ModLog.Warning($"SetTechDescription: 'refReserach' is undefined!"); return; }
@@ -78,6 +80,7 @@ namespace FFU_Industrial_Capacity {
                 fieldStrings.SetValue(refReserach, newStr);
                 FieldInfo fieldDesc = typeof(ResearchNodeProto).GetField("ResolvedDescription", BindingFlags.Instance | BindingFlags.Public);
                 fieldDesc.SetValue(refReserach, refReserach.Strings.DescShort);
+                FFU_IC_IDs.SyncProtoMod(refReserach);
             }
         }
         public void AddNewUnitToTech(ResearchNodeProto refReserach, MachineProto refMachine, RecipeProto refNewUnit, bool hideInUI = false) {
@@ -90,6 +93,7 @@ namespace FFU_Industrial_Capacity {
             newUnitList.AddAndAssertNew(new RecipeUnlock(refNewUnit, refMachine, hideInUI));
             FieldInfo fieldUnits = typeof(ResearchNodeProto).GetField("Units", BindingFlags.Instance | BindingFlags.Public);
             fieldUnits.SetValue(refReserach, newUnitList.ToImmutableArray());
+            FFU_IC_IDs.SyncProtoMod(refReserach);
         }
 
         public void RegisterData(ProtoRegistrator registrator) {

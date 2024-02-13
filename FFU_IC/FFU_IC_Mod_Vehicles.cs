@@ -62,12 +62,14 @@ namespace FFU_Industrial_Capacity {
             ModLog.Info($"{refTruck.Id} Capacity: {refTruck.CapacityBase} -> {newTruckCap}");
             FieldInfo fieldCapBase = typeof(TruckProto).GetField("CapacityBase", BindingFlags.Instance | BindingFlags.Public);
             fieldCapBase.SetValue(refTruck, new Quantity(newTruckCap));
+            FFU_IC_IDs.SyncProtoMod(refTruck);
         }
         public void SetVehicleCapacity(ExcavatorProto refExcav, int newShovelCap) {
             if (refExcav == null) { ModLog.Warning($"SetVehicleCapacity: 'refExcav' is undefined!"); return; }
             ModLog.Info($"{refExcav.Id} Capacity: {refExcav.Capacity} -> {newShovelCap}");
             FieldInfo fieldCapBase = typeof(ExcavatorProto).GetField("Capacity", BindingFlags.Instance | BindingFlags.Public);
             fieldCapBase.SetValue(refExcav, new Quantity(newShovelCap));
+            FFU_IC_IDs.SyncProtoMod(refExcav);
         }
         public void SetVehicleDriveData(TruckProto refTruck, double[] speedSet) {
             if (refTruck == null) { ModLog.Warning($"SetVehicleDriveData: 'refTruck' is undefined!"); return; }
@@ -76,6 +78,7 @@ namespace FFU_Industrial_Capacity {
             FieldInfo fieldDriveData = typeof(DrivingEntityProto).GetField("DrivingData", BindingFlags.Instance | BindingFlags.Public);
             fieldDriveData.SetValue(refTruck, new DrivingData(speedSet[0].Tiles(), speedSet[1].Tiles(), speedSet[2].Percent(), speedSet[3].Tiles(), speedSet[4].Tiles(), 
             speedSet[5].Degrees(), speedSet[6].Degrees(), speedSet[7].ToFix32(), speedSet[8].Tiles(), speedSet[9].Tiles(), NoFuelMaxSpeedPerc));
+            FFU_IC_IDs.SyncProtoMod(refTruck);
         }
         public void SetVehicleDriveData(ExcavatorProto refExcav, double[] speedSet) {
             if (refExcav == null) { ModLog.Warning($"SetVehicleDriveData: 'refExcav' is undefined!"); return; }
@@ -84,6 +87,7 @@ namespace FFU_Industrial_Capacity {
             FieldInfo fieldDriveData = typeof(DrivingEntityProto).GetField("DrivingData", BindingFlags.Instance | BindingFlags.Public);
             fieldDriveData.SetValue(refExcav, new DrivingData(speedSet[0].Tiles(), speedSet[1].Tiles(), speedSet[2].Percent(), speedSet[3].Tiles(), speedSet[4].Tiles(),
             speedSet[5].Degrees(), speedSet[6].Degrees(), speedSet[7].ToFix32(), RelTile1f.Zero, RelTile1f.Zero, NoFuelMaxSpeedPerc));
+            FFU_IC_IDs.SyncProtoMod(refExcav);
         }
         public void SetVehicleDescription(TruckProto refTruck, string[] strSet, bool canGoUnder) {
             if (refTruck == null) { ModLog.Warning($"SetVehicleDescription: 'refTruck' is undefined!"); return; }
@@ -103,6 +107,7 @@ namespace FFU_Industrial_Capacity {
                 Mafi.Core.Prototypes.Proto.Str currStr = (Mafi.Core.Prototypes.Proto.Str)fieldStrings.GetValue(refTruck);
                 Mafi.Core.Prototypes.Proto.Str newStr = new Mafi.Core.Prototypes.Proto.Str(currStr.Name, locDesc);
                 fieldStrings.SetValue(refTruck, newStr);
+                FFU_IC_IDs.SyncProtoMod(refTruck);
             }
         }
         public void SetVehicleDescription(ExcavatorProto refExcav, string[] strSet) {
@@ -117,6 +122,7 @@ namespace FFU_Industrial_Capacity {
                 Mafi.Core.Prototypes.Proto.Str currStr = (Mafi.Core.Prototypes.Proto.Str)fieldStrings.GetValue(refExcav);
                 Mafi.Core.Prototypes.Proto.Str newStr = new Mafi.Core.Prototypes.Proto.Str(currStr.Name, newDesc);
                 fieldStrings.SetValue(refExcav, newStr);
+                FFU_IC_IDs.SyncProtoMod(refExcav);
             }
         }
 

@@ -40,12 +40,14 @@ namespace FFU_Industrial_Capacity {
             ModLog.Info($"{refStorage.Id} Capacity: {refStorage.Capacity} -> {newMaterialCap}");
             FieldInfo fieldStorage = typeof(StorageBaseProto).GetField("Capacity", BindingFlags.Instance | BindingFlags.Public);
             fieldStorage.SetValue(refStorage, new Quantity(newMaterialCap));
+            FFU_IC_IDs.SyncProtoMod(refStorage);
         }
         public void SetStorageCapacity(ThermalStorageProto refThermal, int newThermalCap) {
             if (refThermal == null) { ModLog.Warning($"SetStorageCapacity: 'refThermal' is undefined!"); return; }
             ModLog.Info($"{refThermal.Id} Capacity: {refThermal.Capacity} -> {newThermalCap}");
             FieldInfo fieldThermal = typeof(ThermalStorageProto).GetField("Capacity", BindingFlags.Instance | BindingFlags.Public);
             fieldThermal.SetValue(refThermal, new Quantity(newThermalCap));
+            FFU_IC_IDs.SyncProtoMod(refThermal);
         }
         public void SetStorageCapacity(NuclearWasteStorageProto refNuclear, int newNuclearCap, int newRetiredCap) {
             if (refNuclear == null) { ModLog.Warning($"SetStorageCapacity: 'refNuclear' is undefined!"); return; }
@@ -54,6 +56,7 @@ namespace FFU_Industrial_Capacity {
             FieldInfo fieldRetried = typeof(NuclearWasteStorageProto).GetField("RetiredWasteCapacity", BindingFlags.Instance | BindingFlags.Public);
             fieldNuclear.SetValue(refNuclear, new Quantity(newNuclearCap));
             fieldRetried.SetValue(refNuclear, new Quantity(newRetiredCap));
+            FFU_IC_IDs.SyncProtoMod(refNuclear);
         }
         public void SetStorageDescription(StorageProto refStorage, string[] strSet) {
             if (refStorage == null) { ModLog.Warning($"SetStorageDescription: 'refStorage' is undefined!"); return; }
@@ -70,6 +73,7 @@ namespace FFU_Industrial_Capacity {
                 Mafi.Core.Prototypes.Proto.Str currStr = (Mafi.Core.Prototypes.Proto.Str)fieldStrings.GetValue(refStorage);
                 Mafi.Core.Prototypes.Proto.Str newStr = new Mafi.Core.Prototypes.Proto.Str(currStr.Name, locDesc);
                 fieldStrings.SetValue(refStorage, newStr);
+                FFU_IC_IDs.SyncProtoMod(refStorage);
             }
         }
 

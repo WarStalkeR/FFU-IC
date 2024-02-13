@@ -40,6 +40,7 @@ namespace FFU_Industrial_Capacity {
                 fieldPortsIn.SetValue(refMachine, updatedIn);
                 fieldPortsOut.SetValue(refMachine, updatedOut);
                 if (charMap != null) SyncMachineRecipeMap(refMachine, charMap);
+                FFU_IC_IDs.SyncProtoMod(refMachine);
             }
         }
         public void SyncMachineRecipeMap(MachineProto refMachine, Dictionary<char, char[]> charMap) {
