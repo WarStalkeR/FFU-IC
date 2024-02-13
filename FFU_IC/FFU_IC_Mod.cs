@@ -3,8 +3,6 @@ using Mafi.Collections;
 using Mafi.Core.Mods;
 using Mafi.Core.Game;
 using Mafi.Core.Prototypes;
-using System;
-using System.Reflection;
 
 namespace FFU_Industrial_Capacity {
     public static class FFU_IC_Base {

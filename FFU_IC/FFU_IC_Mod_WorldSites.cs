@@ -1,5 +1,4 @@
 ﻿using Mafi.Base;
-using Mafi.Core.Entities;
 using Mafi.Core.Mods;
 using Mafi.Core.World.Entities;
 

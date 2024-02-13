@@ -1,4 +1,8 @@
 ﻿using Mafi.Base;
+using Mafi.Collections;
+using Mafi.Collections.ImmutableCollections;
+using Mafi.Core.Factory.Machines;
+using Mafi.Core.Factory.Recipes;
 using Mafi.Core.Mods;
 using Mafi.Core.Research;
 using Mafi.Core.UnlockingTree;
@@ -52,7 +56,7 @@ namespace FFU_Industrial_Capacity {
                     TypeInfo typeUnit = typeof(T).GetTypeInfo();
                     FieldInfo fieldTitle = typeUnit.GetDeclaredField("<Title>k__BackingField");
                     if (fieldTitle != null) {
-                        ModLog.Info($"{refReserach.Id} unit title changed.");
+                        ModLog.Info($"{refReserach.Id} unit title modified.");
                         LocStr1Plural techLoc = Loc.Str1Plural(strSet[0], strSet[1], strSet[2], strSet[3]);
                         LocStrFormatted techVehCapTitle = techLoc.Format(refVal.ToString(), refVal);
                         fieldTitle.SetValue(refUnit, techVehCapTitle);
@@ -68,13 +72,24 @@ namespace FFU_Industrial_Capacity {
             TypeInfo typeProto = typeof(Mafi.Core.Prototypes.Proto).GetTypeInfo();
             FieldInfo fieldStrings = typeProto.GetDeclaredField("<Strings>k__BackingField");
             if (fieldStrings != null) {
-                ModLog.Info($"{refReserach.Id} description changed.");
+                ModLog.Info($"{refReserach.Id} description modified.");
                 Mafi.Core.Prototypes.Proto.Str currStr = (Mafi.Core.Prototypes.Proto.Str)fieldStrings.GetValue(refReserach);
                 Mafi.Core.Prototypes.Proto.Str newStr = new Mafi.Core.Prototypes.Proto.Str(currStr.Name, locDesc);
                 fieldStrings.SetValue(refReserach, newStr);
                 FieldInfo fieldDesc = typeof(ResearchNodeProto).GetField("ResolvedDescription", BindingFlags.Instance | BindingFlags.Public);
                 fieldDesc.SetValue(refReserach, refReserach.Strings.DescShort);
             }
+        }
+        public void AddNewUnitToTech(ResearchNodeProto refReserach, MachineProto refMachine, RecipeProto refNewUnit, bool hideInUI = false) {
+            if (refReserach == null) { ModLog.Warning($"AddNewUnitToTech: 'refReserach' is undefined!"); return; }
+            if (refMachine == null) { ModLog.Warning($"AddNewUnitToTech: 'refMachine' is undefined!"); return; }
+            if (refNewUnit == null) { ModLog.Warning($"AddNewUnitToTech: 'refNewUnit' is undefined!"); return; }
+            ModLog.Info($"Added new unit {refNewUnit.Id} to research {refReserach.Id}.");
+            Set<IUnlockNodeUnit> newUnitList = new Set<IUnlockNodeUnit>(0, null);
+            refReserach.Units.ForEach(refUnit => newUnitList.Add(refUnit));
+            newUnitList.AddAndAssertNew(new RecipeUnlock(refNewUnit, refMachine, hideInUI));
+            FieldInfo fieldUnits = typeof(ResearchNodeProto).GetField("Units", BindingFlags.Instance | BindingFlags.Public);
+            fieldUnits.SetValue(refReserach, newUnitList.ToImmutableArray());
         }
 
         public void RegisterData(ProtoRegistrator registrator) {

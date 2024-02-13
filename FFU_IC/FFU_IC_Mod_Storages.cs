@@ -2,7 +2,6 @@
 using Mafi.Base;
 using Mafi.Base.Prototypes.Buildings.ThermalStorages;
 using Mafi.Core.Buildings.Storages;
-using Mafi.Core.Entities.Static;
 using Mafi.Core.Game;
 using Mafi.Core.Mods;
 using Mafi.Localization;
@@ -67,7 +66,7 @@ namespace FFU_Industrial_Capacity {
             TypeInfo typeProto = typeof(Mafi.Core.Prototypes.Proto).GetTypeInfo();
             FieldInfo fieldStrings = typeProto.GetDeclaredField("<Strings>k__BackingField");
             if (fieldStrings != null) {
-                ModLog.Info($"{refStorage.Id} description changed.");
+                ModLog.Info($"{refStorage.Id} description modified.");
                 Mafi.Core.Prototypes.Proto.Str currStr = (Mafi.Core.Prototypes.Proto.Str)fieldStrings.GetValue(refStorage);
                 Mafi.Core.Prototypes.Proto.Str newStr = new Mafi.Core.Prototypes.Proto.Str(currStr.Name, locDesc);
                 fieldStrings.SetValue(refStorage, newStr);

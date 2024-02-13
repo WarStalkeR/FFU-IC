@@ -31,7 +31,7 @@ namespace FFU_Industrial_Capacity {
             TypeInfo typeLayout = typeof(LayoutEntityProto).GetTypeInfo();
             FieldInfo fieldLayout = typeLayout.GetDeclaredField("<Layout>k__BackingField");
             if (fieldLayout != null) {
-                ModLog.Info($"{refMachine.Id} layout changed.");
+                ModLog.Info($"{refMachine.Id} layout modified.");
                 fieldLayout.SetValue(refMachine, newLayout);
                 FieldInfo fieldPortsIn = typeof(LayoutEntityProto).GetField("InputPorts", BindingFlags.Instance | BindingFlags.Public);
                 FieldInfo fieldPortsOut = typeof(LayoutEntityProto).GetField("OutputPorts", BindingFlags.Instance | BindingFlags.Public);
@@ -43,7 +43,7 @@ namespace FFU_Industrial_Capacity {
             }
         }
         public void SyncMachineRecipeMap(MachineProto refMachine, Dictionary<char, char[]> charMap) {
-            ModLog.Info($"{refMachine.Id} port map changed.");
+            ModLog.Info($"{refMachine.Id} port map modified.");
             foreach (RecipeProto refRecipe in refMachine.Recipes) {
                 foreach (RecipeInput refInput in refRecipe.AllInputs) {
                     char[] inMap = null;
@@ -80,9 +80,8 @@ namespace FFU_Industrial_Capacity {
             // Variables Initialization
             pReg = registrator;
         }
-        public void ExampleUse(ProtoRegistrator registrator) {
+        public void ExampleUse(RecipeProto.ID newRecipeID) {
             // Machinery Variables
-            RecipeProto.ID newRecipeID = new RecipeProto.ID("newRecipeID");
             Dictionary<string, string[]> layout =
                 new Dictionary<string, string[]>() {
                 { "Example", new string[] {

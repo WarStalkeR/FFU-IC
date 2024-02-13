@@ -99,7 +99,7 @@ namespace FFU_Industrial_Capacity {
             TypeInfo typeProto = typeof(Mafi.Core.Prototypes.Proto).GetTypeInfo();
             FieldInfo fieldStrings = typeProto.GetDeclaredField("<Strings>k__BackingField");
             if (fieldStrings != null) {
-                ModLog.Info($"{refTruck.Id} description changed.");
+                ModLog.Info($"{refTruck.Id} description modified.");
                 Mafi.Core.Prototypes.Proto.Str currStr = (Mafi.Core.Prototypes.Proto.Str)fieldStrings.GetValue(refTruck);
                 Mafi.Core.Prototypes.Proto.Str newStr = new Mafi.Core.Prototypes.Proto.Str(currStr.Name, locDesc);
                 fieldStrings.SetValue(refTruck, newStr);
@@ -113,7 +113,7 @@ namespace FFU_Industrial_Capacity {
             TypeInfo typeProto = typeof(Mafi.Core.Prototypes.Proto).GetTypeInfo();
             FieldInfo fieldStrings = typeProto.GetDeclaredField("<Strings>k__BackingField");
             if (fieldStrings != null) {
-                ModLog.Info($"{refExcav.Id} description changed.");
+                ModLog.Info($"{refExcav.Id} description modified.");
                 Mafi.Core.Prototypes.Proto.Str currStr = (Mafi.Core.Prototypes.Proto.Str)fieldStrings.GetValue(refExcav);
                 Mafi.Core.Prototypes.Proto.Str newStr = new Mafi.Core.Prototypes.Proto.Str(currStr.Name, newDesc);
                 fieldStrings.SetValue(refExcav, newStr);
