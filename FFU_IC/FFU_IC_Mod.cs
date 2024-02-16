@@ -23,11 +23,18 @@ namespace FFU_Industrial_Capacity {
         }
         public void RegisterPrototypes(ProtoRegistrator registrator) {
             ModLog.Info($"Registering Prototypes...");
+            // Prototypes: Products
+            registrator.RegisterData<FFU_IC_Mod_ProdSolid>();
+            registrator.RegisterData<FFU_IC_Mod_ProdLoose>();
+            registrator.RegisterData<FFU_IC_Mod_ProdFluid>();
+            // Prototypes: Other Data
             registrator.RegisterData<FFU_IC_Mod_Storages>();
             registrator.RegisterData<FFU_IC_Mod_Vehicles>();
             registrator.RegisterData<FFU_IC_Mod_Machinery>();
             registrator.RegisterData<FFU_IC_Mod_WorldSites>();
+            // Prototypes: Recipes
             registrator.RegisterData<FFU_IC_Mod_Recipes>();
+            // Prototypes: Research
             registrator.RegisterData<FFU_IC_Mod_Research>();
             ModLog.Info($"Prototypes Registered!");
         }

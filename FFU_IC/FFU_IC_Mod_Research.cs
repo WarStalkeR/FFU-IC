@@ -37,6 +37,7 @@ namespace FFU_Industrial_Capacity {
         };
 
         // Reflection Helpers
+        public ResearchNodeProto RnRef(ResearchNodeProto.ID refID) => FFU_IC_IDs.ResearchRef(pReg, refID);
         public void SetTechVehicleCapacity(ResearchNodeProto refReserach, int newVehCap) {
             if (refReserach == null) { ModLog.Warning($"SetTechVehicleCapacity: 'refReserach' is undefined!"); return; }
             refReserach.Units.ForEach(refUnit => {
@@ -83,14 +84,31 @@ namespace FFU_Industrial_Capacity {
                 FFU_IC_IDs.SyncProtoMod(refReserach);
             }
         }
-        public void AddNewUnitToTech(ResearchNodeProto refReserach, MachineProto refMachine, RecipeProto refNewUnit, bool hideInUI = false) {
-            if (refReserach == null) { ModLog.Warning($"AddNewUnitToTech: 'refReserach' is undefined!"); return; }
-            if (refMachine == null) { ModLog.Warning($"AddNewUnitToTech: 'refMachine' is undefined!"); return; }
-            if (refNewUnit == null) { ModLog.Warning($"AddNewUnitToTech: 'refNewUnit' is undefined!"); return; }
+        public void AddTechRecipe(ResearchNodeProto refReserach, MachineProto refMachine, RecipeProto refNewUnit, bool hideInUI = false) {
+            if (refReserach == null) { ModLog.Warning($"AddTechRecipe: 'refReserach' is undefined!"); return; }
+            if (refMachine == null) { ModLog.Warning($"AddTechRecipe: 'refMachine' is undefined!"); return; }
+            if (refNewUnit == null) { ModLog.Warning($"AddTechRecipe: 'refNewUnit' is undefined!"); return; }
             ModLog.Info($"Added new unit {refNewUnit.Id} to research {refReserach.Id}.");
             Set<IUnlockNodeUnit> newUnitList = new Set<IUnlockNodeUnit>(0, null);
-            refReserach.Units.ForEach(refUnit => newUnitList.Add(refUnit));
+            refReserach.Units.ForEach(refUnit => {
+                newUnitList.Add(refUnit);
+            });
             newUnitList.AddAndAssertNew(new RecipeUnlock(refNewUnit, refMachine, hideInUI));
+            FieldInfo fieldUnits = typeof(ResearchNodeProto).GetField("Units", BindingFlags.Instance | BindingFlags.Public);
+            fieldUnits.SetValue(refReserach, newUnitList.ToImmutableArray());
+            FFU_IC_IDs.SyncProtoMod(refReserach);
+        }
+        public void RemoveTechRecipe(ResearchNodeProto refReserach, RecipeProto refOldUnit, bool hideInUI = false) {
+            if (refReserach == null) { ModLog.Warning($"RemoveTechRecipe: 'refReserach' is undefined!"); return; }
+            if (refOldUnit == null) { ModLog.Warning($"RemoveTechRecipe: 'refOldUnit' is undefined!"); return; }
+            ModLog.Info($"Removed existing unit {refOldUnit.Id} from research {refReserach.Id}.");
+            Set<IUnlockNodeUnit> newUnitList = new Set<IUnlockNodeUnit>(0, null);
+            refReserach.Units.ForEach(refUnit => {
+                if (!(refUnit is RecipeUnlock refRecipeUnlock) ||
+                refRecipeUnlock.Proto.Id != refOldUnit.Id) {
+                    newUnitList.Add(refUnit);
+                }
+            });
             FieldInfo fieldUnits = typeof(ResearchNodeProto).GetField("Units", BindingFlags.Instance | BindingFlags.Public);
             fieldUnits.SetValue(refReserach, newUnitList.ToImmutableArray());
             FFU_IC_IDs.SyncProtoMod(refReserach);
@@ -101,12 +119,12 @@ namespace FFU_Industrial_Capacity {
             pReg = registrator;
 
             // Technology References
-            ResearchNodeProto techVehCap1 = FFU_IC_IDs.ResearchRef(pReg, Ids.Research.VehicleCapIncrease);
-            ResearchNodeProto techVehCap2 = FFU_IC_IDs.ResearchRef(pReg, Ids.Research.VehicleCapIncrease2);
-            ResearchNodeProto techVehCap3 = FFU_IC_IDs.ResearchRef(pReg, Ids.Research.VehicleCapIncrease3);
-            ResearchNodeProto techVehCap4 = FFU_IC_IDs.ResearchRef(pReg, Ids.Research.VehicleCapIncrease4);
-            ResearchNodeProto techVehCap5 = FFU_IC_IDs.ResearchRef(pReg, Ids.Research.VehicleCapIncrease5);
-            ResearchNodeProto techVehCap6 = FFU_IC_IDs.ResearchRef(pReg, Ids.Research.VehicleCapIncrease6);
+            ResearchNodeProto techVehCap1 = RnRef(Ids.Research.VehicleCapIncrease);
+            ResearchNodeProto techVehCap2 = RnRef(Ids.Research.VehicleCapIncrease2);
+            ResearchNodeProto techVehCap3 = RnRef(Ids.Research.VehicleCapIncrease3);
+            ResearchNodeProto techVehCap4 = RnRef(Ids.Research.VehicleCapIncrease4);
+            ResearchNodeProto techVehCap5 = RnRef(Ids.Research.VehicleCapIncrease5);
+            ResearchNodeProto techVehCap6 = RnRef(Ids.Research.VehicleCapIncrease6);
 
             // Vehicle Capacity Modifications
             SetTechVehicleCapacity(techVehCap1, TechVars["TechVC1"]);

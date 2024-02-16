@@ -24,6 +24,7 @@ namespace FFU_Industrial_Capacity {
         };
 
         // Reflection Helpers
+        public MachineProto McRef(MachineProto.ID refID) => FFU_IC_IDs.MachineRef(pReg, refID);
         public void SetMachineLayout(MachineProto refMachine, string[] strLayout, Dictionary<char, char[]> charMap = null) {
             if (refMachine == null) { ModLog.Warning($"SetMachineLayout: 'refMachine' is undefined!"); return; }
             if (strLayout == null) { ModLog.Warning($"SetMachineLayout: 'strLayout' is undefined!"); return; }
@@ -105,7 +106,7 @@ namespace FFU_Industrial_Capacity {
             };
 
             // Machinery References
-            MachineProto furnace = FFU_IC_IDs.MachineRef(pReg, Ids.Machines.ArcFurnace);
+            MachineProto furnace = McRef(Ids.Machines.ArcFurnace);
 
             // Machinery Modifications
             SetMachineLayout(furnace, layout["Example"], map["Example"]);

@@ -57,6 +57,8 @@ namespace FFU_Industrial_Capacity {
         };
 
         // Reflection Helpers
+        public TruckProto TrRef(DynamicEntityProto.ID refID) => FFU_IC_IDs.TruckRef(pReg, refID);
+        public ExcavatorProto ExRef(DynamicEntityProto.ID refID) => FFU_IC_IDs.ExcavRef(pReg, refID);
         public void SetVehicleCapacity(TruckProto refTruck, int newTruckCap) {
             if (refTruck == null) { ModLog.Warning($"SetVehicleCapacity: 'refTruck' is undefined!"); return; }
             ModLog.Info($"{refTruck.Id} Capacity: {refTruck.CapacityBase} -> {newTruckCap}");
@@ -131,13 +133,13 @@ namespace FFU_Industrial_Capacity {
             pReg = registrator;
 
             // Vehicle References
-            TruckProto refTruckT1 = FFU_IC_IDs.TruckRef(pReg, Ids.Vehicles.TruckT1.Id);
-            TruckProto refTruckT2 = FFU_IC_IDs.TruckRef(pReg, Ids.Vehicles.TruckT2.Id);
-            TruckProto refTruckT3A = FFU_IC_IDs.TruckRef(pReg, Ids.Vehicles.TruckT3Loose.Id);
-            TruckProto refTruckT3B = FFU_IC_IDs.TruckRef(pReg, Ids.Vehicles.TruckT3Fluid.Id);
-            ExcavatorProto refExcavT1 = FFU_IC_IDs.ExcavRef(pReg, Ids.Vehicles.ExcavatorT1);
-            ExcavatorProto refExcavT2 = FFU_IC_IDs.ExcavRef(pReg, Ids.Vehicles.ExcavatorT2);
-            ExcavatorProto refExcavT3 = FFU_IC_IDs.ExcavRef(pReg, Ids.Vehicles.ExcavatorT3);
+            TruckProto refTruckT1 = TrRef(Ids.Vehicles.TruckT1.Id);
+            TruckProto refTruckT2 = TrRef(Ids.Vehicles.TruckT2.Id);
+            TruckProto refTruckT3A = TrRef(Ids.Vehicles.TruckT3Loose.Id);
+            TruckProto refTruckT3B = TrRef(Ids.Vehicles.TruckT3Fluid.Id);
+            ExcavatorProto refExcavT1 = ExRef(Ids.Vehicles.ExcavatorT1);
+            ExcavatorProto refExcavT2 = ExRef(Ids.Vehicles.ExcavatorT2);
+            ExcavatorProto refExcavT3 = ExRef(Ids.Vehicles.ExcavatorT3);
 
             // Truck Modifications
             SetVehicleCapacity(refTruckT1, TruckCapacity["T1"]);

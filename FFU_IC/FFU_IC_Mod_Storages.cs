@@ -35,6 +35,9 @@ namespace FFU_Industrial_Capacity {
         };
 
         // Reflection Helpers
+        public StorageProto StRef(Mafi.Core.Entities.Static.StaticEntityProto.ID refID) => FFU_IC_IDs.StorageRef(pReg, refID);
+        public ThermalStorageProto ThRef(Mafi.Core.Entities.Static.StaticEntityProto.ID refID) => FFU_IC_IDs.ThermalRef(pReg, refID);
+        public NuclearWasteStorageProto NcRef(Mafi.Core.Entities.Static.StaticEntityProto.ID refID) => FFU_IC_IDs.NuclearRef(pReg, refID);
         public void SetStorageCapacity(StorageProto refStorage, int newMaterialCap) {
             if (refStorage == null) { ModLog.Warning($"SetStorageCapacity: 'refStorage' is undefined!"); return; }
             ModLog.Info($"{refStorage.Id} Capacity: {refStorage.Capacity} -> {newMaterialCap}");
@@ -84,20 +87,20 @@ namespace FFU_Industrial_Capacity {
                 GameDifficultyConfig.LogisticsPowerSetting.DoNotConsume;
 
             // Storage References
-            StorageProto refSolidT1 = FFU_IC_IDs.StorageRef(pReg, Ids.Buildings.StorageUnit);
-            StorageProto refSolidT2 = FFU_IC_IDs.StorageRef(pReg, Ids.Buildings.StorageUnitT2);
-            StorageProto refSolidT3 = FFU_IC_IDs.StorageRef(pReg, Ids.Buildings.StorageUnitT3);
-            StorageProto refSolidT4 = FFU_IC_IDs.StorageRef(pReg, Ids.Buildings.StorageUnitT4);
-            StorageProto refLooseT1 = FFU_IC_IDs.StorageRef(pReg, Ids.Buildings.StorageLoose);
-            StorageProto refLooseT2 = FFU_IC_IDs.StorageRef(pReg, Ids.Buildings.StorageLooseT2);
-            StorageProto refLooseT3 = FFU_IC_IDs.StorageRef(pReg, Ids.Buildings.StorageLooseT3);
-            StorageProto refLooseT4 = FFU_IC_IDs.StorageRef(pReg, Ids.Buildings.StorageLooseT4);
-            StorageProto refFluidT1 = FFU_IC_IDs.StorageRef(pReg, Ids.Buildings.StorageFluid);
-            StorageProto refFluidT2 = FFU_IC_IDs.StorageRef(pReg, Ids.Buildings.StorageFluidT2);
-            StorageProto refFluidT3 = FFU_IC_IDs.StorageRef(pReg, Ids.Buildings.StorageFluidT3);
-            StorageProto refFluidT4 = FFU_IC_IDs.StorageRef(pReg, Ids.Buildings.StorageFluidT4);
-            ThermalStorageProto refThermal = FFU_IC_IDs.ThermalRef(pReg, Ids.Buildings.ThermalStorage);
-            NuclearWasteStorageProto refNuclear = FFU_IC_IDs.NuclearRef(pReg, Ids.Buildings.NuclearWasteStorage);
+            StorageProto refSolidT1 = StRef(Ids.Buildings.StorageUnit);
+            StorageProto refSolidT2 = StRef(Ids.Buildings.StorageUnitT2);
+            StorageProto refSolidT3 = StRef(Ids.Buildings.StorageUnitT3);
+            StorageProto refSolidT4 = StRef(Ids.Buildings.StorageUnitT4);
+            StorageProto refLooseT1 = StRef(Ids.Buildings.StorageLoose);
+            StorageProto refLooseT2 = StRef(Ids.Buildings.StorageLooseT2);
+            StorageProto refLooseT3 = StRef(Ids.Buildings.StorageLooseT3);
+            StorageProto refLooseT4 = StRef(Ids.Buildings.StorageLooseT4);
+            StorageProto refFluidT1 = StRef(Ids.Buildings.StorageFluid);
+            StorageProto refFluidT2 = StRef(Ids.Buildings.StorageFluidT2);
+            StorageProto refFluidT3 = StRef(Ids.Buildings.StorageFluidT3);
+            StorageProto refFluidT4 = StRef(Ids.Buildings.StorageFluidT4);
+            ThermalStorageProto refThermal = ThRef(Ids.Buildings.ThermalStorage);
+            NuclearWasteStorageProto refNuclear = NcRef(Ids.Buildings.NuclearWasteStorage);
 
             // Solid Storage Modifications
             SetStorageCapacity(refSolidT1, StorageCapacity["DefaultT1"]);

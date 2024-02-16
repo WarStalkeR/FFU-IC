@@ -6,6 +6,7 @@ using Mafi.Core.Entities.Static;
 using Mafi.Core.Factory.Machines;
 using Mafi.Core.Factory.Recipes;
 using Mafi.Core.Mods;
+using Mafi.Core.Products;
 using Mafi.Core.Research;
 using Mafi.Core.Vehicles.Excavators;
 using Mafi.Core.Vehicles.Trucks;
@@ -22,6 +23,7 @@ namespace FFU_Industrial_Capacity {
         public static ExcavatorProto ExcavRef(ProtoRegistrator pReg, DynamicEntityProto.ID refID) => pReg.PrototypesDb.Get<ExcavatorProto>(refID).Value;
         public static WorldMapMineProto WorldMineRef(ProtoRegistrator pReg, EntityProto.ID refID) => pReg.PrototypesDb.Get<WorldMapMineProto>(refID).Value;
         public static RecipeProto RecipeRef(ProtoRegistrator pReg, RecipeProto.ID refID) => pReg.PrototypesDb.Get<RecipeProto>(refID).Value;
+        public static ProductProto ProductRef(ProtoRegistrator pReg, ProductProto.ID refID) => pReg.PrototypesDb.Get<ProductProto>(refID).Value;
         public static ResearchNodeProto ResearchRef(ProtoRegistrator pReg, ResearchNodeProto.ID refID) => pReg.PrototypesDb.Get<ResearchNodeProto>(refID).Value;
         public static void SyncProtoMod(Mafi.Core.Prototypes.Proto refEntity) {
             if (FFU_IC_Base.RefMod == null) { ModLog.Warning($"SyncProtoInfo: 'RefMod' is undefined!"); return; }
