@@ -58,7 +58,7 @@ namespace FFU_Industrial_Capacity {
             // Variables Initialization
             pReg = registrator;
 
-            // World Mine References
+            // World Site References
             WorldMapMineProto oilRig1 = WmRef(Ids.World.OilRigCost1);
             WorldMapMineProto oilRig2 = WmRef(Ids.World.OilRigCost2);
             WorldMapMineProto oilRig3 = WmRef(Ids.World.OilRigCost3);
