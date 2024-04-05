@@ -115,8 +115,8 @@ namespace FFU_Industrial_Capacity {
             FFU_IC_IDs.SyncProtoMod(refTrHarv);
         }
         public void SetVehicleDriveData(TreePlanterProto refTrPlant, double[] speedSet) {
-            if (refTrPlant == null) { ModLog.Warning($"SetVehicleDriveData: 'refExcav' is undefined!"); return; }
-            if (speedSet == null) { ModLog.Warning($"SetVehicleDriveData: 'refTrPlant' is undefined!"); return; }
+            if (refTrPlant == null) { ModLog.Warning($"SetVehicleDriveData: 'refTrPlant' is undefined!"); return; }
+            if (speedSet == null) { ModLog.Warning($"SetVehicleDriveData: 'speedSet' is undefined!"); return; }
             ModLog.Info($"{refTrPlant.Id} Speed F/B: {refTrPlant.DrivingData.MaxForwardsSpeed}/{refTrPlant.DrivingData.MaxBackwardsSpeed} -> {speedSet[0]}/{speedSet[1]}");
             FieldInfo fieldDriveData = typeof(DrivingEntityProto).GetField("DrivingData", BindingFlags.Instance | BindingFlags.Public);
             fieldDriveData.SetValue(refTrPlant, new DrivingData(speedSet[0].Tiles(), speedSet[1].Tiles(), speedSet[2].Percent(), speedSet[3].Tiles(), speedSet[4].Tiles(),
