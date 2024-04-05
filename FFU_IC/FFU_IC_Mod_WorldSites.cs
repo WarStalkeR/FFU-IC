@@ -51,6 +51,7 @@ namespace FFU_Industrial_Capacity {
             fieldMineLevel.SetValue(refMine, (int)mineData[3]);
             fieldMineUpgrade.SetValue(refMine, (int)mineData[4]);
             fieldMineInit.SetValue(refMine, (int)mineData[4]);
+            FFU_IC_IDs.SyncProtoMod(refMine);
         }
 
         public void RegisterData(ProtoRegistrator registrator) {
