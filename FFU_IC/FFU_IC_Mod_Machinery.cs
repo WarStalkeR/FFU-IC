@@ -81,6 +81,7 @@ namespace FFU_Industrial_Capacity {
         public void RegisterData(ProtoRegistrator registrator) {
             // Variables Initialization
             pReg = registrator;
+            // ExampleUse(FFU_IC_IDs.Recipes.CopperSmeltingArcHalf);
         }
         public void ExampleUse(RecipeProto.ID newRecipeID) {
             // Machinery Variables

@@ -65,7 +65,7 @@ namespace FFU_Industrial_Capacity {
         public void RegisterData(ProtoRegistrator registrator) {
             // Variables Initialization
             pReg = registrator;
-            //ExampleUse();
+            // ExampleUse();
         }
         public void ExampleUse() {
             // Recipe References

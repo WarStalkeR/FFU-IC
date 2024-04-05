@@ -1,8 +1,11 @@
 ﻿using Mafi;
 using Mafi.Base;
+using Mafi.Base.Prototypes.Vehicles;
 using Mafi.Core.Entities.Dynamic;
 using Mafi.Core.Mods;
 using Mafi.Core.Vehicles.Excavators;
+using Mafi.Core.Vehicles.TreeHarvesters;
+using Mafi.Core.Vehicles.TreePlanters;
 using Mafi.Core.Vehicles.Trucks;
 using Mafi.Localization;
 using System.Collections.Generic;
@@ -40,6 +43,15 @@ namespace FFU_Industrial_Capacity {
             { "T2", new double[] { 0.8, 0.6, 50, 0.025, 0.05, 8, 1, 2.5 }},
             { "T3", new double[] { 0.5, 0.4, 40, 0.015, 0.03, 4.0, 0.4, 3 }},
         };
+        public readonly Dictionary<string, double[]> TrHarvDriveData =
+            new Dictionary<string, double[]>() {
+            { "T1", new double[] { 1.0, 0.7, 50, 0.04, 0.06, 8, 1.5, 2 }},
+            { "T2", new double[] { 1.5, 1.0, 50, 0.05, 0.06, 10, 2, 2 }},
+        };
+        public readonly Dictionary<string, double[]> TrPlantDriveData =
+            new Dictionary<string, double[]>() {
+            { "T1", new double[] { 1.0, 0.7, 50, 0.04, 0.06, 8, 1.5, 2 }},
+        };
 
         // Localization Definitions
         public readonly Dictionary<string, string[]> TruckLocStrings = 
@@ -59,6 +71,8 @@ namespace FFU_Industrial_Capacity {
         // Reflection Helpers
         public TruckProto TrRef(DynamicEntityProto.ID refID) => FFU_IC_IDs.TruckRef(pReg, refID);
         public ExcavatorProto ExRef(DynamicEntityProto.ID refID) => FFU_IC_IDs.ExcavRef(pReg, refID);
+        public TreeHarvesterProto THrRef(DynamicEntityProto.ID refID) => FFU_IC_IDs.TrHarvRef(pReg, refID);
+        public TreePlanterProto TPlRef(DynamicEntityProto.ID refID) => FFU_IC_IDs.TrPlantRef(pReg, refID);
         public void SetVehicleCapacity(TruckProto refTruck, int newTruckCap) {
             if (refTruck == null) { ModLog.Warning($"SetVehicleCapacity: 'refTruck' is undefined!"); return; }
             ModLog.Info($"{refTruck.Id} Capacity: {refTruck.CapacityBase} -> {newTruckCap}");
@@ -90,6 +104,24 @@ namespace FFU_Industrial_Capacity {
             fieldDriveData.SetValue(refExcav, new DrivingData(speedSet[0].Tiles(), speedSet[1].Tiles(), speedSet[2].Percent(), speedSet[3].Tiles(), speedSet[4].Tiles(),
             speedSet[5].Degrees(), speedSet[6].Degrees(), speedSet[7].ToFix32(), RelTile1f.Zero, RelTile1f.Zero, NoFuelMaxSpeedPerc));
             FFU_IC_IDs.SyncProtoMod(refExcav);
+        }
+        public void SetVehicleDriveData(TreeHarvesterProto refTrHarv, double[] speedSet) {
+            if (refTrHarv == null) { ModLog.Warning($"SetVehicleDriveData: 'refTrHarv' is undefined!"); return; }
+            if (speedSet == null) { ModLog.Warning($"SetVehicleDriveData: 'speedSet' is undefined!"); return; }
+            ModLog.Info($"{refTrHarv.Id} Speed F/B: {refTrHarv.DrivingData.MaxForwardsSpeed}/{refTrHarv.DrivingData.MaxBackwardsSpeed} -> {speedSet[0]}/{speedSet[1]}");
+            FieldInfo fieldDriveData = typeof(DrivingEntityProto).GetField("DrivingData", BindingFlags.Instance | BindingFlags.Public);
+            fieldDriveData.SetValue(refTrHarv, new DrivingData(speedSet[0].Tiles(), speedSet[1].Tiles(), speedSet[2].Percent(), speedSet[3].Tiles(), speedSet[4].Tiles(),
+            speedSet[5].Degrees(), speedSet[6].Degrees(), speedSet[7].ToFix32(), RelTile1f.Zero, RelTile1f.Zero, NoFuelMaxSpeedPerc));
+            FFU_IC_IDs.SyncProtoMod(refTrHarv);
+        }
+        public void SetVehicleDriveData(TreePlanterProto refTrPlant, double[] speedSet) {
+            if (refTrPlant == null) { ModLog.Warning($"SetVehicleDriveData: 'refExcav' is undefined!"); return; }
+            if (speedSet == null) { ModLog.Warning($"SetVehicleDriveData: 'refTrPlant' is undefined!"); return; }
+            ModLog.Info($"{refTrPlant.Id} Speed F/B: {refTrPlant.DrivingData.MaxForwardsSpeed}/{refTrPlant.DrivingData.MaxBackwardsSpeed} -> {speedSet[0]}/{speedSet[1]}");
+            FieldInfo fieldDriveData = typeof(DrivingEntityProto).GetField("DrivingData", BindingFlags.Instance | BindingFlags.Public);
+            fieldDriveData.SetValue(refTrPlant, new DrivingData(speedSet[0].Tiles(), speedSet[1].Tiles(), speedSet[2].Percent(), speedSet[3].Tiles(), speedSet[4].Tiles(),
+            speedSet[5].Degrees(), speedSet[6].Degrees(), speedSet[7].ToFix32(), RelTile1f.Zero, RelTile1f.Zero, NoFuelMaxSpeedPerc));
+            FFU_IC_IDs.SyncProtoMod(refTrPlant);
         }
         public void SetVehicleDescription(TruckProto refTruck, string[] strSet, bool canGoUnder) {
             if (refTruck == null) { ModLog.Warning($"SetVehicleDescription: 'refTruck' is undefined!"); return; }
@@ -140,6 +172,9 @@ namespace FFU_Industrial_Capacity {
             ExcavatorProto refExcavT1 = ExRef(Ids.Vehicles.ExcavatorT1);
             ExcavatorProto refExcavT2 = ExRef(Ids.Vehicles.ExcavatorT2);
             ExcavatorProto refExcavT3 = ExRef(Ids.Vehicles.ExcavatorT3);
+            TreeHarvesterProto refTrHarvT1 = THrRef(Ids.Vehicles.TreeHarvesterT1);
+            TreeHarvesterProto refTrHarvT2 = THrRef(Ids.Vehicles.TreeHarvesterT2);
+            TreePlanterProto refTrPlantT1 = TPlRef(Ids.Vehicles.TreePlanterT1);
 
             // Truck Modifications
             SetVehicleCapacity(refTruckT1, TruckCapacity["T1"]);
@@ -165,6 +200,13 @@ namespace FFU_Industrial_Capacity {
             SetVehicleDescription(refExcavT1, ExcavLocStrings["T1"]);
             SetVehicleDescription(refExcavT2, ExcavLocStrings["T2"]);
             SetVehicleDescription(refExcavT3, ExcavLocStrings["T3"]);
+
+            // Tree Harvester Modifications
+            SetVehicleDriveData(refTrHarvT1, TrHarvDriveData["T1"]);
+            SetVehicleDriveData(refTrHarvT2, TrHarvDriveData["T2"]);
+
+            // Tree Planter Modifications
+            SetVehicleDriveData(refTrPlantT1, TrPlantDriveData["T1"]);
         }
     }
 }

@@ -9,6 +9,8 @@ using Mafi.Core.Mods;
 using Mafi.Core.Products;
 using Mafi.Core.Research;
 using Mafi.Core.Vehicles.Excavators;
+using Mafi.Core.Vehicles.TreeHarvesters;
+using Mafi.Core.Vehicles.TreePlanters;
 using Mafi.Core.Vehicles.Trucks;
 using Mafi.Core.World.Entities;
 using System.Reflection;
@@ -21,6 +23,8 @@ namespace FFU_Industrial_Capacity {
         public static MachineProto MachineRef(ProtoRegistrator pReg, MachineProto.ID refID) => pReg.PrototypesDb.Get<MachineProto>(refID).Value;
         public static TruckProto TruckRef(ProtoRegistrator pReg, DynamicEntityProto.ID refID) => pReg.PrototypesDb.Get<TruckProto>(refID).Value;
         public static ExcavatorProto ExcavRef(ProtoRegistrator pReg, DynamicEntityProto.ID refID) => pReg.PrototypesDb.Get<ExcavatorProto>(refID).Value;
+        public static TreeHarvesterProto TrHarvRef(ProtoRegistrator pReg, DynamicEntityProto.ID refID) => pReg.PrototypesDb.Get<TreeHarvesterProto>(refID).Value;
+        public static TreePlanterProto TrPlantRef(ProtoRegistrator pReg, DynamicEntityProto.ID refID) => pReg.PrototypesDb.Get<TreePlanterProto>(refID).Value;
         public static WorldMapMineProto WorldMineRef(ProtoRegistrator pReg, EntityProto.ID refID) => pReg.PrototypesDb.Get<WorldMapMineProto>(refID).Value;
         public static RecipeProto RecipeRef(ProtoRegistrator pReg, RecipeProto.ID refID) => pReg.PrototypesDb.Get<RecipeProto>(refID).Value;
         public static ProductProto ProductRef(ProtoRegistrator pReg, ProductProto.ID refID) => pReg.PrototypesDb.Get<ProductProto>(refID).Value;
@@ -46,6 +50,7 @@ namespace FFU_Industrial_Capacity {
         }
         public static class Recipes {
             public static readonly RecipeProto.ID None = new RecipeProto.ID("None");
+            // public static readonly RecipeProto.ID CopperSmeltingArcHalf = new RecipeProto.ID("CopperSmeltingArcHalf");
         }
         public static class Research {
             public static readonly ResearchNodeProto.ID None = new ResearchNodeProto.ID("None");
