@@ -12,7 +12,6 @@ namespace FFU_Industrial_Capacity {
 	internal partial class FFU_IC_Mod_Storages : IModData {
         // Modification Variables
         ProtoRegistrator pReg = null;
-        public bool usePower = false;
 
         // Modification Definitions
         public readonly Dictionary<string, int> StorageCapacity =
@@ -66,9 +65,7 @@ namespace FFU_Industrial_Capacity {
             if (strSet == null) { ModLog.Warning($"SetStorageDescription: 'strSet' is undefined!"); return; }
             LocStr1 locStr = Loc.Str1(strSet[0], strSet[1], strSet[2]);
             LocStr locDesc = LocalizationManager.CreateAlreadyLocalizedStr(refStorage.Id.Value + 
-                "__desc", locStr.Format(refStorage.Capacity.ToString()).ToString() + (usePower ? " " +
-                Loc.Str("StoragePowerConsumptionSuffix", "Consumes power when sending or receiving products via its ports.", 
-                "appended at the end of a description to explain that a storage consumes power").ToString() : ""));
+                "__desc", locStr.Format(refStorage.Capacity.ToString()).ToString());
             TypeInfo typeProto = typeof(Mafi.Core.Prototypes.Proto).GetTypeInfo();
             FieldInfo fieldStrings = typeProto.GetDeclaredField("<Strings>k__BackingField");
             if (fieldStrings != null) {
@@ -83,8 +80,7 @@ namespace FFU_Industrial_Capacity {
         public void RegisterData(ProtoRegistrator registrator) {
             // Variables Initialization
             pReg = registrator;
-            usePower = pReg.DifficultyConfig.PowerSetting != 
-                GameDifficultyConfig.LogisticsPowerSetting.DoNotConsume;
+            LocalizationManager.IgnoreDuplicates();
 
             // Storage References
             StorageProto refSolidT1 = StRef(Ids.Buildings.StorageUnit);

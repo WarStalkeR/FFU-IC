@@ -3,6 +3,7 @@ using Mafi.Collections;
 using Mafi.Core.Mods;
 using Mafi.Core.Game;
 using Mafi.Core.Prototypes;
+using Mafi.Localization;
 
 namespace FFU_Industrial_Capacity {
     public static class FFU_IC_Base {
@@ -11,15 +12,16 @@ namespace FFU_Industrial_Capacity {
     }
     public sealed class FFU_IC_Mod : IMod {
 		public string Name => "Industrial Capacity";
-		public int Version => 1;
+		public int Version => 2;
         public bool IsUiOnly => false;
+        public Option<IConfig> ModConfig { get; }
         public FFU_IC_Mod() {
             ModLog.Info($"v{FFU_IC_Base.FullVersion}");
             FFU_IC_Base.RefMod = this;
         }
-        public void ChangeConfigs(Lyst<IConfig> configs) {
-        }
         public void Initialize(DependencyResolver resolver, bool gameWasLoaded) {
+        }
+        public void ChangeConfigs(Lyst<IConfig> configs) {
         }
         public void RegisterPrototypes(ProtoRegistrator registrator) {
             ModLog.Info($"Registering Prototypes...");
@@ -39,6 +41,10 @@ namespace FFU_Industrial_Capacity {
             ModLog.Info($"Prototypes Registered!");
         }
         public void RegisterDependencies(DependencyResolverBuilder depBuilder, ProtosDb protosDb, bool gameWasLoaded) {
+        }
+        public void InitializePatchers(DependencyResolver resolver) {
+        }
+        public void EarlyInit(DependencyResolver resolver) {
         }
     }
 }

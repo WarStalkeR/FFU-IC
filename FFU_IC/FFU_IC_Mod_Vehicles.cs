@@ -18,7 +18,6 @@ namespace FFU_Industrial_Capacity {
 
         // Modification Definitions
         public const int ceilMin = 2;
-        Percent NoFuelMaxSpeedPerc = 40.Percent();
         public readonly Dictionary<string, int> TruckCapacity = 
             new Dictionary<string, int>() {
             { "T1", 100 },
@@ -93,7 +92,7 @@ namespace FFU_Industrial_Capacity {
             ModLog.Info($"{refTruck.Id} Speed F/B: {refTruck.DrivingData.MaxForwardsSpeed}/{refTruck.DrivingData.MaxBackwardsSpeed} -> {speedSet[0]}/{speedSet[1]}");
             FieldInfo fieldDriveData = typeof(DrivingEntityProto).GetField("DrivingData", BindingFlags.Instance | BindingFlags.Public);
             fieldDriveData.SetValue(refTruck, new DrivingData(speedSet[0].Tiles(), speedSet[1].Tiles(), speedSet[2].Percent(), speedSet[3].Tiles(), speedSet[4].Tiles(), 
-            speedSet[5].Degrees(), speedSet[6].Degrees(), speedSet[7].ToFix32(), speedSet[8].Tiles(), speedSet[9].Tiles(), NoFuelMaxSpeedPerc));
+            speedSet[5].Degrees(), speedSet[6].Degrees(), speedSet[7].ToFix32(), speedSet[8].Tiles(), speedSet[9].Tiles()));
             FFU_IC_IDs.SyncProtoMod(refTruck);
         }
         public void SetVehicleDriveData(ExcavatorProto refExcav, double[] speedSet) {
@@ -102,7 +101,7 @@ namespace FFU_Industrial_Capacity {
             ModLog.Info($"{refExcav.Id} Speed F/B: {refExcav.DrivingData.MaxForwardsSpeed}/{refExcav.DrivingData.MaxBackwardsSpeed} -> {speedSet[0]}/{speedSet[1]}");
             FieldInfo fieldDriveData = typeof(DrivingEntityProto).GetField("DrivingData", BindingFlags.Instance | BindingFlags.Public);
             fieldDriveData.SetValue(refExcav, new DrivingData(speedSet[0].Tiles(), speedSet[1].Tiles(), speedSet[2].Percent(), speedSet[3].Tiles(), speedSet[4].Tiles(),
-            speedSet[5].Degrees(), speedSet[6].Degrees(), speedSet[7].ToFix32(), RelTile1f.Zero, RelTile1f.Zero, NoFuelMaxSpeedPerc));
+            speedSet[5].Degrees(), speedSet[6].Degrees(), speedSet[7].ToFix32(), RelTile1f.Zero, RelTile1f.Zero));
             FFU_IC_IDs.SyncProtoMod(refExcav);
         }
         public void SetVehicleDriveData(TreeHarvesterProto refTrHarv, double[] speedSet) {
@@ -111,7 +110,7 @@ namespace FFU_Industrial_Capacity {
             ModLog.Info($"{refTrHarv.Id} Speed F/B: {refTrHarv.DrivingData.MaxForwardsSpeed}/{refTrHarv.DrivingData.MaxBackwardsSpeed} -> {speedSet[0]}/{speedSet[1]}");
             FieldInfo fieldDriveData = typeof(DrivingEntityProto).GetField("DrivingData", BindingFlags.Instance | BindingFlags.Public);
             fieldDriveData.SetValue(refTrHarv, new DrivingData(speedSet[0].Tiles(), speedSet[1].Tiles(), speedSet[2].Percent(), speedSet[3].Tiles(), speedSet[4].Tiles(),
-            speedSet[5].Degrees(), speedSet[6].Degrees(), speedSet[7].ToFix32(), RelTile1f.Zero, RelTile1f.Zero, NoFuelMaxSpeedPerc));
+            speedSet[5].Degrees(), speedSet[6].Degrees(), speedSet[7].ToFix32(), RelTile1f.Zero, RelTile1f.Zero));
             FFU_IC_IDs.SyncProtoMod(refTrHarv);
         }
         public void SetVehicleDriveData(TreePlanterProto refTrPlant, double[] speedSet) {
@@ -120,7 +119,7 @@ namespace FFU_Industrial_Capacity {
             ModLog.Info($"{refTrPlant.Id} Speed F/B: {refTrPlant.DrivingData.MaxForwardsSpeed}/{refTrPlant.DrivingData.MaxBackwardsSpeed} -> {speedSet[0]}/{speedSet[1]}");
             FieldInfo fieldDriveData = typeof(DrivingEntityProto).GetField("DrivingData", BindingFlags.Instance | BindingFlags.Public);
             fieldDriveData.SetValue(refTrPlant, new DrivingData(speedSet[0].Tiles(), speedSet[1].Tiles(), speedSet[2].Percent(), speedSet[3].Tiles(), speedSet[4].Tiles(),
-            speedSet[5].Degrees(), speedSet[6].Degrees(), speedSet[7].ToFix32(), RelTile1f.Zero, RelTile1f.Zero, NoFuelMaxSpeedPerc));
+            speedSet[5].Degrees(), speedSet[6].Degrees(), speedSet[7].ToFix32(), RelTile1f.Zero, RelTile1f.Zero));
             FFU_IC_IDs.SyncProtoMod(refTrPlant);
         }
         public void SetVehicleDescription(TruckProto refTruck, string[] strSet, bool canGoUnder) {
@@ -163,6 +162,7 @@ namespace FFU_Industrial_Capacity {
         public void RegisterData(ProtoRegistrator registrator) {
             // Variables Initialization
             pReg = registrator;
+            LocalizationManager.IgnoreDuplicates();
 
             // Vehicle References
             TruckProto refTruckT1 = TrRef(Ids.Vehicles.TruckT1.Id);

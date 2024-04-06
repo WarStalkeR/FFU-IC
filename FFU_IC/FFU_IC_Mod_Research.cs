@@ -117,6 +117,7 @@ namespace FFU_Industrial_Capacity {
         public void RegisterData(ProtoRegistrator registrator) {
             // Variables Initialization
             pReg = registrator;
+            LocalizationManager.IgnoreDuplicates();
 
             // Technology References
             ResearchNodeProto techVehCap1 = RnRef(Ids.Research.VehicleCapIncrease);
