@@ -35,21 +35,27 @@ namespace FFU_Industrial_Capacity {
             { "T1", new double[] { 2.0, 1.2, 50, 0.06, 0.09, 60, 20, 2.5, 1.25, 1.25 }},
             { "T2", new double[] { 2.5, 1.4, 50, 0.06, 0.09, 60, 20, 2.5, 1.5, 1.5 }},
             { "T3", new double[] { 1.5, 1.0, 50, 0.02, 0.06, 60, 15, 3.0, 1.5, 1.5 }},
+            { "T2H", new double[] { 3.0, 1.6, 50, 0.06, 0.09, 60, 20, 2.5, 1.5, 1.5 }},
+            { "T3H", new double[] { 1.8, 1.2, 50, 0.02, 0.06, 60, 15, 3.0, 1.5, 1.5 }},
         };
         public readonly Dictionary<string, double[]> ExcavDriveData =
             new Dictionary<string, double[]>() {
             { "T1", new double[] { 1.2, 0.8, 50, 0.04, 0.06, 10, 2, 2 }},
             { "T2", new double[] { 0.8, 0.6, 50, 0.025, 0.05, 8, 1, 2.5 }},
             { "T3", new double[] { 0.5, 0.4, 40, 0.015, 0.03, 4.0, 0.4, 3 }},
+            { "T2H", new double[] { 1.0, 0.7, 50, 0.025, 0.05, 8, 1, 2.5 }},
+            { "T3H", new double[] { 0.7, 0.5, 40, 0.015, 0.03, 4.0, 0.4, 3 }},
         };
         public readonly Dictionary<string, double[]> TrHarvDriveData =
             new Dictionary<string, double[]>() {
             { "T1", new double[] { 1.0, 0.7, 50, 0.04, 0.06, 8, 1.5, 2 }},
             { "T2", new double[] { 1.5, 1.0, 50, 0.05, 0.06, 10, 2, 2 }},
+            { "T2H", new double[] { 1.8, 1.2, 50, 0.05, 0.06, 10, 2, 2 }},
         };
         public readonly Dictionary<string, double[]> TrPlantDriveData =
             new Dictionary<string, double[]>() {
             { "T1", new double[] { 1.0, 0.7, 50, 0.04, 0.06, 8, 1.5, 2 }},
+            { "T1H", new double[] { 1.2, 0.8, 50, 0.04, 0.06, 8, 1.5, 2 }},
         };
 
         // Localization Definitions
@@ -57,8 +63,8 @@ namespace FFU_Industrial_Capacity {
             new Dictionary<string, string[]>() {
             { "T1", new string[] { "Heavy duty pickup truck with max capacity of {0}. It can go under transports that are at height {1} or higher.", "truck description, for instance {0}=20,{1}=2" }},
             { "T2", new string[] { "Large industrial truck with max capacity of {0}. It can go under transports if they are at height {1} or higher.", "vehicle description, for instance {0}=20,{1}=2" }},
-            { "T3A", new string[] { "Large hauling truck with max capacity of {0}. This type can transport only loose products (coal for instance). It cannot go under transports.", "vehicle description, for instance {0}=150" }},
-            { "T3B", new string[] { "Large hauling truck with max capacity of {0}. This type can transport only liquid or gas products. It cannot go under transports.", "vehicle description, for instance {0}=150" }},
+            { "T3F", new string[] { "Large hauling truck with max capacity of {0}. This type can transport only liquid or gas products. It cannot go under transports.", "vehicle description, for instance {0}=150" }},
+            { "T3L", new string[] { "Large hauling truck with max capacity of {0}. This type can transport only loose products (coal for instance). It cannot go under transports.", "vehicle description, for instance {0}=150" }},
         };
         public readonly Dictionary<string, string[]> ExcavLocStrings =
             new Dictionary<string, string[]>() {
@@ -164,11 +170,11 @@ namespace FFU_Industrial_Capacity {
             pReg = registrator;
             LocalizationManager.IgnoreDuplicates();
 
-            // Vehicle References
+            // Vehicle References - Diesel
             TruckProto refTruckT1 = TrRef(Ids.Vehicles.TruckT1.Id);
             TruckProto refTruckT2 = TrRef(Ids.Vehicles.TruckT2.Id);
-            TruckProto refTruckT3A = TrRef(Ids.Vehicles.TruckT3Loose.Id);
-            TruckProto refTruckT3B = TrRef(Ids.Vehicles.TruckT3Fluid.Id);
+            TruckProto refTruckT3F = TrRef(Ids.Vehicles.TruckT3Fluid.Id);
+            TruckProto refTruckT3L = TrRef(Ids.Vehicles.TruckT3Loose.Id);
             ExcavatorProto refExcavT1 = ExRef(Ids.Vehicles.ExcavatorT1);
             ExcavatorProto refExcavT2 = ExRef(Ids.Vehicles.ExcavatorT2);
             ExcavatorProto refExcavT3 = ExRef(Ids.Vehicles.ExcavatorT3);
@@ -176,37 +182,71 @@ namespace FFU_Industrial_Capacity {
             TreeHarvesterProto refTrHarvT2 = THrRef(Ids.Vehicles.TreeHarvesterT2);
             TreePlanterProto refTrPlantT1 = TPlRef(Ids.Vehicles.TreePlanterT1);
 
-            // Truck Modifications
+            // Vehicle References - Hydrogen
+            TruckProto refTruckT2H = TrRef(Ids.Vehicles.TruckT2H.Id);
+            TruckProto refTruckT3FH = TrRef(Ids.Vehicles.TruckT3FluidH.Id);
+            TruckProto refTruckT3LH = TrRef(Ids.Vehicles.TruckT3LooseH.Id);
+            ExcavatorProto refExcavT2H = ExRef(Ids.Vehicles.ExcavatorT2H);
+            ExcavatorProto refExcavT3H = ExRef(Ids.Vehicles.ExcavatorT3H);
+            TreeHarvesterProto refTrHarvT2H = THrRef(Ids.Vehicles.TreeHarvesterT2H);
+            TreePlanterProto refTrPlantT1H = TPlRef(Ids.Vehicles.TreePlanterT1H);
+
+            // Truck Modifications - Capacity
             SetVehicleCapacity(refTruckT1, TruckCapacity["T1"]);
             SetVehicleCapacity(refTruckT2, TruckCapacity["T2"]);
-            SetVehicleCapacity(refTruckT3A, TruckCapacity["T3"]);
-            SetVehicleCapacity(refTruckT3B, TruckCapacity["T3"]);
+            SetVehicleCapacity(refTruckT3F, TruckCapacity["T3"]);
+            SetVehicleCapacity(refTruckT3L, TruckCapacity["T3"]);
+            SetVehicleCapacity(refTruckT2H, TruckCapacity["T2"]);
+            SetVehicleCapacity(refTruckT3FH, TruckCapacity["T3"]);
+            SetVehicleCapacity(refTruckT3LH, TruckCapacity["T3"]);
+
+            // Truck Modifications - Drive Data
             SetVehicleDriveData(refTruckT1, TruckDriveData["T1"]);
             SetVehicleDriveData(refTruckT2, TruckDriveData["T2"]);
-            SetVehicleDriveData(refTruckT3A, TruckDriveData["T3"]);
-            SetVehicleDriveData(refTruckT3B, TruckDriveData["T3"]);
+            SetVehicleDriveData(refTruckT3F, TruckDriveData["T3"]);
+            SetVehicleDriveData(refTruckT3L, TruckDriveData["T3"]);
+            SetVehicleDriveData(refTruckT2H, TruckDriveData["T2H"]);
+            SetVehicleDriveData(refTruckT3FH, TruckDriveData["T3H"]);
+            SetVehicleDriveData(refTruckT3LH, TruckDriveData["T3H"]);
+
+            // Truck Modifications - Localization
             SetVehicleDescription(refTruckT1, TruckLocStrings["T1"], true);
             SetVehicleDescription(refTruckT2, TruckLocStrings["T2"], true);
-            SetVehicleDescription(refTruckT3A, TruckLocStrings["T3A"], false);
-            SetVehicleDescription(refTruckT3B, TruckLocStrings["T3B"], false);
+            SetVehicleDescription(refTruckT3F, TruckLocStrings["T3F"], false);
+            SetVehicleDescription(refTruckT3L, TruckLocStrings["T3L"], false);
+            SetVehicleDescription(refTruckT2H, TruckLocStrings["T2"], true);
+            SetVehicleDescription(refTruckT3FH, TruckLocStrings["T3F"], false);
+            SetVehicleDescription(refTruckT3LH, TruckLocStrings["T3L"], false);
 
-            // Excavator Modifications
+            // Excavator Modifications - Capacity
             SetVehicleCapacity(refExcavT1, ExcavCapacity["T1"]);
             SetVehicleCapacity(refExcavT2, ExcavCapacity["T2"]);
             SetVehicleCapacity(refExcavT3, ExcavCapacity["T3"]);
+            SetVehicleCapacity(refExcavT2H, ExcavCapacity["T2"]);
+            SetVehicleCapacity(refExcavT3H, ExcavCapacity["T3"]);
+
+            // Excavator Modifications - Drive Data
             SetVehicleDriveData(refExcavT1, ExcavDriveData["T1"]);
             SetVehicleDriveData(refExcavT2, ExcavDriveData["T2"]);
             SetVehicleDriveData(refExcavT3, ExcavDriveData["T3"]);
+            SetVehicleDriveData(refExcavT2H, ExcavDriveData["T2H"]);
+            SetVehicleDriveData(refExcavT3H, ExcavDriveData["T3H"]);
+
+            // Excavator Modifications - Localization
             SetVehicleDescription(refExcavT1, ExcavLocStrings["T1"]);
             SetVehicleDescription(refExcavT2, ExcavLocStrings["T2"]);
             SetVehicleDescription(refExcavT3, ExcavLocStrings["T3"]);
+            SetVehicleDescription(refExcavT2H, ExcavLocStrings["T2"]);
+            SetVehicleDescription(refExcavT3H, ExcavLocStrings["T3"]);
 
-            // Tree Harvester Modifications
+            // Tree Harvester Modifications - Drive Data
             SetVehicleDriveData(refTrHarvT1, TrHarvDriveData["T1"]);
             SetVehicleDriveData(refTrHarvT2, TrHarvDriveData["T2"]);
+            SetVehicleDriveData(refTrHarvT2H, TrHarvDriveData["T2H"]);
 
-            // Tree Planter Modifications
+            // Tree Planter Modifications - Drive Data
             SetVehicleDriveData(refTrPlantT1, TrPlantDriveData["T1"]);
+            SetVehicleDriveData(refTrPlantT1H, TrPlantDriveData["T1H"]);
         }
     }
 }
