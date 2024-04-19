@@ -1,4 +1,5 @@
 ﻿using Mafi.Base.Prototypes.Buildings.ThermalStorages;
+using Mafi.Core.Buildings.Settlements;
 using Mafi.Core.Buildings.Storages;
 using Mafi.Core.Entities;
 using Mafi.Core.Entities.Dynamic;
@@ -20,6 +21,7 @@ namespace FFU_Industrial_Capacity {
         public static StorageProto StorageRef(ProtoRegistrator pReg, StaticEntityProto.ID refID) => pReg.PrototypesDb.Get<StorageProto>(refID).Value;
         public static ThermalStorageProto ThermalRef(ProtoRegistrator pReg, StaticEntityProto.ID refID) => pReg.PrototypesDb.Get<ThermalStorageProto>(refID).Value;
         public static NuclearWasteStorageProto NuclearRef(ProtoRegistrator pReg, StaticEntityProto.ID refID) => pReg.PrototypesDb.Get<NuclearWasteStorageProto>(refID).Value;
+        public static SettlementFoodModuleProto MarketRef(ProtoRegistrator pReg, StaticEntityProto.ID refID) => pReg.PrototypesDb.Get<SettlementFoodModuleProto>(refID).Value;
         public static MachineProto MachineRef(ProtoRegistrator pReg, MachineProto.ID refID) => pReg.PrototypesDb.Get<MachineProto>(refID).Value;
         public static TruckProto TruckRef(ProtoRegistrator pReg, DynamicEntityProto.ID refID) => pReg.PrototypesDb.Get<TruckProto>(refID).Value;
         public static ExcavatorProto ExcavRef(ProtoRegistrator pReg, DynamicEntityProto.ID refID) => pReg.PrototypesDb.Get<ExcavatorProto>(refID).Value;

@@ -120,7 +120,7 @@ namespace FFU_Industrial_Capacity {
             LocalizationManager.IgnoreDuplicates();
 
             // Technology References
-            ResearchNodeProto techVehCap1 = RnRef(Ids.Research.VehicleCapIncrease);
+            ResearchNodeProto techVehCap1 = RnRef(Ids.Research.AdvancedLogisticsControl);
             ResearchNodeProto techVehCap2 = RnRef(Ids.Research.VehicleCapIncrease2);
             ResearchNodeProto techVehCap3 = RnRef(Ids.Research.VehicleCapIncrease3);
             ResearchNodeProto techVehCap4 = RnRef(Ids.Research.VehicleCapIncrease4);
@@ -140,7 +140,6 @@ namespace FFU_Industrial_Capacity {
             SetTechUnitTitle<VehicleLimitIncreaseUnlock>(techVehCap4, UnitLocStrings["TechVC"], TechVars["TechVC4"]);
             SetTechUnitTitle<VehicleLimitIncreaseUnlock>(techVehCap5, UnitLocStrings["TechVC"], TechVars["TechVC5"]);
             SetTechUnitTitle<VehicleLimitIncreaseUnlock>(techVehCap6, UnitLocStrings["TechVC"], TechVars["TechVC6"]);
-            SetTechDescription(techVehCap1, TechLocStrings["TechVC"], TechVars["TechVC1"]);
             SetTechDescription(techVehCap2, TechLocStrings["TechVC"], TechVars["TechVC2"]);
             SetTechDescription(techVehCap3, TechLocStrings["TechVC"], TechVars["TechVC3"]);
             SetTechDescription(techVehCap4, TechLocStrings["TechVC"], TechVars["TechVC4"]);

@@ -1,6 +1,7 @@
 ﻿using Mafi;
 using Mafi.Base;
 using Mafi.Base.Prototypes.Buildings.ThermalStorages;
+using Mafi.Core.Buildings.Settlements;
 using Mafi.Core.Buildings.Storages;
 using Mafi.Core.Game;
 using Mafi.Core.Mods;
@@ -23,6 +24,7 @@ namespace FFU_Industrial_Capacity {
             { "RadWaste", 12000 },
             { "RetWaste", 3000 },
             { "Thermal", 15000 },
+            { "Foodstuff", 2500 },
         };
 
         // Localization Definitions
@@ -37,6 +39,7 @@ namespace FFU_Industrial_Capacity {
         public StorageProto StRef(Mafi.Core.Entities.Static.StaticEntityProto.ID refID) => FFU_IC_IDs.StorageRef(pReg, refID);
         public ThermalStorageProto ThRef(Mafi.Core.Entities.Static.StaticEntityProto.ID refID) => FFU_IC_IDs.ThermalRef(pReg, refID);
         public NuclearWasteStorageProto NcRef(Mafi.Core.Entities.Static.StaticEntityProto.ID refID) => FFU_IC_IDs.NuclearRef(pReg, refID);
+        public SettlementFoodModuleProto MkRef(Mafi.Core.Entities.Static.StaticEntityProto.ID refID) => FFU_IC_IDs.MarketRef(pReg, refID);
         public void SetStorageCapacity(StorageProto refStorage, int newMaterialCap) {
             if (refStorage == null) { ModLog.Warning($"SetStorageCapacity: 'refStorage' is undefined!"); return; }
             ModLog.Info($"{refStorage.Id} Capacity: {refStorage.Capacity} -> {newMaterialCap}");
@@ -59,6 +62,13 @@ namespace FFU_Industrial_Capacity {
             fieldNuclear.SetValue(refNuclear, new Quantity(newNuclearCap));
             fieldRetried.SetValue(refNuclear, new Quantity(newRetiredCap));
             FFU_IC_IDs.SyncProtoMod(refNuclear);
+        }
+        public void SetStorageCapacity(SettlementFoodModuleProto refMarket, int newFoodCap) {
+            if (refMarket == null) { ModLog.Warning($"SetStorageCapacity: 'refMarket' is undefined!"); return; }
+            ModLog.Info($"{refMarket.Id} Capacity: {refMarket.CapacityPerBuffer} -> {newFoodCap}");
+            FieldInfo fieldMarket = typeof(SettlementFoodModuleProto).GetField("CapacityPerBuffer", BindingFlags.Instance | BindingFlags.Public);
+            fieldMarket.SetValue(refMarket, new Quantity(newFoodCap));
+            FFU_IC_IDs.SyncProtoMod(refMarket);
         }
         public void SetStorageDescription(StorageProto refStorage, string[] strSet) {
             if (refStorage == null) { ModLog.Warning($"SetStorageDescription: 'refStorage' is undefined!"); return; }
@@ -97,6 +107,8 @@ namespace FFU_Industrial_Capacity {
             StorageProto refFluidT4 = StRef(Ids.Buildings.StorageFluidT4);
             ThermalStorageProto refThermal = ThRef(Ids.Buildings.ThermalStorage);
             NuclearWasteStorageProto refNuclear = NcRef(Ids.Buildings.NuclearWasteStorage);
+            SettlementFoodModuleProto refMarketT1 = MkRef(Ids.Buildings.SettlementFoodModule);
+            SettlementFoodModuleProto refMarketT2 = MkRef(Ids.Buildings.SettlementFoodModuleT2);
 
             // Solid Storage Modifications
             SetStorageCapacity(refSolidT1, StorageCapacity["DefaultT1"]);
@@ -133,6 +145,10 @@ namespace FFU_Industrial_Capacity {
 
             // Nuclear Storage Modifications
             SetStorageCapacity(refNuclear, StorageCapacity["RadWaste"], StorageCapacity["RetWaste"]);
+
+            // Settlement Market Modifications
+            SetStorageCapacity(refMarketT1, StorageCapacity["Foodstuff"]);
+            SetStorageCapacity(refMarketT2, StorageCapacity["Foodstuff"]);
         }
     }
 }
