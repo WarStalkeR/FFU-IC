@@ -6,6 +6,7 @@ using Mafi.Core.Entities.Dynamic;
 using Mafi.Core.Entities.Static;
 using Mafi.Core.Factory.Machines;
 using Mafi.Core.Factory.Recipes;
+using Mafi.Core.Factory.Transports;
 using Mafi.Core.Mods;
 using Mafi.Core.Products;
 using Mafi.Core.Research;
@@ -28,6 +29,7 @@ namespace FFU_Industrial_Capacity {
         public static TreeHarvesterProto TrHarvRef(ProtoRegistrator pReg, DynamicEntityProto.ID refID) => pReg.PrototypesDb.Get<TreeHarvesterProto>(refID).Value;
         public static TreePlanterProto TrPlantRef(ProtoRegistrator pReg, DynamicEntityProto.ID refID) => pReg.PrototypesDb.Get<TreePlanterProto>(refID).Value;
         public static WorldMapMineProto WorldMineRef(ProtoRegistrator pReg, EntityProto.ID refID) => pReg.PrototypesDb.Get<WorldMapMineProto>(refID).Value;
+        public static TransportProto TransportRef(ProtoRegistrator pReg, EntityProto.ID refID) => pReg.PrototypesDb.Get<TransportProto>(refID).Value;
         public static RecipeProto RecipeRef(ProtoRegistrator pReg, RecipeProto.ID refID) => pReg.PrototypesDb.Get<RecipeProto>(refID).Value;
         public static ProductProto ProductRef(ProtoRegistrator pReg, ProductProto.ID refID) => pReg.PrototypesDb.Get<ProductProto>(refID).Value;
         public static ResearchNodeProto ResearchRef(ProtoRegistrator pReg, ResearchNodeProto.ID refID) => pReg.PrototypesDb.Get<ResearchNodeProto>(refID).Value;

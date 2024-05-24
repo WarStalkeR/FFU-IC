@@ -34,9 +34,11 @@ namespace FFU_Industrial_Capacity {
             registrator.RegisterData<FFU_IC_Mod_Vehicles>();
             registrator.RegisterData<FFU_IC_Mod_Machinery>();
             registrator.RegisterData<FFU_IC_Mod_WorldSites>();
-            // 3rd Stage Prototypes: Recipes
+            // 3rd Stage Prototypes: Build Costs
+            registrator.RegisterData<FFU_IC_Mod_BuildCosts>();
+            // 4rd Stage Prototypes: Recipes
             registrator.RegisterData<FFU_IC_Mod_Recipes>();
-            // 4th Stage Prototypes: Research
+            // 5th Stage Prototypes: Research
             registrator.RegisterData<FFU_IC_Mod_Research>();
             ModLog.Info($"Prototypes Registered!");
         }
