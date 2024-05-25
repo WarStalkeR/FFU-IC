@@ -13,18 +13,20 @@ using System.Reflection;
 namespace FFU_Industrial_Capacity {
     internal partial class FFU_IC_Mod_Machinery : IModData {
         // Modification Variables
-        ProtoRegistrator pReg = null;
+        private ProtoRegistrator pReg = null;
 
         // Modification Definitions
-        public readonly Dictionary<string, string[]> LayoutStrings =
+        private readonly Dictionary<string, string[]> LayoutStrings =
             new Dictionary<string, string[]>() {
         };
-        public readonly Dictionary<string, Dictionary<char, char[]>> LayoutMap =
+        private readonly Dictionary<string, Dictionary<char, char[]>> LayoutMap =
             new Dictionary<string, Dictionary<char, char[]>>() { 
         };
 
+        // Reference Helpers
+        private MachineProto McRef(MachineProto.ID refID) => FFU_IC_IDs.MachineRef(pReg, refID);
+
         // Reflection Helpers
-        public MachineProto McRef(MachineProto.ID refID) => FFU_IC_IDs.MachineRef(pReg, refID);
         public void SetMachineLayout(MachineProto refMachine, string[] strLayout, Dictionary<char, char[]> charMap = null) {
             if (refMachine == null) { ModLog.Warning($"SetMachineLayout: 'refMachine' is undefined!"); return; }
             if (strLayout == null) { ModLog.Warning($"SetMachineLayout: 'strLayout' is undefined!"); return; }
@@ -81,6 +83,7 @@ namespace FFU_Industrial_Capacity {
         public void RegisterData(ProtoRegistrator registrator) {
             // Variables Initialization
             pReg = registrator;
+
             // ExampleUse(FFU_IC_IDs.Recipes.CopperSmeltingArcHalf);
         }
         public void ExampleUse(RecipeProto.ID newRecipeID) {

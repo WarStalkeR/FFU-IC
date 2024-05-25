@@ -4,10 +4,12 @@ using Mafi.Core.Products;
 namespace FFU_Industrial_Capacity {
 	internal partial class FFU_IC_Mod_ProdSolid : IModData {
         // Modification Variables
-        ProtoRegistrator pReg = null;
+        private ProtoRegistrator pReg = null;
+
+        // Reference Helpers
+        private ProductProto PdRef(ProductProto.ID refID) => FFU_IC_IDs.ProductRef(pReg, refID);
 
         // Reflection Helpers
-        public ProductProto PdRef(ProductProto.ID refID) => FFU_IC_IDs.ProductRef(pReg, refID);
 
         public void RegisterData(ProtoRegistrator registrator) {
             // Variables Initialization

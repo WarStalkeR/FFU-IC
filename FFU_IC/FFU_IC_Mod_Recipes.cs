@@ -8,11 +8,13 @@ using System.Reflection;
 namespace FFU_Industrial_Capacity {
     internal partial class FFU_IC_Mod_Recipes : IModData {
         // Modification Variables
-        ProtoRegistrator pReg = null;
+        private ProtoRegistrator pReg = null;
+
+        // Reference Helpers
+        private RecipeProto RcRef(RecipeProto.ID refID) => FFU_IC_IDs.RecipeRef(pReg, refID);
+        private ProductProto PdRef(ProductProto.ID refID) => FFU_IC_IDs.ProductRef(pReg, refID);
 
         // Reflection Helpers
-        public RecipeProto RcRef(RecipeProto.ID refID) => FFU_IC_IDs.RecipeRef(pReg, refID);
-        public ProductProto PdRef(ProductProto.ID refID) => FFU_IC_IDs.ProductRef(pReg, refID);
         public void ModifyRecipeTime(RecipeProto refRecipe, Duration newTime) {
             if (refRecipe == null) { ModLog.Warning($"ModifyRecipeTime: 'refRecipe' is undefined!"); return; }
             ModLog.Info($"{refRecipe.Id} Production Time: {refRecipe.Duration.Seconds}s -> {newTime.Seconds}s");
@@ -65,6 +67,11 @@ namespace FFU_Industrial_Capacity {
         public void RegisterData(ProtoRegistrator registrator) {
             // Variables Initialization
             pReg = registrator;
+
+            // Arc Furnace Half Scrap Recipes
+
+            // Arc Furnace Cold Scrap Recipes
+
             // ExampleUse();
         }
         public void ExampleUse() {

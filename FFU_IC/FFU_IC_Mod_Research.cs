@@ -13,10 +13,10 @@ using System.Reflection;
 namespace FFU_Industrial_Capacity {
 	internal partial class FFU_IC_Mod_Research : IResearchNodesData, IModData {
         // Modification Variables
-        ProtoRegistrator pReg = null;
+        private ProtoRegistrator pReg = null;
 
         // Modification Definitions
-        public readonly Dictionary<string, int> TechVars =
+        private readonly Dictionary<string, int> TechVars =
             new Dictionary<string, int>() {
             { "TechVC1", 40 },
             { "TechVC2", 40 },
@@ -27,17 +27,19 @@ namespace FFU_Industrial_Capacity {
         };
 
         // Localization Definitions
-        public readonly Dictionary<string, string[]> UnitLocStrings =
+        private readonly Dictionary<string, string[]> UnitLocStrings =
             new Dictionary<string, string[]>() {
             { "TechVC", new string[] { "VehicleLimitIncrease", "+{0} VEHICLE CAP", "+{0} VEHICLES CAP", "vehicles cap increase, all caps" }},
         };
-        public readonly Dictionary<string, string[]> TechLocStrings =
+        private readonly Dictionary<string, string[]> TechLocStrings =
             new Dictionary<string, string[]>() {
             { "TechVC", new string[] { "Increases vehicle limit by {0}.", "{0}=25" }},
         };
 
+        // Reference Helpers
+        private ResearchNodeProto RnRef(ResearchNodeProto.ID refID) => FFU_IC_IDs.ResearchRef(pReg, refID);
+
         // Reflection Helpers
-        public ResearchNodeProto RnRef(ResearchNodeProto.ID refID) => FFU_IC_IDs.ResearchRef(pReg, refID);
         public void SetTechVehicleCapacity(ResearchNodeProto refReserach, int newVehCap) {
             if (refReserach == null) { ModLog.Warning($"SetTechVehicleCapacity: 'refReserach' is undefined!"); return; }
             refReserach.Units.ForEach(refUnit => {

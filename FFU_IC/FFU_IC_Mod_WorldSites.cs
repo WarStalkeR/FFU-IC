@@ -10,10 +10,10 @@ using System.Reflection;
 namespace FFU_Industrial_Capacity {
 	internal partial class FFU_IC_Mod_WorldSites : IModData {
         // Modification Variables
-        ProtoRegistrator pReg = null;
+        private ProtoRegistrator pReg = null;
 
         // Modification Definitions
-        public readonly Dictionary<string, double[]> MineProdData =
+        private readonly Dictionary<string, double[]> MineProdData =
             new Dictionary<string, double[]>() {
             { "Oil", new double[] { 25, 20.0, 0.05, 20, 2 }},
             { "Water", new double[] { 15, 10.0, 0.05, 20, 2 }},
@@ -27,9 +27,11 @@ namespace FFU_Industrial_Capacity {
 
         // Localization Definitions
 
+        // Reference Helpers
+        private WorldMapMineProto WmRef(Mafi.Core.Entities.EntityProto.ID refID) => FFU_IC_IDs.WorldMineRef(pReg, refID);
+        private ProductProto ProdRef(ProductProto.ID refID) => FFU_IC_IDs.ProductRef(pReg, refID);
+
         // Reflection Helpers
-        public WorldMapMineProto WmRef(Mafi.Core.Entities.EntityProto.ID refID) => FFU_IC_IDs.WorldMineRef(pReg, refID);
-        public ProductProto ProdRef(ProductProto.ID refID) => FFU_IC_IDs.ProductRef(pReg, refID);
         public void SetMineProduction(WorldMapMineProto refMine, double[] mineData) {
             if (refMine == null) { ModLog.Warning($"SetMineProduction: 'refMine' is undefined!"); return; }
             if (mineData == null) { ModLog.Warning($"SetMineProduction: 'mineData' is undefined!"); return; }

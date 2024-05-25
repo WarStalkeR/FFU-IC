@@ -15,10 +15,10 @@ using System.Reflection;
 namespace FFU_Industrial_Capacity {
 	internal partial class FFU_IC_Mod_BuildCosts : IModData {
         // Modification Variables
-        ProtoRegistrator pReg = null;
+        private ProtoRegistrator pReg = null;
 
         // Modification Definitions
-        public readonly Dictionary<string, Dictionary<ProductProto.ID, int>> buildCostData =
+        private readonly Dictionary<string, Dictionary<ProductProto.ID, int>> buildCostData =
             new Dictionary<string, Dictionary<ProductProto.ID, int>>() {
             { "ConveyorT1", new Dictionary<ProductProto.ID, int>() {
                 { Ids.Products.ConstructionParts, 4 },
@@ -30,9 +30,11 @@ namespace FFU_Industrial_Capacity {
             }},
         };
 
+        // Reference Helpers
+        private ProductProto PdRef(ProductProto.ID refID) => FFU_IC_IDs.ProductRef(pReg, refID);
+        private TransportProto TrnRef(EntityProto.ID refID) => FFU_IC_IDs.TransportRef(pReg, refID);
+
         // Reflection Helpers
-        public ProductProto PdRef(ProductProto.ID refID) => FFU_IC_IDs.ProductRef(pReg, refID);
-        public TransportProto TrnRef(EntityProto.ID refID) => FFU_IC_IDs.TransportRef(pReg, refID);
         public void SetBuildingCost(TransportProto refTransport, Dictionary<ProductProto.ID, int> costData) {
             if (refTransport == null) { ModLog.Warning($"SetBuildingCost: 'refTransport' is undefined!"); return; }
             if (costData == null) { ModLog.Warning($"SetBuildingCost: 'costData' is undefined!"); return; }

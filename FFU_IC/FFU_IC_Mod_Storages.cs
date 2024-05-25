@@ -12,10 +12,10 @@ using System.Reflection;
 namespace FFU_Industrial_Capacity {
 	internal partial class FFU_IC_Mod_Storages : IModData {
         // Modification Variables
-        ProtoRegistrator pReg = null;
+        private ProtoRegistrator pReg = null;
 
         // Modification Definitions
-        public readonly Dictionary<string, int> StorageCapacity =
+        private readonly Dictionary<string, int> StorageCapacity =
             new Dictionary<string, int>() {
             { "DefaultT1", 600 },
             { "DefaultT2", 1800 },
@@ -28,18 +28,20 @@ namespace FFU_Industrial_Capacity {
         };
 
         // Localization Definitions
-        public readonly Dictionary<string, string[]> StorageLocStrings =
+        private readonly Dictionary<string, string[]> StorageLocStrings =
             new Dictionary<string, string[]>() {
             { "Solid", new string[] { "StorageSolidFormattedBase__desc", "Stores up to {0} units of a solid product.", "description for storage" }},
             { "Loose", new string[] { "StorageLooseFormattedBase__desc", "Stores up to {0} units of a loose product.", "description for storage" }},
             { "Fluid", new string[] { "StorageFluidFormattedBase__desc", "Stores up to {0} units of a liquid or gas product.", "description for storage" }},
         };
 
+        // Reference Helpers
+        private StorageProto StRef(Mafi.Core.Entities.Static.StaticEntityProto.ID refID) => FFU_IC_IDs.StorageRef(pReg, refID);
+        private ThermalStorageProto ThRef(Mafi.Core.Entities.Static.StaticEntityProto.ID refID) => FFU_IC_IDs.ThermalRef(pReg, refID);
+        private NuclearWasteStorageProto NcRef(Mafi.Core.Entities.Static.StaticEntityProto.ID refID) => FFU_IC_IDs.NuclearRef(pReg, refID);
+        private SettlementFoodModuleProto MkRef(Mafi.Core.Entities.Static.StaticEntityProto.ID refID) => FFU_IC_IDs.MarketRef(pReg, refID);
+
         // Reflection Helpers
-        public StorageProto StRef(Mafi.Core.Entities.Static.StaticEntityProto.ID refID) => FFU_IC_IDs.StorageRef(pReg, refID);
-        public ThermalStorageProto ThRef(Mafi.Core.Entities.Static.StaticEntityProto.ID refID) => FFU_IC_IDs.ThermalRef(pReg, refID);
-        public NuclearWasteStorageProto NcRef(Mafi.Core.Entities.Static.StaticEntityProto.ID refID) => FFU_IC_IDs.NuclearRef(pReg, refID);
-        public SettlementFoodModuleProto MkRef(Mafi.Core.Entities.Static.StaticEntityProto.ID refID) => FFU_IC_IDs.MarketRef(pReg, refID);
         public void SetStorageCapacity(StorageProto refStorage, int newMaterialCap) {
             if (refStorage == null) { ModLog.Warning($"SetStorageCapacity: 'refStorage' is undefined!"); return; }
             ModLog.Info($"{refStorage.Id} Capacity: {refStorage.Capacity} -> {newMaterialCap}");
