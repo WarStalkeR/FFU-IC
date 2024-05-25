@@ -1,5 +1,6 @@
 ﻿using Mafi;
 using Mafi.Base;
+using Mafi.Core.Factory.Machines;
 using Mafi.Core.Factory.Recipes;
 using Mafi.Core.Mods;
 using Mafi.Core.Products;
@@ -13,6 +14,7 @@ namespace FFU_Industrial_Capacity {
         // Reference Helpers
         private RecipeProto RcRef(RecipeProto.ID refID) => FFU_IC_IDs.RecipeRef(pReg, refID);
         private ProductProto PdRef(ProductProto.ID refID) => FFU_IC_IDs.ProductRef(pReg, refID);
+        private MachineProto McRef(MachineProto.ID refID) => FFU_IC_IDs.MachineRef(pReg, refID);
 
         // Reflection Helpers
         public void ModifyRecipeTime(RecipeProto refRecipe, Duration newTime) {
@@ -52,7 +54,7 @@ namespace FFU_Industrial_Capacity {
             }
         }
         public void SyncRecipeProcedures(RecipeProto refRecipe) {
-            if (refRecipe == null) { ModLog.Warning($"SyncRecipeVariables: 'refRecipe' is undefined!"); return; }
+            if (refRecipe == null) { ModLog.Warning($"SyncRecipeProcedures: 'refRecipe' is undefined!"); return; }
             TypeInfo typeProto = typeof(RecipeProto).GetTypeInfo();
             FieldInfo fieldAllUserVisibleInputs = typeProto.GetDeclaredField("<AllUserVisibleInputs>k__BackingField");
             FieldInfo fieldAllUserVisibleOutputs = typeProto.GetDeclaredField("<AllUserVisibleOutputs>k__BackingField");
@@ -68,11 +70,64 @@ namespace FFU_Industrial_Capacity {
             // Variables Initialization
             pReg = registrator;
 
+            // Machinery References
+            MachineProto arcFurnaceT1 = McRef(Ids.Machines.ArcFurnace);
+            MachineProto arcFurnaceT2 = McRef(Ids.Machines.ArcFurnace2);
+
             // Arc Furnace Half Scrap Recipes
+            pReg.RecipeProtoBuilder
+            .Start("Iron scrap smelting (arc half)", FFU_IC_IDs.Recipes.IronSmeltingArcHalfScrap, arcFurnaceT1)
+            .AddInput(8, Ids.Products.IronScrap, "*", false)
+            .AddInput(1, Ids.Products.Graphite, "*", false)
+            .SetDuration(20.Seconds())
+            .AddOutput(8, Ids.Products.MoltenIron, "*", false, false)
+            .AddOutput(2, Ids.Products.Exhaust, "E", false, false)
+            .BuildAndAdd();
+            pReg.RecipeProtoBuilder
+            .Start("Copper scrap smelting (arc half)", FFU_IC_IDs.Recipes.CopperSmeltingArcHalfScrap, arcFurnaceT1)
+            .AddInput(8, Ids.Products.CopperScrap, "*", false)
+            .AddInput(1, Ids.Products.Graphite, "*", false)
+            .SetDuration(20.Seconds())
+            .AddOutput(8, Ids.Products.MoltenCopper, "*", false, false)
+            .AddOutput(2, Ids.Products.Exhaust, "E", false, false)
+            .BuildAndAdd();
+            pReg.RecipeProtoBuilder
+            .Start("Glass broken smelting (arc half)", FFU_IC_IDs.Recipes.GlassSmeltingArcHalfWithBroken, arcFurnaceT1)
+            .AddInput(12, Ids.Products.BrokenGlass, "*", false)
+            .AddInput(1, Ids.Products.Graphite, "*", false)
+            .SetDuration(20.Seconds())
+            .AddOutput(8, Ids.Products.MoltenGlass, "*", false, false)
+            .AddOutput(2, Ids.Products.Exhaust, "E", false, false)
+            .BuildAndAdd();
 
             // Arc Furnace Cold Scrap Recipes
-
-            // ExampleUse();
+            pReg.RecipeProtoBuilder
+            .Start("Iron scrap smelting (arc cold)", FFU_IC_IDs.Recipes.IronSmeltingArcColdScrap, arcFurnaceT2)
+            .AddInput(8, Ids.Products.IronScrap, "*", false)
+            .AddInput(1, Ids.Products.Graphite, "*", false)
+            .AddInput(4, Ids.Products.ChilledWater, "D", false)
+            .SetDuration(20.Seconds())
+            .AddOutput(8, Ids.Products.MoltenIron, "*", false, false)
+            .AddOutput(4, Ids.Products.SteamLo, "Z", false, false)
+            .BuildAndAdd();
+            pReg.RecipeProtoBuilder
+            .Start("Copper scrap smelting (arc cold)", FFU_IC_IDs.Recipes.CopperSmeltingArcColdScrap, arcFurnaceT2)
+            .AddInput(8, Ids.Products.CopperScrap, "*", false)
+            .AddInput(1, Ids.Products.Graphite, "*", false)
+            .AddInput(4, Ids.Products.ChilledWater, "D", false)
+            .SetDuration(20.Seconds())
+            .AddOutput(8, Ids.Products.MoltenCopper, "*", false, false)
+            .AddOutput(4, Ids.Products.SteamLo, "Z", false, false)
+            .BuildAndAdd();
+            pReg.RecipeProtoBuilder
+            .Start("Glass broken smelting (arc cold)", FFU_IC_IDs.Recipes.GlassSmeltingArcColdWithBroken, arcFurnaceT2)
+            .AddInput(12, Ids.Products.BrokenGlass, "*", false)
+            .AddInput(1, Ids.Products.Graphite, "*", false)
+            .AddInput(4, Ids.Products.ChilledWater, "D", false)
+            .SetDuration(20.Seconds())
+            .AddOutput(8, Ids.Products.MoltenGlass, "*", false, false)
+            .AddOutput(4, Ids.Products.SteamLo, "Z", false, false)
+            .BuildAndAdd();
         }
         public void ExampleUse() {
             // Recipe References

@@ -38,6 +38,8 @@ namespace FFU_Industrial_Capacity {
 
         // Reference Helpers
         private ResearchNodeProto RnRef(ResearchNodeProto.ID refID) => FFU_IC_IDs.ResearchRef(pReg, refID);
+        private RecipeProto RcRef(RecipeProto.ID refID) => FFU_IC_IDs.RecipeRef(pReg, refID);
+        private MachineProto McRef(MachineProto.ID refID) => FFU_IC_IDs.MachineRef(pReg, refID);
 
         // Reflection Helpers
         public void SetTechVehicleCapacity(ResearchNodeProto refReserach, int newVehCap) {
@@ -86,16 +88,20 @@ namespace FFU_Industrial_Capacity {
                 FFU_IC_IDs.SyncProtoMod(refReserach);
             }
         }
-        public void AddTechRecipe(ResearchNodeProto refReserach, MachineProto refMachine, RecipeProto refNewUnit, bool hideInUI = false) {
+        public void AddTechRecipe(ResearchNodeProto refReserach, MachineProto refMachine, RecipeProto refNewUnit, bool hideInUI = false, int index = -1) {
             if (refReserach == null) { ModLog.Warning($"AddTechRecipe: 'refReserach' is undefined!"); return; }
             if (refMachine == null) { ModLog.Warning($"AddTechRecipe: 'refMachine' is undefined!"); return; }
             if (refNewUnit == null) { ModLog.Warning($"AddTechRecipe: 'refNewUnit' is undefined!"); return; }
             ModLog.Info($"Added new unit {refNewUnit.Id} to research {refReserach.Id}.");
             Set<IUnlockNodeUnit> newUnitList = new Set<IUnlockNodeUnit>(0, null);
+            int idx = 0;
             refReserach.Units.ForEach(refUnit => {
+                if (index >= 0 && idx == index)
+                    newUnitList.AddAndAssertNew(new RecipeUnlock(refNewUnit, refMachine, hideInUI));
                 newUnitList.Add(refUnit);
+                idx++;
             });
-            newUnitList.AddAndAssertNew(new RecipeUnlock(refNewUnit, refMachine, hideInUI));
+            if (index < 0) newUnitList.AddAndAssertNew(new RecipeUnlock(refNewUnit, refMachine, hideInUI));
             FieldInfo fieldUnits = typeof(ResearchNodeProto).GetField("Units", BindingFlags.Instance | BindingFlags.Public);
             fieldUnits.SetValue(refReserach, newUnitList.ToImmutableArray());
             FFU_IC_IDs.SyncProtoMod(refReserach);
@@ -128,6 +134,19 @@ namespace FFU_Industrial_Capacity {
             ResearchNodeProto techVehCap4 = RnRef(Ids.Research.VehicleCapIncrease4);
             ResearchNodeProto techVehCap5 = RnRef(Ids.Research.VehicleCapIncrease5);
             ResearchNodeProto techVehCap6 = RnRef(Ids.Research.VehicleCapIncrease6);
+            ResearchNodeProto techArcFurnaceT1 = RnRef(Ids.Research.PolySiliconProduction);
+
+            // Machinery References
+            MachineProto arcFurnaceT1 = McRef(Ids.Machines.ArcFurnace);
+            MachineProto arcFurnaceT2 = McRef(Ids.Machines.ArcFurnace2);
+
+            // Recipe References
+            RecipeProto recipeIronSmeltingArcHalfScrap = RcRef(FFU_IC_IDs.Recipes.IronSmeltingArcHalfScrap);
+            RecipeProto recipeCopperSmeltingArcHalfScrap = RcRef(FFU_IC_IDs.Recipes.CopperSmeltingArcHalfScrap);
+            RecipeProto recipeGlassSmeltingArcHalfWithBroken = RcRef(FFU_IC_IDs.Recipes.GlassSmeltingArcHalfWithBroken);
+            //RecipeProto recipeIronSmeltingArcColdScrap = RcRef(FFU_IC_IDs.Recipes.IronSmeltingArcColdScrap);
+            //RecipeProto recipeCopperSmeltingArcColdScrap = RcRef(FFU_IC_IDs.Recipes.CopperSmeltingArcColdScrap);
+            //RecipeProto recipeGlassSmeltingArcColdWithBroken = RcRef(FFU_IC_IDs.Recipes.GlassSmeltingArcColdWithBroken);
 
             // Vehicle Capacity Modifications
             SetTechVehicleCapacity(techVehCap1, TechVars["TechVC1"]);
@@ -136,17 +155,26 @@ namespace FFU_Industrial_Capacity {
             SetTechVehicleCapacity(techVehCap4, TechVars["TechVC4"]);
             SetTechVehicleCapacity(techVehCap5, TechVars["TechVC5"]);
             SetTechVehicleCapacity(techVehCap6, TechVars["TechVC6"]);
+
+            // Vehicle Capacity Unit Description
             SetTechUnitTitle<VehicleLimitIncreaseUnlock>(techVehCap1, UnitLocStrings["TechVC"], TechVars["TechVC1"]);
             SetTechUnitTitle<VehicleLimitIncreaseUnlock>(techVehCap2, UnitLocStrings["TechVC"], TechVars["TechVC2"]);
             SetTechUnitTitle<VehicleLimitIncreaseUnlock>(techVehCap3, UnitLocStrings["TechVC"], TechVars["TechVC3"]);
             SetTechUnitTitle<VehicleLimitIncreaseUnlock>(techVehCap4, UnitLocStrings["TechVC"], TechVars["TechVC4"]);
             SetTechUnitTitle<VehicleLimitIncreaseUnlock>(techVehCap5, UnitLocStrings["TechVC"], TechVars["TechVC5"]);
             SetTechUnitTitle<VehicleLimitIncreaseUnlock>(techVehCap6, UnitLocStrings["TechVC"], TechVars["TechVC6"]);
+
+            // Vehicle Capacity Tech Description
             SetTechDescription(techVehCap2, TechLocStrings["TechVC"], TechVars["TechVC2"]);
             SetTechDescription(techVehCap3, TechLocStrings["TechVC"], TechVars["TechVC3"]);
             SetTechDescription(techVehCap4, TechLocStrings["TechVC"], TechVars["TechVC4"]);
             SetTechDescription(techVehCap5, TechLocStrings["TechVC"], TechVars["TechVC5"]);
             SetTechDescription(techVehCap6, TechLocStrings["TechVC"], TechVars["TechVC6"]);
+
+            // Add Half Arc Scrap Smelting Recipes
+            AddTechRecipe(techArcFurnaceT1, arcFurnaceT1, recipeIronSmeltingArcHalfScrap, index: 2);
+            AddTechRecipe(techArcFurnaceT1, arcFurnaceT1, recipeCopperSmeltingArcHalfScrap, index: 3);
+            AddTechRecipe(techArcFurnaceT1, arcFurnaceT1, recipeGlassSmeltingArcHalfWithBroken, index: 4);
         }
     }
 }
