@@ -1,4 +1,5 @@
-﻿using Mafi.Base;
+﻿using Mafi;
+using Mafi.Base;
 using Mafi.Collections;
 using Mafi.Collections.ImmutableCollections;
 using Mafi.Core.Factory.Machines;
@@ -135,6 +136,7 @@ namespace FFU_Industrial_Capacity {
             ResearchNodeProto techVehCap5 = RnRef(Ids.Research.VehicleCapIncrease5);
             ResearchNodeProto techVehCap6 = RnRef(Ids.Research.VehicleCapIncrease6);
             ResearchNodeProto techArcFurnaceT1 = RnRef(Ids.Research.PolySiliconProduction);
+            ResearchNodeProto techArcFurnaceT2 = RnRef(Ids.Research.ArcFurnace2);
 
             // Machinery References
             MachineProto arcFurnaceT1 = McRef(Ids.Machines.ArcFurnace);
@@ -144,9 +146,9 @@ namespace FFU_Industrial_Capacity {
             RecipeProto recipeIronSmeltingArcHalfScrap = RcRef(FFU_IC_IDs.Recipes.IronSmeltingArcHalfScrap);
             RecipeProto recipeCopperSmeltingArcHalfScrap = RcRef(FFU_IC_IDs.Recipes.CopperSmeltingArcHalfScrap);
             RecipeProto recipeGlassSmeltingArcHalfWithBroken = RcRef(FFU_IC_IDs.Recipes.GlassSmeltingArcHalfWithBroken);
-            //RecipeProto recipeIronSmeltingArcColdScrap = RcRef(FFU_IC_IDs.Recipes.IronSmeltingArcColdScrap);
-            //RecipeProto recipeCopperSmeltingArcColdScrap = RcRef(FFU_IC_IDs.Recipes.CopperSmeltingArcColdScrap);
-            //RecipeProto recipeGlassSmeltingArcColdWithBroken = RcRef(FFU_IC_IDs.Recipes.GlassSmeltingArcColdWithBroken);
+            RecipeProto recipeIronSmeltingArcColdScrap = RcRef(FFU_IC_IDs.Recipes.IronSmeltingArcColdScrap);
+            RecipeProto recipeCopperSmeltingArcColdScrap = RcRef(FFU_IC_IDs.Recipes.CopperSmeltingArcColdScrap);
+            RecipeProto recipeGlassSmeltingArcColdWithBroken = RcRef(FFU_IC_IDs.Recipes.GlassSmeltingArcColdWithBroken);
 
             // Vehicle Capacity Modifications
             SetTechVehicleCapacity(techVehCap1, TechVars["TechVC1"]);
@@ -175,6 +177,11 @@ namespace FFU_Industrial_Capacity {
             AddTechRecipe(techArcFurnaceT1, arcFurnaceT1, recipeIronSmeltingArcHalfScrap, index: 2);
             AddTechRecipe(techArcFurnaceT1, arcFurnaceT1, recipeCopperSmeltingArcHalfScrap, index: 3);
             AddTechRecipe(techArcFurnaceT1, arcFurnaceT1, recipeGlassSmeltingArcHalfWithBroken, index: 4);
+
+            // Add Cold Arc Scrap Smelting Recipes
+            AddTechRecipe(techArcFurnaceT2, arcFurnaceT2, recipeIronSmeltingArcColdScrap);
+            AddTechRecipe(techArcFurnaceT2, arcFurnaceT2, recipeCopperSmeltingArcColdScrap);
+            AddTechRecipe(techArcFurnaceT2, arcFurnaceT2, recipeGlassSmeltingArcColdWithBroken);
         }
     }
 }

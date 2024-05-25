@@ -1,4 +1,5 @@
-﻿using Mafi.Base.Prototypes.Buildings.ThermalStorages;
+﻿using Mafi;
+using Mafi.Base.Prototypes.Buildings.ThermalStorages;
 using Mafi.Core.Buildings.Settlements;
 using Mafi.Core.Buildings.Storages;
 using Mafi.Core.Entities;
@@ -33,6 +34,23 @@ namespace FFU_Industrial_Capacity {
         public static RecipeProto RecipeRef(ProtoRegistrator pReg, RecipeProto.ID refID) => pReg.PrototypesDb.Get<RecipeProto>(refID).Value;
         public static ProductProto ProductRef(ProtoRegistrator pReg, ProductProto.ID refID) => pReg.PrototypesDb.Get<ProductProto>(refID).Value;
         public static ResearchNodeProto ResearchRef(ProtoRegistrator pReg, ResearchNodeProto.ID refID) => pReg.PrototypesDb.Get<ResearchNodeProto>(refID).Value;
+        public static void setTechPosition(ProtoRegistrator pReg, ResearchNodeProto.ID nodeId, Vector2i nodePos) {
+            Option<ResearchNodeProto> optNode = pReg.PrototypesDb.Get<ResearchNodeProto>(nodeId);
+            if (optNode.IsNone) {
+                Log.Warning(string.Format("Failed to set position of research node: {0}", nodeId));
+                return;
+            }
+            optNode.Value.GridPosition = nodePos;
+        }
+        public static void setTechParent(ProtoRegistrator pReg, ResearchNodeProto.ID parentId, ResearchNodeProto.ID ofId) {
+            Option<ResearchNodeProto> optParent = pReg.PrototypesDb.Get<ResearchNodeProto>(parentId);
+            Option<ResearchNodeProto> optOf = pReg.PrototypesDb.Get<ResearchNodeProto>(ofId);
+            if (optParent.IsNone || optOf.IsNone) {
+                Log.Warning(string.Format("Failed to set research relationship: {0} => {1}", ofId, parentId));
+                return;
+            }
+            optOf.Value.AddParent(optParent.Value);
+        }
         public static void SyncProtoMod(Mafi.Core.Prototypes.Proto refEntity) {
             if (FFU_IC_Base.RefMod == null) { ModLog.Warning($"SyncProtoInfo: 'RefMod' is undefined!"); return; }
             if (FFU_IC_Base.RefMod.Name == refEntity.Mod.Name && FFU_IC_Base.RefMod.Version == refEntity.Mod.Version) return;

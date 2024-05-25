@@ -105,28 +105,28 @@ namespace FFU_Industrial_Capacity {
             .Start("Iron scrap smelting (arc cold)", FFU_IC_IDs.Recipes.IronSmeltingArcColdScrap, arcFurnaceT2)
             .AddInput(8, Ids.Products.IronScrap, "*", false)
             .AddInput(1, Ids.Products.Graphite, "*", false)
-            .AddInput(4, Ids.Products.ChilledWater, "D", false)
+            .AddInput(8, Ids.Products.ChilledWater, "D", false)
             .SetDuration(20.Seconds())
             .AddOutput(8, Ids.Products.MoltenIron, "*", false, false)
-            .AddOutput(4, Ids.Products.SteamLo, "Z", false, false)
+            .AddOutput(6, Ids.Products.SteamDepleted, "Z", false, false)
             .BuildAndAdd();
             pReg.RecipeProtoBuilder
             .Start("Copper scrap smelting (arc cold)", FFU_IC_IDs.Recipes.CopperSmeltingArcColdScrap, arcFurnaceT2)
             .AddInput(8, Ids.Products.CopperScrap, "*", false)
             .AddInput(1, Ids.Products.Graphite, "*", false)
-            .AddInput(4, Ids.Products.ChilledWater, "D", false)
+            .AddInput(8, Ids.Products.ChilledWater, "D", false)
             .SetDuration(20.Seconds())
             .AddOutput(8, Ids.Products.MoltenCopper, "*", false, false)
-            .AddOutput(4, Ids.Products.SteamLo, "Z", false, false)
+            .AddOutput(6, Ids.Products.SteamDepleted, "Z", false, false)
             .BuildAndAdd();
             pReg.RecipeProtoBuilder
             .Start("Glass broken smelting (arc cold)", FFU_IC_IDs.Recipes.GlassSmeltingArcColdWithBroken, arcFurnaceT2)
             .AddInput(12, Ids.Products.BrokenGlass, "*", false)
             .AddInput(1, Ids.Products.Graphite, "*", false)
-            .AddInput(4, Ids.Products.ChilledWater, "D", false)
+            .AddInput(8, Ids.Products.ChilledWater, "D", false)
             .SetDuration(20.Seconds())
             .AddOutput(8, Ids.Products.MoltenGlass, "*", false, false)
-            .AddOutput(4, Ids.Products.SteamLo, "Z", false, false)
+            .AddOutput(6, Ids.Products.SteamDepleted, "Z", false, false)
             .BuildAndAdd();
         }
         public void ExampleUse() {
