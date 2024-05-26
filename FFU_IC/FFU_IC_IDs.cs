@@ -78,6 +78,7 @@ namespace FFU_Industrial_Capacity {
             public static readonly RecipeProto.ID IronSmeltingArcColdScrap = new RecipeProto.ID("IronSmeltingArcColdScrap");
             public static readonly RecipeProto.ID CopperSmeltingArcColdScrap = new RecipeProto.ID("CopperSmeltingArcColdScrap");
             public static readonly RecipeProto.ID GlassSmeltingArcColdWithBroken = new RecipeProto.ID("GlassSmeltingArcColdWithBroken");
+            public static readonly RecipeProto.ID ExhaustFilteringCold = new RecipeProto.ID("ExhaustFilteringCold");
         }
         public static class Research {
             public static readonly ResearchNodeProto.ID None = new ResearchNodeProto.ID("None");

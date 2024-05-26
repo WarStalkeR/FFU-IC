@@ -137,10 +137,12 @@ namespace FFU_Industrial_Capacity {
             ResearchNodeProto techVehCap6 = RnRef(Ids.Research.VehicleCapIncrease6);
             ResearchNodeProto techArcFurnaceT1 = RnRef(Ids.Research.PolySiliconProduction);
             ResearchNodeProto techArcFurnaceT2 = RnRef(Ids.Research.ArcFurnace2);
+            ResearchNodeProto techCO2Recycling = RnRef(Ids.Research.CarbonDioxideRecycling);
 
             // Machinery References
             MachineProto arcFurnaceT1 = McRef(Ids.Machines.ArcFurnace);
             MachineProto arcFurnaceT2 = McRef(Ids.Machines.ArcFurnace2);
+            MachineProto exhaustScrubber = McRef(Ids.Machines.ExhaustScrubber);
 
             // Recipe References
             RecipeProto recipeIronSmeltingArcHalfScrap = RcRef(FFU_IC_IDs.Recipes.IronSmeltingArcHalfScrap);
@@ -149,6 +151,7 @@ namespace FFU_Industrial_Capacity {
             RecipeProto recipeIronSmeltingArcColdScrap = RcRef(FFU_IC_IDs.Recipes.IronSmeltingArcColdScrap);
             RecipeProto recipeCopperSmeltingArcColdScrap = RcRef(FFU_IC_IDs.Recipes.CopperSmeltingArcColdScrap);
             RecipeProto recipeGlassSmeltingArcColdWithBroken = RcRef(FFU_IC_IDs.Recipes.GlassSmeltingArcColdWithBroken);
+            RecipeProto recipeExhaustFilteringCold = RcRef(FFU_IC_IDs.Recipes.ExhaustFilteringCold);
 
             // Vehicle Capacity Modifications
             SetTechVehicleCapacity(techVehCap1, TechVars["TechVC1"]);
@@ -182,6 +185,9 @@ namespace FFU_Industrial_Capacity {
             AddTechRecipe(techArcFurnaceT2, arcFurnaceT2, recipeIronSmeltingArcColdScrap);
             AddTechRecipe(techArcFurnaceT2, arcFurnaceT2, recipeCopperSmeltingArcColdScrap);
             AddTechRecipe(techArcFurnaceT2, arcFurnaceT2, recipeGlassSmeltingArcColdWithBroken);
+
+            // Add Cold Exhaust Scrubbing Recipe
+            AddTechRecipe(techCO2Recycling, exhaustScrubber, recipeExhaustFilteringCold);
         }
     }
 }

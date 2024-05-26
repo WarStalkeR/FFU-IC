@@ -73,6 +73,7 @@ namespace FFU_Industrial_Capacity {
             // Machinery References
             MachineProto arcFurnaceT1 = McRef(Ids.Machines.ArcFurnace);
             MachineProto arcFurnaceT2 = McRef(Ids.Machines.ArcFurnace2);
+            MachineProto exhaustScrubber = McRef(Ids.Machines.ExhaustScrubber);
 
             // Arc Furnace Half Scrap Recipes
             pReg.RecipeProtoBuilder
@@ -127,6 +128,16 @@ namespace FFU_Industrial_Capacity {
             .SetDuration(20.Seconds())
             .AddOutput(8, Ids.Products.MoltenGlass, "*", false, false)
             .AddOutput(6, Ids.Products.SteamDepleted, "Z", false, false)
+            .BuildAndAdd();
+
+            // Cold Exhaust Scrubbing Recipe
+            pReg.RecipeProtoBuilder.Start("Exhaust filtering (cold)", FFU_IC_IDs.Recipes.ExhaustFilteringCold, exhaustScrubber)
+            .AddInput(30, Ids.Products.Exhaust, "*", false)
+            .AddInput(4, Ids.Products.ChilledWater, "*", false)
+            .SetDuration(10.Seconds())
+            .AddOutput(1, Ids.Products.Sulfur, "Z", false, false)
+            .AddOutput(12, Ids.Products.CarbonDioxide, "X", false, false)
+            .AddOutput(4, Ids.Products.SteamDepleted, "Y", false, false)
             .BuildAndAdd();
         }
         public void ExampleUse() {
