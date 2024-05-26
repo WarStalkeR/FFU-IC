@@ -42,6 +42,20 @@ namespace FFU_Industrial_Capacity {
         private SettlementFoodModuleProto MkRef(Mafi.Core.Entities.Static.StaticEntityProto.ID refID) => FFU_IC_IDs.MarketRef(pReg, refID);
 
         // Reflection Helpers
+        /// <remarks>
+        /// Modifies storage capacity of a <b>StorageProto</b>. Requires <c>integer</c> value.<br/><br/>
+        /// 
+        /// <br/><u>Usage Example (in 'RegisterData' function)</u>
+        /// 
+        /// <br/><br/>Reference the <b>StorageProto</b> for modification:<br/>
+        /// <c>StorageProto refStorage = registrator.PrototypesDb.Get&lt;StorageProto&gt;(Ids.Buildings.StorageUnit).Value</c>
+        /// 
+        /// <br/><br/>Define new storage capacity as <b>int</b> variable:<br/>
+        /// <c>int newStorageCapacity = 600;</c>
+        /// 
+        /// <br/><br/>Apply new capacity value to the referenced <b>StorageProto</b>:<br/>
+        /// <c>SetStorageCapacity(refStorage, newStorageCapacity);</c>
+        /// </remarks>
         public void SetStorageCapacity(StorageProto refStorage, int newMaterialCap) {
             if (refStorage == null) { ModLog.Warning($"SetStorageCapacity: 'refStorage' is undefined!"); return; }
             ModLog.Info($"{refStorage.Id} Capacity: {refStorage.Capacity} -> {newMaterialCap}");
@@ -49,6 +63,20 @@ namespace FFU_Industrial_Capacity {
             fieldStorage.SetValue(refStorage, new Quantity(newMaterialCap));
             FFU_IC_IDs.SyncProtoMod(refStorage);
         }
+        /// <remarks>
+        /// Modifies thermal capacity of a <b>ThermalStorageProto</b>. Requires <c>integer</c> value.<br/><br/>
+        /// 
+        /// <br/><u>Usage Example (in 'RegisterData' function)</u>
+        /// 
+        /// <br/><br/>Reference the <b>ThermalStorageProto</b> for modification:<br/>
+        /// <c>ThermalStorageProto refThermal = registrator.PrototypesDb.Get&lt;ThermalStorageProto&gt;(Ids.Buildings.ThermalStorage).Value</c>
+        /// 
+        /// <br/><br/>Define new thermal capacity as <b>int</b> variable:<br/>
+        /// <c>int newThermalCapacity = 15000;</c>
+        /// 
+        /// <br/><br/>Apply new capacity value to the referenced <b>ThermalStorageProto</b>:<br/>
+        /// <c>SetStorageCapacity(refThermal, newThermalCapacity);</c>
+        /// </remarks>
         public void SetStorageCapacity(ThermalStorageProto refThermal, int newThermalCap) {
             if (refThermal == null) { ModLog.Warning($"SetStorageCapacity: 'refThermal' is undefined!"); return; }
             ModLog.Info($"{refThermal.Id} Capacity: {refThermal.Capacity} -> {newThermalCap}");

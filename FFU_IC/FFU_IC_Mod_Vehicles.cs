@@ -1,6 +1,5 @@
 ﻿using Mafi;
 using Mafi.Base;
-using Mafi.Base.Prototypes.Vehicles;
 using Mafi.Core.Entities.Dynamic;
 using Mafi.Core.Mods;
 using Mafi.Core.Vehicles.Excavators;
@@ -81,17 +80,17 @@ namespace FFU_Industrial_Capacity {
 
         // Reflection Helpers
         /// <remarks>
-        /// Modifies transportation capacity of trucks. Requires <c>integer</c> value.<br/><br/>
+        /// Modifies transportation capacity of a <b>TruckProto</b>. Requires <b>int</b> value.<br/><br/>
         /// 
         /// <br/><u>Usage Example (in 'RegisterData' function)</u>
         /// 
-        /// <br/><br/>Reference target truck for modification:<br/>
+        /// <br/><br/>Reference <b>TruckProto</b> for modification:<br/>
         /// <c>TruckProto refTruck = registrator.PrototypesDb.Get&lt;TruckProto&gt;(Ids.Vehicles.TruckT1.Id).Value;</c>
         /// 
-        /// <br/><br/>Define new truck capacity as 'int' variable:<br/>
+        /// <br/><br/>Define new truck capacity as <b>int</b> variable:<br/>
         /// <c>int newTruckCapacity = 100;</c>
         /// 
-        /// <br/><br/>Apply new capacity value to the referenced truck:<br/>
+        /// <br/><br/>Apply new capacity value to the referenced <b>TruckProto</b>:<br/>
         /// <c>SetVehicleCapacity(refTruck, newTruckCapacity);</c>
         /// </remarks>
         public void SetVehicleCapacity(TruckProto refTruck, int newTruckCap) {
@@ -102,17 +101,17 @@ namespace FFU_Industrial_Capacity {
             FFU_IC_IDs.SyncProtoMod(refTruck);
         }
         /// <remarks>
-        /// Modifies 'shovel' capacity of excavators. Requires <c>integer</c> value.<br/><br/>
+        /// Modifies 'shovel' capacity of a <b>ExcavatorProto</b>. Requires <b>int</b> value.<br/><br/>
         /// 
         /// <br/><u>Usage Example (in 'RegisterData' function)</u>
         /// 
-        /// <br/><br/>Reference target excavator for modification:<br/>
+        /// <br/><br/>Reference <b>ExcavatorProto</b> for modification:<br/>
         /// <c>ExcavatorProto refExcavator = registrator.PrototypesDb.Get&lt;ExcavatorProto&gt;(Ids.Vehicles.ExcavatorT1).Value;</c>
         /// 
-        /// <br/><br/>Define new excavator capacity as 'int' variable:<br/>
+        /// <br/><br/>Define new excavator capacity as <b>int</b> variable:<br/>
         /// <c>int newExcavatorCapacity = 25;</c>
         /// 
-        /// <br/><br/>Apply new capacity value to the referenced excavator:<br/>
+        /// <br/><br/>Apply new capacity value to the referenced <b>ExcavatorProto</b>:<br/>
         /// <c>SetVehicleCapacity(refExcavator, newExcavatorCapacity);</c>
         /// </remarks>
         public void SetVehicleCapacity(ExcavatorProto refExcav, int newShovelCap) {
@@ -123,7 +122,10 @@ namespace FFU_Industrial_Capacity {
             FFU_IC_IDs.SyncProtoMod(refExcav);
         }
         /// <remarks>
-        /// Modifies drive and motion parameters of vehicles. The <c>double</c> array requires these parameters: 
+        /// Modifies drive parameters of any <b>DrivingEntityProto</b> (i.e. <i>TruckProto</i>, <i>ExcavatorProto</i>, 
+        /// <i>TreeHarvesterProto</i> or <i>TreePlanterProto</i>). 
+        /// 
+        /// <br/><br/>The <b>double[]</b> array requires these parameters: 
         /// <br/><b>maxForwardsSpeed</b>, <b>maxBackwardsSpeed</b>, <b>steeringSpeedMult</b>, <b>acceleration</b>, 
         /// <br/><b>braking</b>, <b>maxSteeringAngle</b>, <b>maxSteeringSpeed</b>, <b>breakingConservativness</b>, 
         /// <br/><b>steeringAxleOffset</b> and <b>nonSteeringAxleOffset</b>. 
@@ -133,23 +135,33 @@ namespace FFU_Industrial_Capacity {
         /// 
         /// <br/><u>Usage Example (in 'RegisterData' function)</u>
         /// 
-        /// <br/><br/>Reference target vehicle for modification (use suitable Proto):<br/>
+        /// <br/><br/>Reference <b>DrivingEntityProto</b> for modification (using relevant prototype):<br/>
         /// <c>TruckProto refVehicle = registrator.PrototypesDb.Get&lt;TruckProto&gt;(Ids.Vehicles.TruckT1.Id).Value;</c><br/>
         /// <c>ExcavatorProto refVehicle = registrator.PrototypesDb.Get&lt;ExcavatorProto&gt;(Ids.Vehicles.ExcavatorT1).Value;</c><br/>
         /// <c>TreeHarvesterProto refVehicle = registrator.PrototypesDb.Get&lt;TreeHarvesterProto&gt;(Ids.Vehicles.TreeHarvesterT1).Value;</c><br/>
         /// <c>TreePlanterProto refVehicle = registrator.PrototypesDb.Get&lt;TreePlanterProto&gt;(Ids.Vehicles.TreePlanterT1).Value;</c>
         /// 
-        /// <br/><br/>Define new vehicle driving parameters as 'double' array:<br/>
+        /// <br/><br/>Define new vehicle driving parameters as <b>double[]</b> array:<br/>
         /// <c>double[] vehicleDriveData = new double[] { 2.0, 1.2, 50, 0.06, 0.09, 60, 20, 2.5, 1.25, 1.25 };</c>
         /// 
-        /// <br/><br/>Apply new capacity value to the referenced vehicle:<br/>
+        /// <br/><br/>Apply new vehicle driving parameters to the referenced <b>DrivingEntityProto</b>:<br/>
         /// <c>SetVehicleDriveData(refVehicle, vehicleDriveData);</c>
         /// </remarks>
         public void SetVehicleDriveData(DrivingEntityProto refVehicle, double[] driveData) {
             if (refVehicle == null) { ModLog.Warning($"SetVehicleDriveData: 'refVehicle' is undefined!"); return; }
             if (driveData == null) { ModLog.Warning($"SetVehicleDriveData: 'driveData' is undefined!"); return; }
             if (driveData.Length != 10) { ModLog.Warning($"SetVehicleDriveData: 'driveData' count is incorrect!"); return; }
-            ModLog.Info($"{refVehicle.Id} Speed F/B: {refVehicle.DrivingData.MaxForwardsSpeed}/{refVehicle.DrivingData.MaxBackwardsSpeed} -> {driveData[0]}/{driveData[1]}");
+            ModLog.Info($"{refVehicle.Id}. " +
+                $"FwSpeed: {refVehicle.DrivingData.MaxForwardsSpeed} -> {(driveData[0] >= 0 ? driveData[0] : "_")}, " +
+                $"BkSpeed: {refVehicle.DrivingData.MaxBackwardsSpeed} -> {(driveData[1] >= 0 ? driveData[1] : "_")}, " +
+                $"StrMult: {refVehicle.DrivingData.SteeringSpeedMult} -> {(driveData[2] >= 0 ? driveData[2] : "_")}, " +
+                $"Accel: {refVehicle.DrivingData.Acceleration} -> {(driveData[3] >= 0 ? driveData[3] : "_")}, " +
+                $"Brake: {refVehicle.DrivingData.Braking} -> {(driveData[4] >= 0 ? driveData[4] : "_")}, " +
+                $"MxStrAng: {refVehicle.DrivingData.MaxSteeringAngle} -> {(driveData[5] >= 0 ? driveData[5] : "_")}, " +
+                $"MxStrSpd: {refVehicle.DrivingData.MaxSteeringSpeed} -> {(driveData[6] >= 0 ? driveData[6] : "_")}, " +
+                $"BrkCons: {refVehicle.DrivingData.BrakingConservativness} -> {(driveData[7] >= 0 ? driveData[7] : "_")}, " +
+                $"StrAxle: {refVehicle.DrivingData.SteeringAxleOffset} -> {(driveData[8] >= 0 ? driveData[8] : "_")}, " +
+                $"NoStrAxle: {refVehicle.DrivingData.NonSteeringAxleOffset} -> {(driveData[9] >= 0 ? driveData[9] : "_")}");
             FieldInfo fieldDriveData = typeof(DrivingEntityProto).GetField("DrivingData", BindingFlags.Instance | BindingFlags.Public);
             DrivingData vehicleDriveData = new DrivingData(
                 driveData[0] >= 0 ? driveData[0].Tiles() : refVehicle.DrivingData.MaxForwardsSpeed,
@@ -166,20 +178,19 @@ namespace FFU_Industrial_Capacity {
             FFU_IC_IDs.SyncProtoMod(refVehicle);
         }
         /// <remarks>
-        /// Modifies description of vehicles. The <c>string</c> array requires default localization text parameters + capacity value.
-        /// For reference just use the original values.<br/><br/>
+        /// Modifies description of a <b>DrivingEntityProto</b> (i.e. <i>TruckProto</i> or <i>ExcavatorProto</i>). For reference just use the original description values.<br/><br/>
         /// 
         /// <br/><u>Usage Example (in 'RegisterData' function)</u>
         /// 
-        /// <br/><br/>Reference target vehicle for modification (use suitable Proto):<br/>
+        /// <br/><br/>Reference <b>DrivingEntityProto</b> for modification (using relevant prototype):<br/>
         /// <c>TruckProto refVehicle = registrator.PrototypesDb.Get&lt;TruckProto&gt;(Ids.Vehicles.TruckT1.Id).Value;</c><br/>
         /// <c>ExcavatorProto refVehicle = registrator.PrototypesDb.Get&lt;ExcavatorProto&gt;(Ids.Vehicles.ExcavatorT1).Value;</c>
         /// 
-        /// <br/><br/>Define new vehicle localization strings as 'string' array (use suitable Strings Set):<br/>
+        /// <br/><br/>Define new vehicle localization as <b>string[]</b> array (using relevant strings):<br/>
         /// <c>string[] vehicleLocString = new string[] { "Truck with capacity of {0}. Will go under height {1} or higher.", "truck description" };</c><br/>
         /// <c>string[] vehicleLocString = new string[] { "Excavator with capacity of {0}. Will not go under belts/pipes.", "excavator description" };</c>
         /// 
-        /// <br/><br/>Apply new capacity value to the referenced vehicle:<br/>
+        /// <br/><br/>Apply new description strings to the referenced <b>DrivingEntityProto</b>:<br/>
         /// <c>SetVehicleDescription(refVehicle, vehicleLocString);</c>
         /// </remarks>
         public void SetVehicleDescription(DrivingEntityProto refVehicle, string[] strSet, bool canGoUnder = false) {
