@@ -36,15 +36,15 @@ namespace FFU_Industrial_Capacity {
         // Reflection Helpers
         /// <remarks>
         /// Modifies various World Map Mines (such as Coal/Uranium) parameters, except the resource that mine produces. 
-        /// The <c>double</c> array requires these parameters: <b>Produced Per Step</b>, <b>Production Duration</b>,
-        /// <b>Monthly Unity Per Level</b>, <b>Max Mine Level</b> and <b>Levels Per Upgrade</b>.<br/><br/>
         /// 
+        /// <br/><br/>The <c>double</c> array requires these parameters:<br/>
         /// <b>Produced Per Step</b> - how much resource produced per level. If you will choose 8 for example, it will be amount * 8.<br/>
         /// <b>Production Duration</b> - how often resource is produced. Defined in seconds. E.g. every 10, 20 or 40 seconds.<br/>
         /// <b>Monthly Unity Per Level</b> - how much unity consumed per active level each month. E.g. 0.5 * 8 every month is 4.<br/>
         /// <b>Max Mine Level</b> - what is the max level of the mine it can be upgraded to. E.g. can be upgraded to level 16 or 20.<br/>
         /// <b>Levels Per Upgrade</b> - how much levels added to mine with each upgrade. E.g. every upgrade gives 2 or 3 more levels.<br/>
-        /// <b>Note:</b> make sure that <b>Max Mine Level</b> modulus of <b>Levels Per Upgrade</b> is always zero without exception!<br/>
+        /// 
+        /// <br/><b>Note:</b> make sure that <b>Max Mine Level</b> modulus of <b>Levels Per Upgrade</b> is always zero without exception!<br/>
         /// 
         /// <br/><u>Usage Example (in 'RegisterData' function)</u>
         /// 
