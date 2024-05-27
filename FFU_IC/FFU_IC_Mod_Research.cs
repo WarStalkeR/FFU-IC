@@ -135,7 +135,7 @@ namespace FFU_Industrial_Capacity {
             ResearchNodeProto techVehCap4 = RnRef(Ids.Research.VehicleCapIncrease4);
             ResearchNodeProto techVehCap5 = RnRef(Ids.Research.VehicleCapIncrease5);
             ResearchNodeProto techVehCap6 = RnRef(Ids.Research.VehicleCapIncrease6);
-            ResearchNodeProto techArcFurnaceT1 = RnRef(Ids.Research.PolySiliconProduction);
+            ResearchNodeProto techSiliconProd = RnRef(Ids.Research.PolySiliconProduction);
             ResearchNodeProto techArcFurnaceT2 = RnRef(Ids.Research.ArcFurnace2);
             ResearchNodeProto techCO2Recycling = RnRef(Ids.Research.CarbonDioxideRecycling);
 
@@ -143,6 +143,7 @@ namespace FFU_Industrial_Capacity {
             MachineProto arcFurnaceT1 = McRef(Ids.Machines.ArcFurnace);
             MachineProto arcFurnaceT2 = McRef(Ids.Machines.ArcFurnace2);
             MachineProto exhaustScrubber = McRef(Ids.Machines.ExhaustScrubber);
+            MachineProto itemShredder = McRef(Ids.Machines.Shredder);
 
             // Recipe References
             RecipeProto recipeIronSmeltingArcHalfScrap = RcRef(FFU_IC_IDs.Recipes.IronSmeltingArcHalfScrap);
@@ -152,6 +153,7 @@ namespace FFU_Industrial_Capacity {
             RecipeProto recipeCopperSmeltingArcColdScrap = RcRef(FFU_IC_IDs.Recipes.CopperSmeltingArcColdScrap);
             RecipeProto recipeGlassSmeltingArcColdWithBroken = RcRef(FFU_IC_IDs.Recipes.GlassSmeltingArcColdWithBroken);
             RecipeProto recipeExhaustFilteringCold = RcRef(FFU_IC_IDs.Recipes.ExhaustFilteringCold);
+            RecipeProto recipeGraphiteCoalShredding = RcRef(FFU_IC_IDs.Recipes.GraphiteCoalShredding);
 
             // Vehicle Capacity Modifications
             SetTechVehicleCapacity(techVehCap1, TechVars["TechVC1"]);
@@ -177,9 +179,9 @@ namespace FFU_Industrial_Capacity {
             SetTechDescription(techVehCap6, TechLocStrings["TechVC"], TechVars["TechVC6"]);
 
             // Add Half Arc Scrap Smelting Recipes
-            AddTechRecipe(techArcFurnaceT1, arcFurnaceT1, recipeIronSmeltingArcHalfScrap, index: 2);
-            AddTechRecipe(techArcFurnaceT1, arcFurnaceT1, recipeCopperSmeltingArcHalfScrap, index: 3);
-            AddTechRecipe(techArcFurnaceT1, arcFurnaceT1, recipeGlassSmeltingArcHalfWithBroken, index: 4);
+            AddTechRecipe(techSiliconProd, arcFurnaceT1, recipeIronSmeltingArcHalfScrap, index: 2);
+            AddTechRecipe(techSiliconProd, arcFurnaceT1, recipeCopperSmeltingArcHalfScrap, index: 3);
+            AddTechRecipe(techSiliconProd, arcFurnaceT1, recipeGlassSmeltingArcHalfWithBroken, index: 4);
 
             // Add Cold Arc Scrap Smelting Recipes
             AddTechRecipe(techArcFurnaceT2, arcFurnaceT2, recipeIronSmeltingArcColdScrap);
@@ -188,6 +190,9 @@ namespace FFU_Industrial_Capacity {
 
             // Add Cold Exhaust Scrubbing Recipe
             AddTechRecipe(techCO2Recycling, exhaustScrubber, recipeExhaustFilteringCold);
+
+            // Add Graphite-Coal Shredding Recipe
+            AddTechRecipe(techSiliconProd, itemShredder, recipeGraphiteCoalShredding, index: 7);
         }
     }
 }

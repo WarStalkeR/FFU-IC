@@ -74,6 +74,7 @@ namespace FFU_Industrial_Capacity {
             MachineProto arcFurnaceT1 = McRef(Ids.Machines.ArcFurnace);
             MachineProto arcFurnaceT2 = McRef(Ids.Machines.ArcFurnace2);
             MachineProto exhaustScrubber = McRef(Ids.Machines.ExhaustScrubber);
+            MachineProto itemShredder = McRef(Ids.Machines.Shredder);
 
             // Arc Furnace Half Scrap Recipes
             pReg.RecipeProtoBuilder
@@ -138,6 +139,13 @@ namespace FFU_Industrial_Capacity {
             .AddOutput(1, Ids.Products.Sulfur, "Z", false, false)
             .AddOutput(12, Ids.Products.CarbonDioxide, "X", false, false)
             .AddOutput(4, Ids.Products.SteamDepleted, "Y", false, false)
+            .BuildAndAdd();
+
+            // Graphite-Coal Shredding Recipe
+            pReg.RecipeProtoBuilder.Start("Shredding graphite", FFU_IC_IDs.Recipes.GraphiteCoalShredding, itemShredder)
+            .AddInput(10, Ids.Products.Graphite, "*", false)
+            .SetDuration(10.Seconds())
+            .AddOutput(5, Ids.Products.Coal, "*", false, false)
             .BuildAndAdd();
         }
         public void ExampleUse() {
