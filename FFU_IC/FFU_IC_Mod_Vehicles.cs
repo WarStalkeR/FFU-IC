@@ -2,6 +2,7 @@
 using Mafi.Base;
 using Mafi.Core.Entities.Dynamic;
 using Mafi.Core.Mods;
+using Mafi.Core.Terrain.Trees;
 using Mafi.Core.Vehicles.Excavators;
 using Mafi.Core.Vehicles.TreeHarvesters;
 using Mafi.Core.Vehicles.TreePlanters;
@@ -80,46 +81,38 @@ namespace FFU_Industrial_Capacity {
 
         // Reflection Helpers
         /// <remarks>
-        /// Modifies transportation capacity of a <b>TruckProto</b>. Requires <b>int</b> value.<br/><br/>
+        /// Modifies transportation/'shovel' capacity of a <b>TruckProto</b>/<b>ExcavatorProto</b>. Requires <b>int</b> value.<br/><br/>
         /// 
         /// <br/><u>Usage Example (in 'RegisterData' function)</u>
         /// 
-        /// <br/><br/>Reference <b>TruckProto</b> for modification:<br/>
-        /// <c>TruckProto refTruck = registrator.PrototypesDb.Get&lt;TruckProto&gt;(Ids.Vehicles.TruckT1.Id).Value;</c>
+        /// <br/><br/>Reference the <b>ProtoRegistrator</b> to access prototypes database:<br/>
+        /// <c>pReg = registrator;</c>
         /// 
-        /// <br/><br/>Define new truck capacity as <b>int</b> variable:<br/>
-        /// <c>int newTruckCapacity = 100;</c>
-        /// 
-        /// <br/><br/>Apply new capacity value to the referenced <b>TruckProto</b>:<br/>
-        /// <c>SetVehicleCapacity(refTruck, newTruckCapacity);</c>
-        /// </remarks>
-        public void SetVehicleCapacity(TruckProto refTruck, int newTruckCap) {
-            if (refTruck == null) { ModLog.Warning($"SetVehicleCapacity: 'refTruck' is undefined!"); return; }
-            ModLog.Info($"{refTruck.Id} Capacity: {refTruck.CapacityBase} -> {newTruckCap}");
-            FieldInfo fieldCapBase = typeof(TruckProto).GetField("CapacityBase", BindingFlags.Instance | BindingFlags.Public);
-            fieldCapBase.SetValue(refTruck, new Quantity(newTruckCap));
-            FFU_IC_IDs.SyncProtoMod(refTruck);
-        }
-        /// <remarks>
-        /// Modifies 'shovel' capacity of a <b>ExcavatorProto</b>. Requires <b>int</b> value.<br/><br/>
-        /// 
-        /// <br/><u>Usage Example (in 'RegisterData' function)</u>
-        /// 
-        /// <br/><br/>Reference <b>ExcavatorProto</b> for modification:<br/>
-        /// <c>ExcavatorProto refExcavator = registrator.PrototypesDb.Get&lt;ExcavatorProto&gt;(Ids.Vehicles.ExcavatorT1).Value;</c>
-        /// 
-        /// <br/><br/>Define new excavator capacity as <b>int</b> variable:<br/>
+        /// <br/><br/>Define new capacity as <b>int</b> variable:<br/>
+        /// <c>int newTruckCapacity = 100;</c><br/>
         /// <c>int newExcavatorCapacity = 25;</c>
         /// 
-        /// <br/><br/>Apply new capacity value to the referenced <b>ExcavatorProto</b>:<br/>
-        /// <c>SetVehicleCapacity(refExcavator, newExcavatorCapacity);</c>
+        /// <br/><br/>Apply new capacity value via <b>TruckProto</b>/<b>ExcavatorProto</b> identifier:<br/>
+        /// <c>SetVehicleCapacity(Ids.Vehicles.TruckT1.Id, newTruckCapacity);</c><br/>
+        /// <c>SetVehicleCapacity(Ids.Vehicles.ExcavatorT1, newExcavatorCapacity);</c>
         /// </remarks>
-        public void SetVehicleCapacity(ExcavatorProto refExcav, int newShovelCap) {
-            if (refExcav == null) { ModLog.Warning($"SetVehicleCapacity: 'refExcav' is undefined!"); return; }
-            ModLog.Info($"{refExcav.Id} Capacity: {refExcav.Capacity} -> {newShovelCap}");
-            FieldInfo fieldCapBase = typeof(ExcavatorProto).GetField("Capacity", BindingFlags.Instance | BindingFlags.Public);
-            fieldCapBase.SetValue(refExcav, new Quantity(newShovelCap));
-            FFU_IC_IDs.SyncProtoMod(refExcav);
+        public void SetVehicleCapacity(DynamicEntityProto.ID refVehicleID, int newVehicleCap) {
+            if (pReg == null) { ModLog.Warning($"SetVehicleCapacity: the ProtoRegistrator is not referenced!"); return; };
+            TruckProto refTruck = FFU_IC_IDs.TruckRef(pReg, refVehicleID);
+            ExcavatorProto refExcav = FFU_IC_IDs.ExcavRef(pReg, refVehicleID);
+            if (refTruck == null && refExcav == null) { ModLog.Warning($"SetVehicleCapacity: can't find TruckProto or ExcavatorProto reference!"); return; }
+            if (refTruck != null) {
+                ModLog.Info($"{refTruck.Id} Capacity: {refTruck.CapacityBase} -> {newVehicleCap}");
+                FieldInfo fieldCapBase = typeof(TruckProto).GetField("CapacityBase", BindingFlags.Instance | BindingFlags.Public);
+                fieldCapBase.SetValue(refTruck, new Quantity(newVehicleCap));
+                FFU_IC_IDs.SyncProtoMod(refTruck);
+            }
+            if (refExcav != null) {
+                ModLog.Info($"{refExcav.Id} Capacity: {refExcav.Capacity} -> {newVehicleCap}");
+                FieldInfo fieldCapBase = typeof(ExcavatorProto).GetField("Capacity", BindingFlags.Instance | BindingFlags.Public);
+                fieldCapBase.SetValue(refExcav, new Quantity(newVehicleCap));
+                FFU_IC_IDs.SyncProtoMod(refExcav);
+            }
         }
         /// <remarks>
         /// Modifies drive parameters of any <b>DrivingEntityProto</b> (i.e. <i>TruckProto</i>, <i>ExcavatorProto</i>, 
@@ -131,24 +124,29 @@ namespace FFU_Industrial_Capacity {
         /// <br/><b>steeringAxleOffset</b> and <b>nonSteeringAxleOffset</b>. 
         /// For reference just use the original values.<br/><br/>
         /// 
-        /// <b>Note:</b> using negative values (e.g. -1) in <c>double</c> array will result in values being taken from original driving data.<br/>
+        /// <b>Note:</b> using negative values (e.g. -1) in <c>double[]</c> array will result in values being taken from original driving data.<br/>
         /// 
         /// <br/><u>Usage Example (in 'RegisterData' function)</u>
         /// 
-        /// <br/><br/>Reference <b>DrivingEntityProto</b> for modification (using relevant prototype):<br/>
-        /// <c>TruckProto refVehicle = registrator.PrototypesDb.Get&lt;TruckProto&gt;(Ids.Vehicles.TruckT1.Id).Value;</c><br/>
-        /// <c>ExcavatorProto refVehicle = registrator.PrototypesDb.Get&lt;ExcavatorProto&gt;(Ids.Vehicles.ExcavatorT1).Value;</c><br/>
-        /// <c>TreeHarvesterProto refVehicle = registrator.PrototypesDb.Get&lt;TreeHarvesterProto&gt;(Ids.Vehicles.TreeHarvesterT1).Value;</c><br/>
-        /// <c>TreePlanterProto refVehicle = registrator.PrototypesDb.Get&lt;TreePlanterProto&gt;(Ids.Vehicles.TreePlanterT1).Value;</c>
+        /// <br/><br/>Reference the <b>ProtoRegistrator</b> to access prototypes database:<br/>
+        /// <c>pReg = registrator;</c>
         /// 
         /// <br/><br/>Define new vehicle driving parameters as <b>double[]</b> array:<br/>
         /// <c>double[] vehicleDriveData = new double[] { 2.0, 1.2, 50, 0.06, 0.09, 60, 20, 2.5, 1.25, 1.25 };</c>
         /// 
-        /// <br/><br/>Apply new vehicle driving parameters to the referenced <b>DrivingEntityProto</b>:<br/>
-        /// <c>SetVehicleDriveData(refVehicle, vehicleDriveData);</c>
+        /// <br/><br/>Apply new vehicle driving parameters via <b>DrivingEntityProto</b> identifier:<br/>
+        /// <c>SetVehicleDriveData(Ids.Vehicles.TruckT1.Id, vehicleDriveData);</c><br/>
+        /// <c>SetVehicleDriveData(Ids.Vehicles.ExcavatorT1, vehicleDriveData);</c><br/>
+        /// <c>SetVehicleDriveData(Ids.Vehicles.TreeHarvesterT1, vehicleDriveData);</c><br/>
+        /// <c>SetVehicleDriveData(Ids.Vehicles.TreePlanterT1, vehicleDriveData);</c>
         /// </remarks>
-        public void SetVehicleDriveData(DrivingEntityProto refVehicle, double[] driveData) {
-            if (refVehicle == null) { ModLog.Warning($"SetVehicleDriveData: 'refVehicle' is undefined!"); return; }
+        public void SetVehicleDriveData(DynamicEntityProto.ID refVehicleID, double[] driveData) {
+            if (pReg == null) { ModLog.Warning($"SetVehicleDriveData: the ProtoRegistrator is not referenced!"); return; };
+            DrivingEntityProto refVehicle = FFU_IC_IDs.TruckRef(pReg, refVehicleID);
+            if (refVehicle == null) refVehicle = FFU_IC_IDs.ExcavRef(pReg, refVehicleID);
+            if (refVehicle == null) refVehicle = FFU_IC_IDs.TrHarvRef(pReg, refVehicleID);
+            if (refVehicle == null) refVehicle = FFU_IC_IDs.TrPlantRef(pReg, refVehicleID);
+            if (refVehicle == null) { ModLog.Warning($"SetVehicleDriveData: can't find DrivingEntityProto reference!"); return; }
             if (driveData == null) { ModLog.Warning($"SetVehicleDriveData: 'driveData' is undefined!"); return; }
             if (driveData.Length != 10) { ModLog.Warning($"SetVehicleDriveData: 'driveData' count is incorrect!"); return; }
             ModLog.Info($"{refVehicle.Id}. " +
@@ -178,23 +176,28 @@ namespace FFU_Industrial_Capacity {
             FFU_IC_IDs.SyncProtoMod(refVehicle);
         }
         /// <remarks>
-        /// Modifies description of a <b>DrivingEntityProto</b> (i.e. <i>TruckProto</i> or <i>ExcavatorProto</i>). For reference just use the original description values.<br/><br/>
+        /// Modifies description of a <b>DrivingEntityProto</b> (<i>TruckProto</i> or <i>ExcavatorProto</i> only). For reference use description values in example below.<br/><br/>
         /// 
         /// <br/><u>Usage Example (in 'RegisterData' function)</u>
         /// 
-        /// <br/><br/>Reference <b>DrivingEntityProto</b> for modification (using relevant prototype):<br/>
-        /// <c>TruckProto refVehicle = registrator.PrototypesDb.Get&lt;TruckProto&gt;(Ids.Vehicles.TruckT1.Id).Value;</c><br/>
-        /// <c>ExcavatorProto refVehicle = registrator.PrototypesDb.Get&lt;ExcavatorProto&gt;(Ids.Vehicles.ExcavatorT1).Value;</c>
+        /// <br/><br/>Reference the <b>ProtoRegistrator</b> to access prototypes database:<br/>
+        /// <c>pReg = registrator;</c>
+        /// 
+        /// <br/><br/>Activate the <b>LocalizationManager</b> override to avoid exceptions:<br/>
+        /// <c>LocalizationManager.IgnoreDuplicates();</c>
         /// 
         /// <br/><br/>Define new vehicle localization as <b>string[]</b> array (using relevant strings):<br/>
-        /// <c>string[] vehicleLocString = new string[] { "Truck with capacity of {0}. Will go under height {1} or higher.", "truck description" };</c><br/>
-        /// <c>string[] vehicleLocString = new string[] { "Excavator with capacity of {0}. Will not go under belts/pipes.", "excavator description" };</c>
+        /// <c>string[] vehicleLocString = new string[] { "Truck with capacity of {0}. Will go under height {1} or higher.", "truck capacity value" };</c><br/>
+        /// <c>string[] vehicleLocString = new string[] { "Excavator with capacity of {0}. Will not go under belts/pipes.", "excavator capacity value" };</c>
         /// 
-        /// <br/><br/>Apply new description strings to the referenced <b>DrivingEntityProto</b>:<br/>
+        /// <br/><br/>Apply new description strings via <b>DrivingEntityProto</b> identifier:<br/>
         /// <c>SetVehicleDescription(refVehicle, vehicleLocString);</c>
         /// </remarks>
-        public void SetVehicleDescription(DrivingEntityProto refVehicle, string[] strSet, bool canGoUnder = false) {
-            if (refVehicle == null) { ModLog.Warning($"SetVehicleDescription: 'refVehicle' is undefined!"); return; }
+        public void SetVehicleDescription(DynamicEntityProto.ID refVehicleID, string[] strSet, bool canGoUnder = false) {
+            if (pReg == null) { ModLog.Warning($"SetVehicleDriveData: the ProtoRegistrator is not referenced!"); return; };
+            DrivingEntityProto refVehicle = FFU_IC_IDs.TruckRef(pReg, refVehicleID);
+            if (refVehicle == null) refVehicle = FFU_IC_IDs.ExcavRef(pReg, refVehicleID);
+            if (refVehicle == null) { ModLog.Warning($"SetVehicleDescription: can't find DrivingEntityProto reference!"); return; }
             if (strSet == null) { ModLog.Warning($"SetVehicleDescription: 'strSet' is undefined!"); return; }
             if (strSet.Length != 3) { ModLog.Warning($"SetVehicleDescription: 'strSet' count is incorrect!"); return; }
             LocStr locDesc;
@@ -221,83 +224,62 @@ namespace FFU_Industrial_Capacity {
             pReg = registrator;
             LocalizationManager.IgnoreDuplicates();
 
-            // Vehicle References - Diesel
-            TruckProto refTruckT1 = TrRef(Ids.Vehicles.TruckT1.Id);
-            TruckProto refTruckT2 = TrRef(Ids.Vehicles.TruckT2.Id);
-            TruckProto refTruckT3F = TrRef(Ids.Vehicles.TruckT3Fluid.Id);
-            TruckProto refTruckT3L = TrRef(Ids.Vehicles.TruckT3Loose.Id);
-            ExcavatorProto refExcavT1 = ExRef(Ids.Vehicles.ExcavatorT1);
-            ExcavatorProto refExcavT2 = ExRef(Ids.Vehicles.ExcavatorT2);
-            ExcavatorProto refExcavT3 = ExRef(Ids.Vehicles.ExcavatorT3);
-            TreeHarvesterProto refTrHarvT1 = THrRef(Ids.Vehicles.TreeHarvesterT1);
-            TreeHarvesterProto refTrHarvT2 = THrRef(Ids.Vehicles.TreeHarvesterT2);
-            TreePlanterProto refTrPlantT1 = TPlRef(Ids.Vehicles.TreePlanterT1);
-
-            // Vehicle References - Hydrogen
-            TruckProto refTruckT2H = TrRef(Ids.Vehicles.TruckT2H.Id);
-            TruckProto refTruckT3FH = TrRef(Ids.Vehicles.TruckT3FluidH.Id);
-            TruckProto refTruckT3LH = TrRef(Ids.Vehicles.TruckT3LooseH.Id);
-            ExcavatorProto refExcavT2H = ExRef(Ids.Vehicles.ExcavatorT2H);
-            ExcavatorProto refExcavT3H = ExRef(Ids.Vehicles.ExcavatorT3H);
-            TreeHarvesterProto refTrHarvT2H = THrRef(Ids.Vehicles.TreeHarvesterT2H);
-            TreePlanterProto refTrPlantT1H = TPlRef(Ids.Vehicles.TreePlanterT1H);
-
             // Truck Modifications - Capacity
-            SetVehicleCapacity(refTruckT1, TruckCapacity["T1"]);
-            SetVehicleCapacity(refTruckT2, TruckCapacity["T2"]);
-            SetVehicleCapacity(refTruckT3F, TruckCapacity["T3"]);
-            SetVehicleCapacity(refTruckT3L, TruckCapacity["T3"]);
-            SetVehicleCapacity(refTruckT2H, TruckCapacity["T2"]);
-            SetVehicleCapacity(refTruckT3FH, TruckCapacity["T3"]);
-            SetVehicleCapacity(refTruckT3LH, TruckCapacity["T3"]);
+            SetVehicleCapacity(Ids.Vehicles.TruckT1.Id, TruckCapacity["T1"]);
+            SetVehicleCapacity(Ids.Vehicles.TruckT2.Id, TruckCapacity["T2"]);
+            SetVehicleCapacity(Ids.Vehicles.TruckT3Fluid.Id, TruckCapacity["T3"]);
+            SetVehicleCapacity(Ids.Vehicles.TruckT3Loose.Id, TruckCapacity["T3"]);
+            SetVehicleCapacity(Ids.Vehicles.TruckT2H.Id, TruckCapacity["T2"]);
+            SetVehicleCapacity(Ids.Vehicles.TruckT3FluidH.Id, TruckCapacity["T3"]);
+            SetVehicleCapacity(Ids.Vehicles.TruckT3LooseH.Id, TruckCapacity["T3"]);
 
             // Truck Modifications - Drive Data
-            SetVehicleDriveData(refTruckT1, TruckDriveData["T1"]);
-            SetVehicleDriveData(refTruckT2, TruckDriveData["T2"]);
-            SetVehicleDriveData(refTruckT3F, TruckDriveData["T3"]);
-            SetVehicleDriveData(refTruckT3L, TruckDriveData["T3"]);
-            SetVehicleDriveData(refTruckT2H, TruckDriveData["T2H"]);
-            SetVehicleDriveData(refTruckT3FH, TruckDriveData["T3H"]);
-            SetVehicleDriveData(refTruckT3LH, TruckDriveData["T3H"]);
+            SetVehicleDriveData(Ids.Vehicles.TruckT1.Id, TruckDriveData["T1"]);
+            SetVehicleDriveData(Ids.Vehicles.TruckT2.Id, TruckDriveData["T2"]);
+            SetVehicleDriveData(Ids.Vehicles.TruckT3Fluid.Id, TruckDriveData["T3"]);
+            SetVehicleDriveData(Ids.Vehicles.TruckT3Loose.Id, TruckDriveData["T3"]);
+            SetVehicleDriveData(Ids.Vehicles.TruckT2H.Id, TruckDriveData["T2H"]);
+            SetVehicleDriveData(Ids.Vehicles.TruckT3FluidH.Id, TruckDriveData["T3H"]);
+            SetVehicleDriveData(Ids.Vehicles.TruckT3LooseH.Id, TruckDriveData["T3H"]);
 
             // Truck Modifications - Localization
-            SetVehicleDescription(refTruckT1, TruckLocStrings["T1"], true);
-            SetVehicleDescription(refTruckT2, TruckLocStrings["T2"], true);
-            SetVehicleDescription(refTruckT3F, TruckLocStrings["T3F"]);
-            SetVehicleDescription(refTruckT3L, TruckLocStrings["T3L"]);
-            SetVehicleDescription(refTruckT2H, TruckLocStrings["T2"], true);
-            SetVehicleDescription(refTruckT3FH, TruckLocStrings["T3F"]);
-            SetVehicleDescription(refTruckT3LH, TruckLocStrings["T3L"]);
+            SetVehicleDescription(Ids.Vehicles.TruckT1.Id, TruckLocStrings["T1"], true);
+            SetVehicleDescription(Ids.Vehicles.TruckT2.Id, TruckLocStrings["T2"], true);
+            SetVehicleDescription(Ids.Vehicles.TruckT3Fluid.Id, TruckLocStrings["T3F"]);
+            SetVehicleDescription(Ids.Vehicles.TruckT3Loose.Id, TruckLocStrings["T3L"]);
+            SetVehicleDescription(Ids.Vehicles.TruckT2H.Id, TruckLocStrings["T2"], true);
+            SetVehicleDescription(Ids.Vehicles.TruckT3FluidH.Id, TruckLocStrings["T3F"]);
+            SetVehicleDescription(Ids.Vehicles.TruckT3LooseH.Id, TruckLocStrings["T3L"]);
 
             // Excavator Modifications - Capacity
-            SetVehicleCapacity(refExcavT1, ExcavCapacity["T1"]);
-            SetVehicleCapacity(refExcavT2, ExcavCapacity["T2"]);
-            SetVehicleCapacity(refExcavT3, ExcavCapacity["T3"]);
-            SetVehicleCapacity(refExcavT2H, ExcavCapacity["T2"]);
-            SetVehicleCapacity(refExcavT3H, ExcavCapacity["T3"]);
+            SetVehicleCapacity(Ids.Vehicles.ExcavatorT1, ExcavCapacity["T1"]);
+            SetVehicleCapacity(Ids.Vehicles.ExcavatorT2, ExcavCapacity["T2"]);
+            SetVehicleCapacity(Ids.Vehicles.ExcavatorT3, ExcavCapacity["T3"]);
+            SetVehicleCapacity(Ids.Vehicles.ExcavatorT2H, ExcavCapacity["T2"]);
+            SetVehicleCapacity(Ids.Vehicles.ExcavatorT3H, ExcavCapacity["T3"]);
 
             // Excavator Modifications - Drive Data
-            SetVehicleDriveData(refExcavT1, ExcavDriveData["T1"]);
-            SetVehicleDriveData(refExcavT2, ExcavDriveData["T2"]);
-            SetVehicleDriveData(refExcavT3, ExcavDriveData["T3"]);
-            SetVehicleDriveData(refExcavT2H, ExcavDriveData["T2H"]);
-            SetVehicleDriveData(refExcavT3H, ExcavDriveData["T3H"]);
+            SetVehicleDriveData(Ids.Vehicles.ExcavatorT1, ExcavDriveData["T1"]);
+            SetVehicleDriveData(Ids.Vehicles.ExcavatorT2, ExcavDriveData["T2"]);
+            SetVehicleDriveData(Ids.Vehicles.ExcavatorT3, ExcavDriveData["T3"]);
+            SetVehicleDriveData(Ids.Vehicles.ExcavatorT2H, ExcavDriveData["T2H"]);
+            SetVehicleDriveData(Ids.Vehicles.ExcavatorT3H, ExcavDriveData["T3H"]);
 
             // Excavator Modifications - Localization
-            SetVehicleDescription(refExcavT1, ExcavLocStrings["T1"]);
-            SetVehicleDescription(refExcavT2, ExcavLocStrings["T2"]);
-            SetVehicleDescription(refExcavT3, ExcavLocStrings["T3"]);
-            SetVehicleDescription(refExcavT2H, ExcavLocStrings["T2"]);
-            SetVehicleDescription(refExcavT3H, ExcavLocStrings["T3"]);
+            SetVehicleDescription(Ids.Vehicles.ExcavatorT1, ExcavLocStrings["T1"]);
+            SetVehicleDescription(Ids.Vehicles.ExcavatorT2, ExcavLocStrings["T2"]);
+            SetVehicleDescription(Ids.Vehicles.ExcavatorT3, ExcavLocStrings["T3"]);
+            SetVehicleDescription(Ids.Vehicles.ExcavatorT2H, ExcavLocStrings["T2"]);
+            SetVehicleDescription(Ids.Vehicles.ExcavatorT3H, ExcavLocStrings["T3"]);
 
             // Tree Harvester Modifications - Drive Data
-            SetVehicleDriveData(refTrHarvT1, TrHarvDriveData["T1"]);
-            SetVehicleDriveData(refTrHarvT2, TrHarvDriveData["T2"]);
-            SetVehicleDriveData(refTrHarvT2H, TrHarvDriveData["T2H"]);
+            SetVehicleDriveData(Ids.Vehicles.TreeHarvesterT1, TrHarvDriveData["T1"]);
+            SetVehicleDriveData(Ids.Vehicles.TreeHarvesterT2, TrHarvDriveData["T2"]);
+            SetVehicleDriveData(Ids.Vehicles.TreeHarvesterT2H, TrHarvDriveData["T2H"]);
 
             // Tree Planter Modifications - Drive Data
-            SetVehicleDriveData(refTrPlantT1, TrPlantDriveData["T1"]);
-            SetVehicleDriveData(refTrPlantT1H, TrPlantDriveData["T1H"]);
+            SetVehicleDriveData(Ids.Vehicles.TreePlanterT1, TrPlantDriveData["T1"]);
+            SetVehicleDriveData(Ids.Vehicles.TreePlanterT1H, TrPlantDriveData["T1H"]);
         }
     }
 }
