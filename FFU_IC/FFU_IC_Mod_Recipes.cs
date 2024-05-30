@@ -70,15 +70,22 @@ namespace FFU_Industrial_Capacity {
             // Variables Initialization
             pReg = registrator;
 
-            // Machinery References
-            MachineProto arcFurnaceT1 = McRef(Ids.Machines.ArcFurnace);
-            MachineProto arcFurnaceT2 = McRef(Ids.Machines.ArcFurnace2);
-            MachineProto exhaustScrubber = McRef(Ids.Machines.ExhaustScrubber);
-            MachineProto itemShredder = McRef(Ids.Machines.Shredder);
+            // Recipe References
+            RecipeProto conHiSteamT1 = RcRef(Ids.Recipes.SteamHpCondensation);
+            RecipeProto conDepSteamT1 = RcRef(Ids.Recipes.SteamDepletedCondensation);
+            RecipeProto conDepSteamT2 = RcRef(Ids.Recipes.SteamDepletedCondensationT2);
+
+            // Product References
+            ProductProto refWater = PdRef(Ids.Products.Water);
+
+            // Rebalanced Steam Cooling Efficiency
+            ModifyRecipeOutput(conHiSteamT1, refWater, 1);
+            ModifyRecipeOutput(conDepSteamT1, refWater, 3);
+            ModifyRecipeOutput(conDepSteamT2, refWater, 14);
 
             // Arc Furnace Half Scrap Recipes
             pReg.RecipeProtoBuilder
-            .Start("Iron scrap smelting (arc half)", FFU_IC_IDs.Recipes.IronSmeltingArcHalfScrap, arcFurnaceT1)
+            .Start("Iron scrap smelting (arc half)", FFU_IC_IDs.Recipes.IronSmeltingArcHalfScrap, Ids.Machines.ArcFurnace)
             .AddInput(8, Ids.Products.IronScrap, "*", false)
             .AddInput(1, Ids.Products.Graphite, "*", false)
             .SetDuration(20.Seconds())
@@ -86,7 +93,7 @@ namespace FFU_Industrial_Capacity {
             .AddOutput(2, Ids.Products.Exhaust, "E", false, false)
             .BuildAndAdd();
             pReg.RecipeProtoBuilder
-            .Start("Copper scrap smelting (arc half)", FFU_IC_IDs.Recipes.CopperSmeltingArcHalfScrap, arcFurnaceT1)
+            .Start("Copper scrap smelting (arc half)", FFU_IC_IDs.Recipes.CopperSmeltingArcHalfScrap, Ids.Machines.ArcFurnace)
             .AddInput(8, Ids.Products.CopperScrap, "*", false)
             .AddInput(1, Ids.Products.Graphite, "*", false)
             .SetDuration(20.Seconds())
@@ -94,7 +101,7 @@ namespace FFU_Industrial_Capacity {
             .AddOutput(2, Ids.Products.Exhaust, "E", false, false)
             .BuildAndAdd();
             pReg.RecipeProtoBuilder
-            .Start("Glass broken smelting (arc half)", FFU_IC_IDs.Recipes.GlassSmeltingArcHalfWithBroken, arcFurnaceT1)
+            .Start("Glass broken smelting (arc half)", FFU_IC_IDs.Recipes.GlassSmeltingArcHalfWithBroken, Ids.Machines.ArcFurnace)
             .AddInput(12, Ids.Products.BrokenGlass, "*", false)
             .AddInput(1, Ids.Products.Graphite, "*", false)
             .SetDuration(20.Seconds())
@@ -104,7 +111,7 @@ namespace FFU_Industrial_Capacity {
 
             // Arc Furnace Cold Scrap Recipes
             pReg.RecipeProtoBuilder
-            .Start("Iron scrap smelting (arc cold)", FFU_IC_IDs.Recipes.IronSmeltingArcColdScrap, arcFurnaceT2)
+            .Start("Iron scrap smelting (arc cold)", FFU_IC_IDs.Recipes.IronSmeltingArcColdScrap, Ids.Machines.ArcFurnace2)
             .AddInput(8, Ids.Products.IronScrap, "*", false)
             .AddInput(1, Ids.Products.Graphite, "*", false)
             .AddInput(8, Ids.Products.ChilledWater, "D", false)
@@ -113,7 +120,7 @@ namespace FFU_Industrial_Capacity {
             .AddOutput(6, Ids.Products.SteamDepleted, "Z", false, false)
             .BuildAndAdd();
             pReg.RecipeProtoBuilder
-            .Start("Copper scrap smelting (arc cold)", FFU_IC_IDs.Recipes.CopperSmeltingArcColdScrap, arcFurnaceT2)
+            .Start("Copper scrap smelting (arc cold)", FFU_IC_IDs.Recipes.CopperSmeltingArcColdScrap, Ids.Machines.ArcFurnace2)
             .AddInput(8, Ids.Products.CopperScrap, "*", false)
             .AddInput(1, Ids.Products.Graphite, "*", false)
             .AddInput(8, Ids.Products.ChilledWater, "D", false)
@@ -122,7 +129,7 @@ namespace FFU_Industrial_Capacity {
             .AddOutput(6, Ids.Products.SteamDepleted, "Z", false, false)
             .BuildAndAdd();
             pReg.RecipeProtoBuilder
-            .Start("Glass broken smelting (arc cold)", FFU_IC_IDs.Recipes.GlassSmeltingArcColdWithBroken, arcFurnaceT2)
+            .Start("Glass broken smelting (arc cold)", FFU_IC_IDs.Recipes.GlassSmeltingArcColdWithBroken, Ids.Machines.ArcFurnace2)
             .AddInput(12, Ids.Products.BrokenGlass, "*", false)
             .AddInput(1, Ids.Products.Graphite, "*", false)
             .AddInput(8, Ids.Products.ChilledWater, "D", false)
@@ -132,7 +139,7 @@ namespace FFU_Industrial_Capacity {
             .BuildAndAdd();
 
             // Cold Exhaust Scrubbing Recipe
-            pReg.RecipeProtoBuilder.Start("Exhaust filtering (cold)", FFU_IC_IDs.Recipes.ExhaustFilteringCold, exhaustScrubber)
+            pReg.RecipeProtoBuilder.Start("Exhaust filtering (cold)", FFU_IC_IDs.Recipes.ExhaustFilteringCold, Ids.Machines.ExhaustScrubber)
             .AddInput(30, Ids.Products.Exhaust, "*", false)
             .AddInput(4, Ids.Products.ChilledWater, "*", false)
             .SetDuration(10.Seconds())
@@ -142,7 +149,7 @@ namespace FFU_Industrial_Capacity {
             .BuildAndAdd();
 
             // Graphite-Coal Shredding Recipe
-            pReg.RecipeProtoBuilder.Start("Shredding graphite", FFU_IC_IDs.Recipes.GraphiteCoalShredding, itemShredder)
+            pReg.RecipeProtoBuilder.Start("Shredding graphite", FFU_IC_IDs.Recipes.GraphiteCoalShredding, Ids.Machines.Shredder)
             .AddInput(10, Ids.Products.Graphite, "*", false)
             .SetDuration(10.Seconds())
             .AddOutput(5, Ids.Products.Coal, "*", false, false)
