@@ -1,5 +1,6 @@
 ﻿using Mafi;
 using Mafi.Base;
+using Mafi.Collections.ImmutableCollections;
 using Mafi.Core.Factory.Machines;
 using Mafi.Core.Factory.Recipes;
 using Mafi.Core.Mods;
@@ -56,6 +57,8 @@ namespace FFU_Industrial_Capacity {
         public void SyncRecipeProcedures(RecipeProto refRecipe) {
             if (refRecipe == null) { ModLog.Warning($"SyncRecipeProcedures: 'refRecipe' is undefined!"); return; }
             TypeInfo typeProto = typeof(RecipeProto).GetTypeInfo();
+
+            // Update All Input/Output Fields
             FieldInfo fieldAllUserVisibleInputs = typeProto.GetDeclaredField("<AllUserVisibleInputs>k__BackingField");
             FieldInfo fieldAllUserVisibleOutputs = typeProto.GetDeclaredField("<AllUserVisibleOutputs>k__BackingField");
             FieldInfo fieldOutputsAtEnd = typeProto.GetField("OutputsAtEnd", BindingFlags.Instance | BindingFlags.Public);
@@ -64,6 +67,13 @@ namespace FFU_Industrial_Capacity {
             fieldAllUserVisibleOutputs.SetValue(refRecipe, refRecipe.AllOutputs.Filter((RecipeOutput x) => !x.HideInUi));
             fieldOutputsAtEnd.SetValue(refRecipe, refRecipe.AllOutputs.Filter((RecipeOutput x) => !x.TriggerAtStart));
             fieldOutputsAtStart.SetValue(refRecipe, refRecipe.AllOutputs.Filter((RecipeOutput x) => x.TriggerAtStart));
+
+            // Update Greatest Common Divisor
+            int commonDivisor = 0;
+            FieldInfo fieldQuantitiesGcd = typeProto.GetField("QuantitiesGcd", BindingFlags.Instance | BindingFlags.Public);
+            ImmutableArray<RecipeProduct> allProducts = refRecipe.AllInputs.As<RecipeProduct>().Concat(refRecipe.AllOutputs.As<RecipeProduct>());
+            if (!allProducts.IsEmpty) commonDivisor = MafiMath.Gcd(allProducts.Select((RecipeProduct x) => x.Quantity.Value));
+            if (commonDivisor > 0) fieldQuantitiesGcd.SetValue(refRecipe, commonDivisor);
         }
 
         public void RegisterData(ProtoRegistrator registrator) {
@@ -72,6 +82,7 @@ namespace FFU_Industrial_Capacity {
 
             // Recipe References
             RecipeProto conHiSteamT1 = RcRef(Ids.Recipes.SteamHpCondensation);
+            RecipeProto conLoSteamT1 = RcRef(Ids.Recipes.SteamLpCondensation);
             RecipeProto conDepSteamT1 = RcRef(Ids.Recipes.SteamDepletedCondensation);
             RecipeProto conDepSteamT2 = RcRef(Ids.Recipes.SteamDepletedCondensationT2);
 
@@ -82,6 +93,12 @@ namespace FFU_Industrial_Capacity {
             ModifyRecipeOutput(conHiSteamT1, refWater, 1);
             ModifyRecipeOutput(conDepSteamT1, refWater, 3);
             ModifyRecipeOutput(conDepSteamT2, refWater, 14);
+
+            // Sync Recipe Inner Variables
+            SyncRecipeProcedures(conHiSteamT1);
+            SyncRecipeProcedures(conLoSteamT1);
+            SyncRecipeProcedures(conDepSteamT1);
+            SyncRecipeProcedures(conDepSteamT2);
 
             // Arc Furnace Half Scrap Recipes
             pReg.RecipeProtoBuilder

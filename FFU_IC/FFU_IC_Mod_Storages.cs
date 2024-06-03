@@ -3,7 +3,7 @@ using Mafi.Base;
 using Mafi.Base.Prototypes.Buildings.ThermalStorages;
 using Mafi.Core.Buildings.Settlements;
 using Mafi.Core.Buildings.Storages;
-using Mafi.Core.Game;
+using Mafi.Core.Entities.Static;
 using Mafi.Core.Mods;
 using Mafi.Localization;
 using System.Collections.Generic;
@@ -35,29 +35,23 @@ namespace FFU_Industrial_Capacity {
             { "Fluid", new string[] { "StorageFluidFormattedBase__desc", "Stores up to {0} units of a liquid or gas product.", "description for storage" }},
         };
 
-        // Reference Helpers
-        private StorageProto StRef(Mafi.Core.Entities.Static.StaticEntityProto.ID refID) => FFU_IC_IDs.StorageRef(pReg, refID);
-        private ThermalStorageProto ThRef(Mafi.Core.Entities.Static.StaticEntityProto.ID refID) => FFU_IC_IDs.ThermalRef(pReg, refID);
-        private NuclearWasteStorageProto NcRef(Mafi.Core.Entities.Static.StaticEntityProto.ID refID) => FFU_IC_IDs.NuclearRef(pReg, refID);
-        private SettlementFoodModuleProto MkRef(Mafi.Core.Entities.Static.StaticEntityProto.ID refID) => FFU_IC_IDs.MarketRef(pReg, refID);
-
         // Reflection Helpers
         /// <remarks>
         /// Modifies storage capacity of a <b>StorageProto</b>. Requires <c>integer</c> value.<br/><br/>
         /// 
-        /// <br/><u>Usage Example (in 'RegisterData' function)</u>
-        /// 
-        /// <br/><br/>Reference the <b>StorageProto</b> for modification:<br/>
-        /// <c>StorageProto refStorage = registrator.PrototypesDb.Get&lt;StorageProto&gt;(Ids.Buildings.StorageUnit).Value</c>
+        /// <br/><u>Usage Example (within 'RegisterData' scope)</u>
         /// 
         /// <br/><br/>Define new storage capacity as <b>int</b> variable:<br/>
         /// <c>int newStorageCapacity = 600;</c>
         /// 
-        /// <br/><br/>Apply new capacity value to the referenced <b>StorageProto</b>:<br/>
-        /// <c>SetStorageCapacity(refStorage, newStorageCapacity);</c>
+        /// <br/><br/>Apply new capacity value via <b>StorageProto</b> identifier:<br/>
+        /// <c>SetStorageCapacity(Ids.Buildings.StorageUnit, newStorageCapacity);</c>
         /// </remarks>
-        public void SetStorageCapacity(StorageProto refStorage, int newMaterialCap) {
-            if (refStorage == null) { ModLog.Warning($"SetStorageCapacity: 'refStorage' is undefined!"); return; }
+        public void SetStorageCapacity(StaticEntityProto.ID refStorageID, int newMaterialCap) {
+            if (pReg == null) { ModLog.Warning($"SetStorageCapacity: the ProtoRegistrator is not referenced!"); return; };
+            StorageProto refStorage = FFU_IC_IDs.StorageRef(pReg, refStorageID);
+            if (refStorage == null) { ModLog.Warning($"SetStorageCapacity: can't find StorageProto reference!"); return; }
+            if (newMaterialCap <= 0) { ModLog.Warning($"SetStorageCapacity: 'newMaterialCap' is invalid!"); return; }
             ModLog.Info($"{refStorage.Id} Capacity: {refStorage.Capacity} -> {newMaterialCap}");
             FieldInfo fieldStorage = typeof(StorageBaseProto).GetField("Capacity", BindingFlags.Instance | BindingFlags.Public);
             fieldStorage.SetValue(refStorage, new Quantity(newMaterialCap));
@@ -66,26 +60,42 @@ namespace FFU_Industrial_Capacity {
         /// <remarks>
         /// Modifies thermal capacity of a <b>ThermalStorageProto</b>. Requires <c>integer</c> value.<br/><br/>
         /// 
-        /// <br/><u>Usage Example (in 'RegisterData' function)</u>
-        /// 
-        /// <br/><br/>Reference the <b>ThermalStorageProto</b> for modification:<br/>
-        /// <c>ThermalStorageProto refThermal = registrator.PrototypesDb.Get&lt;ThermalStorageProto&gt;(Ids.Buildings.ThermalStorage).Value</c>
+        /// <br/><u>Usage Example (within 'RegisterData' scope)</u>
         /// 
         /// <br/><br/>Define new thermal capacity as <b>int</b> variable:<br/>
         /// <c>int newThermalCapacity = 15000;</c>
         /// 
-        /// <br/><br/>Apply new capacity value to the referenced <b>ThermalStorageProto</b>:<br/>
-        /// <c>SetStorageCapacity(refThermal, newThermalCapacity);</c>
+        /// <br/><br/>Apply new capacity value via <b>ThermalStorageProto</b> identifier:<br/>
+        /// <c>SetThermalCapacity(Ids.Buildings.ThermalStorage, newThermalCapacity);</c>
         /// </remarks>
-        public void SetStorageCapacity(ThermalStorageProto refThermal, int newThermalCap) {
-            if (refThermal == null) { ModLog.Warning($"SetStorageCapacity: 'refThermal' is undefined!"); return; }
+        public void SetThermalCapacity(StaticEntityProto.ID refThermalID, int newThermalCap) {
+            if (pReg == null) { ModLog.Warning($"SetThermalCapacity: the ProtoRegistrator is not referenced!"); return; };
+            ThermalStorageProto refThermal = FFU_IC_IDs.ThermalRef(pReg, refThermalID);
+            if (refThermal == null) { ModLog.Warning($"SetThermalCapacity: can't find ThermalStorageProto reference!"); return; }
+            if (newThermalCap <= 0) { ModLog.Warning($"SetThermalCapacity: 'newThermalCap' is invalid!"); return; }
             ModLog.Info($"{refThermal.Id} Capacity: {refThermal.Capacity} -> {newThermalCap}");
             FieldInfo fieldThermal = typeof(ThermalStorageProto).GetField("Capacity", BindingFlags.Instance | BindingFlags.Public);
             fieldThermal.SetValue(refThermal, new Quantity(newThermalCap));
             FFU_IC_IDs.SyncProtoMod(refThermal);
         }
-        public void SetStorageCapacity(NuclearWasteStorageProto refNuclear, int newNuclearCap, int newRetiredCap) {
-            if (refNuclear == null) { ModLog.Warning($"SetStorageCapacity: 'refNuclear' is undefined!"); return; }
+        /// <remarks>
+        /// Modifies nuclear and retired waste capacity of a <b>NuclearWasteStorageProto</b>. Requires two <c>integer</c> values.<br/><br/>
+        /// 
+        /// <br/><u>Usage Example (within 'RegisterData' scope)</u>
+        /// 
+        /// <br/><br/>Define new nuclear and retired waste capacity as <b>int</b> variables:<br/>
+        /// <c>int newNuclearCapacity = 12000;</c><br/>
+        /// <c>int newRetiredCapacity = 3000;</c>
+        /// 
+        /// <br/><br/>Apply new capacity values via <b>NuclearWasteStorageProto</b> identifier:<br/>
+        /// <c>SetNuclearCapacity(Ids.Buildings.NuclearWasteStorage, newNuclearCapacity, newRetiredCapacity);</c>
+        /// </remarks>
+        public void SetNuclearCapacity(StaticEntityProto.ID refNuclearID, int newNuclearCap, int newRetiredCap) {
+            if (pReg == null) { ModLog.Warning($"SetNuclearCapacity: the ProtoRegistrator is not referenced!"); return; };
+            NuclearWasteStorageProto refNuclear = FFU_IC_IDs.NuclearRef(pReg, refNuclearID);
+            if (refNuclear == null) { ModLog.Warning($"SetNuclearCapacity: can't find NuclearWasteStorageProto reference!"); return; }
+            if (newNuclearCap <= 0) { ModLog.Warning($"SetNuclearCapacity: 'newNuclearCap' is invalid!"); return; }
+            if (newRetiredCap <= 0) { ModLog.Warning($"SetNuclearCapacity: 'newRetiredCap' is invalid!"); return; }
             ModLog.Info($"{refNuclear.Id} Capacity: {refNuclear.Capacity}/{refNuclear.RetiredWasteCapacity} -> {newNuclearCap}/{newRetiredCap}");
             FieldInfo fieldNuclear = typeof(StorageBaseProto).GetField("Capacity", BindingFlags.Instance | BindingFlags.Public);
             FieldInfo fieldRetried = typeof(NuclearWasteStorageProto).GetField("RetiredWasteCapacity", BindingFlags.Instance | BindingFlags.Public);
@@ -93,16 +103,47 @@ namespace FFU_Industrial_Capacity {
             fieldRetried.SetValue(refNuclear, new Quantity(newRetiredCap));
             FFU_IC_IDs.SyncProtoMod(refNuclear);
         }
-        public void SetStorageCapacity(SettlementFoodModuleProto refMarket, int newFoodCap) {
-            if (refMarket == null) { ModLog.Warning($"SetStorageCapacity: 'refMarket' is undefined!"); return; }
+        /// <remarks>
+        /// Modifies food module capacity of a <b>SettlementFoodModuleProto</b>. Requires <c>integer</c> value.<br/><br/>
+        /// 
+        /// <br/><u>Usage Example (within 'RegisterData' scope)</u>
+        /// 
+        /// <br/><br/>Define new food module capacity as <b>int</b> variable:<br/>
+        /// <c>int newFoodModuleCapacity = 2500;</c>
+        /// 
+        /// <br/><br/>Apply new capacity value via <b>SettlementFoodModuleProto</b> identifier:<br/>
+        /// <c>SetFoodModuleCapacity(Ids.Buildings.SettlementFoodModule, newFoodModuleCapacity);</c>
+        /// </remarks>
+        public void SetFoodModuleCapacity(StaticEntityProto.ID refMarketID, int newFoodCap) {
+            if (pReg == null) { ModLog.Warning($"SetFoodModuleCapacity: the ProtoRegistrator is not referenced!"); return; };
+            SettlementFoodModuleProto refMarket = FFU_IC_IDs.MarketRef(pReg, refMarketID);
+            if (refMarket == null) { ModLog.Warning($"SetFoodModuleCapacity: can't find SettlementFoodModuleProto reference!"); return; }
+            if (newFoodCap <= 0) { ModLog.Warning($"SetFoodModuleCapacity: 'newFoodCap' is invalid!"); return; }
             ModLog.Info($"{refMarket.Id} Capacity: {refMarket.CapacityPerBuffer} -> {newFoodCap}");
             FieldInfo fieldMarket = typeof(SettlementFoodModuleProto).GetField("CapacityPerBuffer", BindingFlags.Instance | BindingFlags.Public);
             fieldMarket.SetValue(refMarket, new Quantity(newFoodCap));
             FFU_IC_IDs.SyncProtoMod(refMarket);
         }
-        public void SetStorageDescription(StorageProto refStorage, string[] strSet) {
-            if (refStorage == null) { ModLog.Warning($"SetStorageDescription: 'refStorage' is undefined!"); return; }
+        /// <remarks>
+        /// Modifies description of a <b>StorageProto</b>. For reference use description values in example below.<br/><br/>
+        /// 
+        /// <br/><u>Usage Example (within 'RegisterData' scope)</u>
+        /// 
+        /// <br/><br/>Activate the <b>LocalizationManager</b> override to avoid exceptions:<br/>
+        /// <c>LocalizationManager.IgnoreDuplicates();</c>
+        /// 
+        /// <br/><br/>Define new vehicle localization as <b>string[]</b> array (using relevant strings):<br/>
+        /// <c>string[] storageLocString = new string[] { "StorageSolidFormattedBase__desc", "Stores up to {0} units of a solid product.", "description for storage" };</c><br/>
+        /// 
+        /// <br/><br/>Apply new description strings via <b>DrivingEntityProto</b> identifier:<br/>
+        /// <c>SetStorageDescription(refVehicle, storageLocString);</c>
+        /// </remarks>
+        public void SetStorageDescription(StaticEntityProto.ID refStorageID, string[] strSet) {
+            if (pReg == null) { ModLog.Warning($"SetStorageDescription: the ProtoRegistrator is not referenced!"); return; };
+            StorageProto refStorage = FFU_IC_IDs.StorageRef(pReg, refStorageID);
+            if (refStorage == null) { ModLog.Warning($"SetStorageDescription: can't find StorageProto reference!"); return; }
             if (strSet == null) { ModLog.Warning($"SetStorageDescription: 'strSet' is undefined!"); return; }
+            if (strSet.Length != 3) { ModLog.Warning($"SetStorageDescription: 'strSet' count is incorrect!"); return; }
             LocStr1 locStr = Loc.Str1(strSet[0], strSet[1], strSet[2]);
             LocStr locDesc = LocalizationManager.CreateAlreadyLocalizedStr(refStorage.Id.Value + 
                 "__desc", locStr.Format(refStorage.Capacity.ToString()).ToString());
@@ -122,63 +163,45 @@ namespace FFU_Industrial_Capacity {
             pReg = registrator;
             LocalizationManager.IgnoreDuplicates();
 
-            // Storage References
-            StorageProto refSolidT1 = StRef(Ids.Buildings.StorageUnit);
-            StorageProto refSolidT2 = StRef(Ids.Buildings.StorageUnitT2);
-            StorageProto refSolidT3 = StRef(Ids.Buildings.StorageUnitT3);
-            StorageProto refSolidT4 = StRef(Ids.Buildings.StorageUnitT4);
-            StorageProto refLooseT1 = StRef(Ids.Buildings.StorageLoose);
-            StorageProto refLooseT2 = StRef(Ids.Buildings.StorageLooseT2);
-            StorageProto refLooseT3 = StRef(Ids.Buildings.StorageLooseT3);
-            StorageProto refLooseT4 = StRef(Ids.Buildings.StorageLooseT4);
-            StorageProto refFluidT1 = StRef(Ids.Buildings.StorageFluid);
-            StorageProto refFluidT2 = StRef(Ids.Buildings.StorageFluidT2);
-            StorageProto refFluidT3 = StRef(Ids.Buildings.StorageFluidT3);
-            StorageProto refFluidT4 = StRef(Ids.Buildings.StorageFluidT4);
-            ThermalStorageProto refThermal = ThRef(Ids.Buildings.ThermalStorage);
-            NuclearWasteStorageProto refNuclear = NcRef(Ids.Buildings.NuclearWasteStorage);
-            SettlementFoodModuleProto refMarketT1 = MkRef(Ids.Buildings.SettlementFoodModule);
-            SettlementFoodModuleProto refMarketT2 = MkRef(Ids.Buildings.SettlementFoodModuleT2);
-
             // Solid Storage Modifications
-            SetStorageCapacity(refSolidT1, StorageCapacity["DefaultT1"]);
-            SetStorageCapacity(refSolidT2, StorageCapacity["DefaultT2"]);
-            SetStorageCapacity(refSolidT3, StorageCapacity["DefaultT3"]);
-            SetStorageCapacity(refSolidT4, StorageCapacity["DefaultT4"]);
-            SetStorageDescription(refSolidT1, StorageLocStrings["Solid"]);
-            SetStorageDescription(refSolidT2, StorageLocStrings["Solid"]);
-            SetStorageDescription(refSolidT3, StorageLocStrings["Solid"]);
-            SetStorageDescription(refSolidT4, StorageLocStrings["Solid"]);
+            SetStorageCapacity(Ids.Buildings.StorageUnit, StorageCapacity["DefaultT1"]);
+            SetStorageCapacity(Ids.Buildings.StorageUnitT2, StorageCapacity["DefaultT2"]);
+            SetStorageCapacity(Ids.Buildings.StorageUnitT3, StorageCapacity["DefaultT3"]);
+            SetStorageCapacity(Ids.Buildings.StorageUnitT4, StorageCapacity["DefaultT4"]);
+            SetStorageDescription(Ids.Buildings.StorageUnit, StorageLocStrings["Solid"]);
+            SetStorageDescription(Ids.Buildings.StorageUnitT2, StorageLocStrings["Solid"]);
+            SetStorageDescription(Ids.Buildings.StorageUnitT3, StorageLocStrings["Solid"]);
+            SetStorageDescription(Ids.Buildings.StorageUnitT4, StorageLocStrings["Solid"]);
 
             // Loose Storage Modifications
-            SetStorageCapacity(refLooseT1, StorageCapacity["DefaultT1"]);
-            SetStorageCapacity(refLooseT2, StorageCapacity["DefaultT2"]);
-            SetStorageCapacity(refLooseT3, StorageCapacity["DefaultT3"]);
-            SetStorageCapacity(refLooseT4, StorageCapacity["DefaultT4"]);
-            SetStorageDescription(refLooseT1, StorageLocStrings["Loose"]);
-            SetStorageDescription(refLooseT2, StorageLocStrings["Loose"]);
-            SetStorageDescription(refLooseT3, StorageLocStrings["Loose"]);
-            SetStorageDescription(refLooseT4, StorageLocStrings["Loose"]);
+            SetStorageCapacity(Ids.Buildings.StorageLoose, StorageCapacity["DefaultT1"]);
+            SetStorageCapacity(Ids.Buildings.StorageLooseT2, StorageCapacity["DefaultT2"]);
+            SetStorageCapacity(Ids.Buildings.StorageLooseT3, StorageCapacity["DefaultT3"]);
+            SetStorageCapacity(Ids.Buildings.StorageLooseT4, StorageCapacity["DefaultT4"]);
+            SetStorageDescription(Ids.Buildings.StorageLoose, StorageLocStrings["Loose"]);
+            SetStorageDescription(Ids.Buildings.StorageLooseT2, StorageLocStrings["Loose"]);
+            SetStorageDescription(Ids.Buildings.StorageLooseT3, StorageLocStrings["Loose"]);
+            SetStorageDescription(Ids.Buildings.StorageLooseT4, StorageLocStrings["Loose"]);
 
             // Fluid Storage Modifications
-            SetStorageCapacity(refFluidT1, StorageCapacity["DefaultT1"]);
-            SetStorageCapacity(refFluidT2, StorageCapacity["DefaultT2"]);
-            SetStorageCapacity(refFluidT3, StorageCapacity["DefaultT3"]);
-            SetStorageCapacity(refFluidT4, StorageCapacity["DefaultT4"]);
-            SetStorageDescription(refFluidT1, StorageLocStrings["Fluid"]);
-            SetStorageDescription(refFluidT2, StorageLocStrings["Fluid"]);
-            SetStorageDescription(refFluidT3, StorageLocStrings["Fluid"]);
-            SetStorageDescription(refFluidT4, StorageLocStrings["Fluid"]);
+            SetStorageCapacity(Ids.Buildings.StorageFluid, StorageCapacity["DefaultT1"]);
+            SetStorageCapacity(Ids.Buildings.StorageFluidT2, StorageCapacity["DefaultT2"]);
+            SetStorageCapacity(Ids.Buildings.StorageFluidT3, StorageCapacity["DefaultT3"]);
+            SetStorageCapacity(Ids.Buildings.StorageFluidT4, StorageCapacity["DefaultT4"]);
+            SetStorageDescription(Ids.Buildings.StorageFluid, StorageLocStrings["Fluid"]);
+            SetStorageDescription(Ids.Buildings.StorageFluidT2, StorageLocStrings["Fluid"]);
+            SetStorageDescription(Ids.Buildings.StorageFluidT3, StorageLocStrings["Fluid"]);
+            SetStorageDescription(Ids.Buildings.StorageFluidT4, StorageLocStrings["Fluid"]);
 
             // Thermal Storage Modifications
-            SetStorageCapacity(refThermal, StorageCapacity["Thermal"]);
+            SetThermalCapacity(Ids.Buildings.ThermalStorage, StorageCapacity["Thermal"]);
 
             // Nuclear Storage Modifications
-            SetStorageCapacity(refNuclear, StorageCapacity["RadWaste"], StorageCapacity["RetWaste"]);
+            SetNuclearCapacity(Ids.Buildings.NuclearWasteStorage, StorageCapacity["RadWaste"], StorageCapacity["RetWaste"]);
 
             // Settlement Market Modifications
-            SetStorageCapacity(refMarketT1, StorageCapacity["Foodstuff"]);
-            SetStorageCapacity(refMarketT2, StorageCapacity["Foodstuff"]);
+            SetFoodModuleCapacity(Ids.Buildings.SettlementFoodModule, StorageCapacity["Foodstuff"]);
+            SetFoodModuleCapacity(Ids.Buildings.SettlementFoodModuleT2, StorageCapacity["Foodstuff"]);
         }
     }
 }

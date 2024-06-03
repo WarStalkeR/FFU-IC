@@ -41,10 +41,7 @@ namespace FFU_Industrial_Capacity {
         /// 
         /// <br/><b>Note:</b> make sure that <b>MaxLevel</b> modulus of <b>LevelsPerUpgrade</b> is always zero without exception!<br/>
         /// 
-        /// <br/><u>Usage Example (in 'RegisterData' function)</u>
-        /// 
-        /// <br/><br/>Reference the <b>ProtoRegistrator</b> to access prototypes database:<br/>
-        /// <c>pReg = registrator;</c>
+        /// <br/><u>Usage Example (within 'RegisterData' scope)</u>
         /// 
         /// <br/><br/>Define new world map mine parameters as <b>double[]</b> array:<br/>
         /// <c>double[] dataWaterWell = new double[] { 15, 10.0, 0.05, 20, 2 };</c>

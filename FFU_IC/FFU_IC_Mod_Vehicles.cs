@@ -73,20 +73,11 @@ namespace FFU_Industrial_Capacity {
             { "T3", new string[] { "Extremely large excavator that can mine any terrain with ease. It has bucket capacity of {0}. It cannot go under transports due to its size, use ramps to cross them.", "vehicle description, for instance {0}=60", "225" }},
         };
 
-        // Reference Helpers
-        private TruckProto TrRef(DynamicEntityProto.ID refID) => FFU_IC_IDs.TruckRef(pReg, refID);
-        private ExcavatorProto ExRef(DynamicEntityProto.ID refID) => FFU_IC_IDs.ExcavRef(pReg, refID);
-        private TreeHarvesterProto THrRef(DynamicEntityProto.ID refID) => FFU_IC_IDs.TrHarvRef(pReg, refID);
-        private TreePlanterProto TPlRef(DynamicEntityProto.ID refID) => FFU_IC_IDs.TrPlantRef(pReg, refID);
-
         // Reflection Helpers
         /// <remarks>
         /// Modifies transportation/'shovel' capacity of a <b>TruckProto</b>/<b>ExcavatorProto</b>. Requires <b>int</b> value.<br/><br/>
         /// 
-        /// <br/><u>Usage Example (in 'RegisterData' function)</u>
-        /// 
-        /// <br/><br/>Reference the <b>ProtoRegistrator</b> to access prototypes database:<br/>
-        /// <c>pReg = registrator;</c>
+        /// <br/><u>Usage Example (within 'RegisterData' scope)</u>
         /// 
         /// <br/><br/>Define new capacity as <b>int</b> variable:<br/>
         /// <c>int newTruckCapacity = 100;</c><br/>
@@ -101,6 +92,7 @@ namespace FFU_Industrial_Capacity {
             TruckProto refTruck = FFU_IC_IDs.TruckRef(pReg, refVehicleID);
             ExcavatorProto refExcav = FFU_IC_IDs.ExcavRef(pReg, refVehicleID);
             if (refTruck == null && refExcav == null) { ModLog.Warning($"SetVehicleCapacity: can't find TruckProto or ExcavatorProto reference!"); return; }
+            if (newVehicleCap <= 0) { ModLog.Warning($"SetVehicleCapacity: 'newVehicleCap' is invalid!"); return; }
             if (refTruck != null) {
                 ModLog.Info($"{refTruck.Id} Capacity: {refTruck.CapacityBase} -> {newVehicleCap}");
                 FieldInfo fieldCapBase = typeof(TruckProto).GetField("CapacityBase", BindingFlags.Instance | BindingFlags.Public);
@@ -126,10 +118,7 @@ namespace FFU_Industrial_Capacity {
         /// 
         /// <b>Note:</b> using negative values (e.g. -1) in <c>double[]</c> array will result in values being taken from original driving data.<br/>
         /// 
-        /// <br/><u>Usage Example (in 'RegisterData' function)</u>
-        /// 
-        /// <br/><br/>Reference the <b>ProtoRegistrator</b> to access prototypes database:<br/>
-        /// <c>pReg = registrator;</c>
+        /// <br/><u>Usage Example (within 'RegisterData' scope)</u>
         /// 
         /// <br/><br/>Define new vehicle driving parameters as <b>double[]</b> array:<br/>
         /// <c>double[] vehicleDriveData = new double[] { 2.0, 1.2, 50, 0.06, 0.09, 60, 20, 2.5, 1.25, 1.25 };</c>
@@ -178,10 +167,7 @@ namespace FFU_Industrial_Capacity {
         /// <remarks>
         /// Modifies description of a <b>DrivingEntityProto</b> (<i>TruckProto</i> or <i>ExcavatorProto</i> only). For reference use description values in example below.<br/><br/>
         /// 
-        /// <br/><u>Usage Example (in 'RegisterData' function)</u>
-        /// 
-        /// <br/><br/>Reference the <b>ProtoRegistrator</b> to access prototypes database:<br/>
-        /// <c>pReg = registrator;</c>
+        /// <br/><u>Usage Example (within 'RegisterData' scope)</u>
         /// 
         /// <br/><br/>Activate the <b>LocalizationManager</b> override to avoid exceptions:<br/>
         /// <c>LocalizationManager.IgnoreDuplicates();</c>
