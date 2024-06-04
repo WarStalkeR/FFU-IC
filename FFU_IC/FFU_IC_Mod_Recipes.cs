@@ -72,10 +72,10 @@ namespace FFU_Industrial_Capacity {
             fieldOutputsAtStart.SetValue(refRecipe, refRecipe.AllOutputs.Filter((RecipeOutput x) => x.TriggerAtStart));
 
             // Update Greatest Common Divisor
-            int commonDivisor = 0;
+            int commonDivisor = refRecipe.MinUtilization == Percent.Hundred ? 1 : 0;
             FieldInfo fieldQuantitiesGcd = typeProto.GetField("QuantitiesGcd", BindingFlags.Instance | BindingFlags.Public);
             ImmutableArray<RecipeProduct> allProducts = refRecipe.AllInputs.As<RecipeProduct>().Concat(refRecipe.AllOutputs.As<RecipeProduct>());
-            if (!allProducts.IsEmpty) commonDivisor = MafiMath.Gcd(allProducts.Select((RecipeProduct x) => x.Quantity.Value));
+            if (commonDivisor == 0 && !allProducts.IsEmpty) commonDivisor = MafiMath.Gcd(allProducts.Select((RecipeProduct x) => x.Quantity.Value));
             if (commonDivisor > 0) fieldQuantitiesGcd.SetValue(refRecipe, commonDivisor);
         }
 
