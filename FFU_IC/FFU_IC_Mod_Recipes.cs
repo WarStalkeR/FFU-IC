@@ -25,7 +25,6 @@ namespace FFU_Industrial_Capacity {
             FieldInfo fieldDuration = typeProto.GetDeclaredField("<Duration>k__BackingField");
             if (fieldDuration != null) {
                 fieldDuration.SetValue(refRecipe, newTime);
-                SyncRecipeInternalVars(refRecipe);
                 FFU_IC_IDs.SyncProtoMod(refRecipe);
             }
         }
@@ -91,10 +90,26 @@ namespace FFU_Industrial_Capacity {
 
             // Product References
             ProductProto refWater = PdRef(Ids.Products.Water);
+            ProductProto refSteamHi = PdRef(Ids.Products.SteamHi);
+            ProductProto refSteamLo = PdRef(Ids.Products.SteamLo);
+            ProductProto refSteamDep = PdRef(Ids.Products.SteamDepleted);
 
-            // Rebalanced Steam Cooling Efficiency
-            ModifyRecipeOutput(conHiSteamT1, refWater, 1);
-            ModifyRecipeOutput(conDepSteamT1, refWater, 3);
+            // Rebalanced T1 High Steam Cooling
+            ModifyRecipeTime(conHiSteamT1, 20.Seconds());
+            ModifyRecipeInput(conHiSteamT1, refSteamHi, 8);
+            ModifyRecipeOutput(conHiSteamT1, refWater, 4);
+
+            // Rebalanced T1 Low Steam Cooling
+            ModifyRecipeTime(conLoSteamT1, 20.Seconds());
+            ModifyRecipeInput(conLoSteamT1, refSteamLo, 8);
+            ModifyRecipeOutput(conLoSteamT1, refWater, 5);
+
+            // Rebalanced T1 Depleted Steam Cooling
+            ModifyRecipeTime(conDepSteamT1, 20.Seconds());
+            ModifyRecipeInput(conDepSteamT1, refSteamDep, 8);
+            ModifyRecipeOutput(conDepSteamT1, refWater, 6);
+
+            // Rebalanced T2 Depleted Steam Cooling
             ModifyRecipeOutput(conDepSteamT2, refWater, 14);
 
             // Arc Furnace Half Scrap Recipes
