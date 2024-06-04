@@ -25,6 +25,7 @@ namespace FFU_Industrial_Capacity {
             FieldInfo fieldDuration = typeProto.GetDeclaredField("<Duration>k__BackingField");
             if (fieldDuration != null) {
                 fieldDuration.SetValue(refRecipe, newTime);
+                SyncRecipeInternalVars(refRecipe);
                 FFU_IC_IDs.SyncProtoMod(refRecipe);
             }
         }
@@ -36,6 +37,7 @@ namespace FFU_Industrial_Capacity {
                     ModLog.Info($"{refRecipe.Id} Input {refProduct.Id} Quantity: {refInput.Quantity.Value} -> {newAmount}");
                     FieldInfo fieldQuantity = typeof(RecipeProduct).GetField("Quantity", BindingFlags.Instance | BindingFlags.Public);
                     fieldQuantity.SetValue(refInput, new Quantity(newAmount));
+                    SyncRecipeInternalVars(refRecipe);
                     FFU_IC_IDs.SyncProtoMod(refRecipe);
                     break;
                 }
@@ -49,12 +51,13 @@ namespace FFU_Industrial_Capacity {
                     ModLog.Info($"{refRecipe.Id} Output {refProduct.Id} Quantity: {refOutput.Quantity.Value} -> {newAmount}");
                     FieldInfo fieldQuantity = typeof(RecipeProduct).GetField("Quantity", BindingFlags.Instance | BindingFlags.Public);
                     fieldQuantity.SetValue(refOutput, new Quantity(newAmount));
+                    SyncRecipeInternalVars(refRecipe);
                     FFU_IC_IDs.SyncProtoMod(refRecipe);
                     break;
                 }
             }
         }
-        public void SyncRecipeProcedures(RecipeProto refRecipe) {
+        public void SyncRecipeInternalVars(RecipeProto refRecipe) {
             if (refRecipe == null) { ModLog.Warning($"SyncRecipeProcedures: 'refRecipe' is undefined!"); return; }
             TypeInfo typeProto = typeof(RecipeProto).GetTypeInfo();
 
@@ -93,12 +96,6 @@ namespace FFU_Industrial_Capacity {
             ModifyRecipeOutput(conHiSteamT1, refWater, 1);
             ModifyRecipeOutput(conDepSteamT1, refWater, 3);
             ModifyRecipeOutput(conDepSteamT2, refWater, 14);
-
-            // Sync Recipe Inner Variables
-            SyncRecipeProcedures(conHiSteamT1);
-            SyncRecipeProcedures(conLoSteamT1);
-            SyncRecipeProcedures(conDepSteamT1);
-            SyncRecipeProcedures(conDepSteamT2);
 
             // Arc Furnace Half Scrap Recipes
             pReg.RecipeProtoBuilder
