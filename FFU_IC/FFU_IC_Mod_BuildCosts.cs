@@ -61,11 +61,7 @@ namespace FFU_Industrial_Capacity {
             };
             EntityCosts newCosts = new EntityCosts(newBuildCosts, refEntity.Costs.DefaultPriority, 
                 refEntity.Costs.Workers, refEntity.Costs.Maintenance, refEntity.Costs.IsQuickBuildDisabled);
-            TypeInfo typeCosts = typeof(EntityProto).GetTypeInfo();
-            FieldInfo fieldCosts = typeCosts.GetDeclaredField("<Costs>k__BackingField");
-            if (fieldCosts != null) {
-                fieldCosts.SetValue(refEntity, newCosts);
-            }
+            refEntity.Costs = newCosts;
         }
 
         public void RegisterData(ProtoRegistrator registrator) {

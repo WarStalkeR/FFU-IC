@@ -54,9 +54,7 @@ namespace FFU_Industrial_Capacity {
         public static void SyncProtoMod(Mafi.Core.Prototypes.Proto refEntity) {
             if (FFU_IC_Base.RefMod == null) { ModLog.Warning($"SyncProtoInfo: 'RefMod' is undefined!"); return; }
             if (FFU_IC_Base.RefMod.Name == refEntity.Mod.Name && FFU_IC_Base.RefMod.Version == refEntity.Mod.Version) return;
-            TypeInfo typeProto = typeof(Mafi.Core.Prototypes.Proto).GetTypeInfo();
-            FieldInfo fieldMod = typeProto.GetDeclaredField("<Mod>k__BackingField");
-            if (fieldMod != null) fieldMod.SetValue(refEntity, FFU_IC_Base.RefMod);
+            refEntity.Mod = FFU_IC_Base.RefMod;
         }
         public static class Buildings {
             public static readonly StaticEntityProto.ID None = new StaticEntityProto.ID("None");
