@@ -2,8 +2,6 @@
 using Mafi.Base;
 using Mafi.Core;
 using Mafi.Core.Mods;
-using Mafi.Core.Products;
-using Mafi.Core.Terrain.Trees;
 using Mafi.Core.World.Entities;
 using System.Collections.Generic;
 using System.Reflection;

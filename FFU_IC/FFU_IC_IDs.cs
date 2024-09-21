@@ -16,7 +16,6 @@ using Mafi.Core.Vehicles.TreeHarvesters;
 using Mafi.Core.Vehicles.TreePlanters;
 using Mafi.Core.Vehicles.Trucks;
 using Mafi.Core.World.Entities;
-using System.Reflection;
 
 namespace FFU_Industrial_Capacity {
     public static class FFU_IC_IDs {
@@ -78,6 +77,13 @@ namespace FFU_Industrial_Capacity {
             public static readonly RecipeProto.ID GlassSmeltingArcColdWithBroken = new RecipeProto.ID("GlassSmeltingArcColdWithBroken");
             public static readonly RecipeProto.ID ExhaustFilteringCold = new RecipeProto.ID("ExhaustFilteringCold");
             public static readonly RecipeProto.ID GraphiteCoalShredding = new RecipeProto.ID("GraphiteCoalShredding");
+            public static readonly RecipeProto.ID OceanVacuumPumping = new RecipeProto.ID("OceanVacuumPumping");
+            public static readonly RecipeProto.ID OceanVacuumPumpingT2 = new RecipeProto.ID("OceanVacuumPumpingT2");
+            public static readonly RecipeProto.ID DesalinationVacuumLP = new RecipeProto.ID("DesalinationVacuumLP");
+            public static readonly RecipeProto.ID DesalinationVacuumHP = new RecipeProto.ID("DesalinationVacuumHP");
+            public static readonly RecipeProto.ID DesalinationVacuumSP = new RecipeProto.ID("DesalinationVacuumSP");
+            public static readonly RecipeProto.ID SuperGenerationFuelGas = new RecipeProto.ID("SuperGenerationFuelGas");
+            public static readonly RecipeProto.ID SuperGenerationHydrogen = new RecipeProto.ID("SuperGenerationHydrogen");
         }
         public static class Research {
             public static readonly ResearchNodeProto.ID None = new ResearchNodeProto.ID("None");
