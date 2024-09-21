@@ -60,7 +60,7 @@ namespace FFU_Industrial_Capacity {
                 }
             }
         }
-        public void SyncRecipeInternalVars(RecipeProto refRecipe) {
+        private void SyncRecipeInternalVars(RecipeProto refRecipe) {
             if (refRecipe == null) { ModLog.Warning($"SyncRecipeProcedures: 'refRecipe' is undefined!"); return; }
             TypeInfo typeProto = typeof(RecipeProto).GetTypeInfo();
 
