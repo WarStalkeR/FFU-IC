@@ -85,7 +85,7 @@ namespace FFU_Industrial_Capacity {
         /// <br/><c>string[] researchString = new string[] { "Unlocks something and increases by {0}.", "{0}=25" };</c>
         /// <br/><c>int researchValue = 42;</c>
         /// 
-        /// <br/><br/>Apply new description strings via <b>DrivingEntityProto</b> identifier:<br/>
+        /// <br/><br/>Apply new description strings via <b>ResearchNodeProto</b> identifier:<br/>
         /// <c>SetTechDescription(Ids.Research.VehicleCapIncrease5, researchString, researchValue);</c>
         /// </remarks>
         public static void SetTechDescription(ResearchNodeProto.ID refResearchID, string[] strSet, int refVal) {
@@ -108,6 +108,14 @@ namespace FFU_Industrial_Capacity {
             }
         }
 
+        /// <remarks>
+        /// Adds recipe as unlockable to the <b>ResearchNodeProto</b>. Optionally allows to define new index of added recipe.<br/><br/>
+        /// 
+        /// <br/><u>Usage Example (within 'RegisterData' scope)</u>
+        /// 
+        /// <br/><br/>Add existing recipe via <b>ResearchNodeProto</b>, <b>MachineProto</b> and <b>RecipeProto</b> identifiers:<br/>
+        /// <c>AddTechRecipe(Ids.Research.ArcFurnace2, Ids.Machines.ArcFurnace2, NewRecipeIdentifier);</c>
+        /// </remarks>
         public static void AddTechRecipe(ResearchNodeProto.ID refResearchID, MachineProto.ID refMachineID, RecipeProto.ID refNewUnitID, bool hideInUI = false, int index = -1) {
             if (pReg == null) { ModLog.Warning($"AddTechRecipe: the ProtoRegistrator is not referenced!"); return; };
             ResearchNodeProto refResearch = ResearchRef(refResearchID);
@@ -131,6 +139,14 @@ namespace FFU_Industrial_Capacity {
             SyncProtoMod(refResearch);
         }
 
+        /// <remarks>
+        /// Removes recipe as unlockable from the <b>ResearchNodeProto</b>. Has no additional specific parameters.<br/><br/>
+        /// 
+        /// <br/><u>Usage Example (within 'RegisterData' scope)</u>
+        /// 
+        /// <br/><br/>Remove existing recipe via <b>ResearchNodeProto</b> and <b>RecipeProto</b> identifiers:<br/>
+        /// <c>RemoveTechRecipe(Ids.Research.ArcFurnace2, RecipeIdentifierToRemove);</c>
+        /// </remarks>
         public static void RemoveTechRecipe(ResearchNodeProto.ID refResearchID, RecipeProto.ID refOldUnitID, bool hideInUI = false) {
             if (pReg == null) { ModLog.Warning($"RemoveTechRecipe: the ProtoRegistrator is not referenced!"); return; };
             ResearchNodeProto refResearch = ResearchRef(refResearchID);
@@ -150,25 +166,41 @@ namespace FFU_Industrial_Capacity {
             SyncProtoMod(refResearch);
         }
 
+        /// <remarks>
+        /// Modifies 2D position of the <b>ResearchNodeProto</b> in the UI. Requires use of the <c>Vector2i</c> parameter.<br/><br/>
+        /// 
+        /// <br/><u>Usage Example (within 'RegisterData' scope)</u>
+        /// 
+        /// <br/><br/>Modify the position in the UI via <b>ResearchNodeProto</b> identifier:<br/>
+        /// <c>SetTechPosition(Ids.Research.ArcFurnace2, new Vector2i(115,25));</c>
+        /// </remarks>
         public static void SetTechPosition(ResearchNodeProto.ID refResearchID, Vector2i nodePos) {
             if (pReg == null) { ModLog.Warning($"SetTechPosition: the ProtoRegistrator is not referenced!"); return; };
             Option<ResearchNodeProto> optResearch = ResearchRef(refResearchID);
             if (optResearch.IsNone) {
-                Log.Warning(string.Format("Failed to set position of research node: {0}", refResearchID));
+                ModLog.Warning($"Failed to set position of research node: {refResearchID}");
                 return;
             }
             optResearch.Value.GridPosition = nodePos;
         }
 
-        public static void SetTechParent(ResearchNodeProto.ID refParentID, ResearchNodeProto.ID refTargetID) {
+        /// <remarks>
+        /// Makes the <b>ResearchNodeProto</b> dependent on the other <b>ResearchNodeProto</b>. Everything else is automatic.<br/><br/>
+        /// 
+        /// <br/><u>Usage Example (within 'RegisterData' scope)</u>
+        /// 
+        /// <br/><br/>Modify the unlock dependency via <b>ResearchNodeProto</b> identifier:<br/>
+        /// <c>SetTechParent(Ids.Research.AdvancedSmelting, Ids.Research.ArcFurnace2);</c>
+        /// </remarks>
+        public static void SetTechParent(ResearchNodeProto.ID refParentID, ResearchNodeProto.ID refChildID) {
             if (pReg == null) { ModLog.Warning($"SetTechParent: the ProtoRegistrator is not referenced!"); return; };
             Option<ResearchNodeProto> optParent = ResearchRef(refParentID);
-            Option<ResearchNodeProto> optTarget = ResearchRef(refTargetID);
-            if (optParent.IsNone || optTarget.IsNone) {
-                Log.Warning(string.Format("Failed to set research relationship: {0} => {1}", refTargetID, refParentID));
+            Option<ResearchNodeProto> optChild = ResearchRef(refChildID);
+            if (optParent.IsNone || optChild.IsNone) {
+                ModLog.Warning($"Failed to set research relationship: {refChildID} => {refParentID}");
                 return;
             }
-            optTarget.Value.AddParent(optParent.Value);
+            optChild.Value.AddParent(optParent.Value);
         }
     }
 }
