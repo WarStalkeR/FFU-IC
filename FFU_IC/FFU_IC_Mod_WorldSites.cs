@@ -1,6 +1,7 @@
 ﻿using Mafi.Base;
 using Mafi.Core.Mods;
 using System.Collections.Generic;
+using FFU_Industrial_Lib;
 
 namespace FFU_Industrial_Capacity {
 	internal partial class FFU_IC_Mod_WorldSites : IModData {
@@ -21,20 +22,17 @@ namespace FFU_Industrial_Capacity {
         };
 
         public void RegisterData(ProtoRegistrator registrator) {
-            // Variables Initialization
-            FFU_IC_Lib.ProtoReg = registrator;
-
             // World Mine Modifications
-            FFU_IC_Lib.SetMineProduction(Ids.World.OilRigCost1, MineProdData["Oil"]);
-            FFU_IC_Lib.SetMineProduction(Ids.World.OilRigCost2, MineProdData["Oil"]);
-            FFU_IC_Lib.SetMineProduction(Ids.World.OilRigCost3, MineProdData["Oil"]);
-            FFU_IC_Lib.SetMineProduction(Ids.World.WaterWell, MineProdData["Water"]);
-            FFU_IC_Lib.SetMineProduction(Ids.World.RockMine, MineProdData["Rock"]);
-            FFU_IC_Lib.SetMineProduction(Ids.World.CoalMine, MineProdData["Coal"]);
-            FFU_IC_Lib.SetMineProduction(Ids.World.SulfurMine, MineProdData["Sulfur"]);
-            FFU_IC_Lib.SetMineProduction(Ids.World.LimestoneMine, MineProdData["Limestone"]);
-            FFU_IC_Lib.SetMineProduction(Ids.World.QuartzMine, MineProdData["Quartz"]);
-            FFU_IC_Lib.SetMineProduction(Ids.World.UraniumMine, MineProdData["Uranium"]);
+            FFU_ILib.SetMineProduction(Ids.World.OilRigCost1, MineProdData["Oil"]);
+            FFU_ILib.SetMineProduction(Ids.World.OilRigCost2, MineProdData["Oil"]);
+            FFU_ILib.SetMineProduction(Ids.World.OilRigCost3, MineProdData["Oil"]);
+            FFU_ILib.SetMineProduction(Ids.World.WaterWell, MineProdData["Water"]);
+            FFU_ILib.SetMineProduction(Ids.World.RockMine, MineProdData["Rock"]);
+            FFU_ILib.SetMineProduction(Ids.World.CoalMine, MineProdData["Coal"]);
+            FFU_ILib.SetMineProduction(Ids.World.SulfurMine, MineProdData["Sulfur"]);
+            FFU_ILib.SetMineProduction(Ids.World.LimestoneMine, MineProdData["Limestone"]);
+            FFU_ILib.SetMineProduction(Ids.World.QuartzMine, MineProdData["Quartz"]);
+            FFU_ILib.SetMineProduction(Ids.World.UraniumMine, MineProdData["Uranium"]);
         }
     }
 }

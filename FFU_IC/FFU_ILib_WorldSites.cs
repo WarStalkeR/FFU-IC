@@ -3,8 +3,8 @@ using Mafi;
 using Mafi.Core.World.Entities;
 using System.Reflection;
 
-namespace FFU_Industrial_Capacity {
-    public static partial class FFU_IC_Lib {
+namespace FFU_Industrial_Lib {
+    public static partial class FFU_ILib {
         /// <remarks>
         /// Modifies various parameters of a <b>WorldMapMineProto</b>, except the resource that mine produces. 
         /// 
@@ -26,7 +26,7 @@ namespace FFU_Industrial_Capacity {
         /// <c>SetMineProduction(Ids.World.WaterWell, dataWaterWell);</c>
         /// </remarks>
         public static void SetMineProduction(Mafi.Core.Entities.EntityProto.ID refMineID, double[] mineData) {
-            if (pReg == null) { ModLog.Warning($"SetMineProduction: the ProtoRegistrator is not referenced!"); return; };
+            if (_pReg == null) { ModLog.Warning($"SetMineProduction: the ProtoRegistrator is not referenced!"); return; };
             WorldMapMineProto refMine = WorldMineRef(refMineID);
             if (refMine == null) { ModLog.Warning($"SetMineProduction: can't find WorldMapMineProto reference!"); return; }
             if (mineData == null) { ModLog.Warning($"SetMineProduction: 'mineData' is undefined!"); return; }

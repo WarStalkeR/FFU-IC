@@ -5,8 +5,8 @@ using Mafi.Core.Vehicles.Excavators;
 using Mafi.Core.Vehicles.Trucks;
 using Mafi.Localization;
 
-namespace FFU_Industrial_Capacity {
-    public static partial class FFU_IC_Lib {
+namespace FFU_Industrial_Lib {
+    public static partial class FFU_ILib {
         /// <remarks>
         /// Modifies transportation/'shovel' capacity of a <b>TruckProto</b>/<b>ExcavatorProto</b>. Requires <b>int</b> value.<br/><br/>
         /// 
@@ -21,7 +21,7 @@ namespace FFU_Industrial_Capacity {
         /// <c>SetVehicleCapacity(Ids.Vehicles.ExcavatorT1, newExcavatorCapacity);</c>
         /// </remarks>
         public static void SetVehicleCapacity(DynamicEntityProto.ID refVehicleID, int newVehicleCap) {
-            if (pReg == null) { ModLog.Warning($"SetVehicleCapacity: the ProtoRegistrator is not referenced!"); return; };
+            if (_pReg == null) { ModLog.Warning($"SetVehicleCapacity: the ProtoRegistrator is not referenced!"); return; };
             TruckProto refTruck = TruckRef(refVehicleID);
             ExcavatorProto refExcav = ExcavRef(refVehicleID);
             if (refTruck == null && refExcav == null) { ModLog.Warning($"SetVehicleCapacity: can't find TruckProto or ExcavatorProto reference!"); return; }
@@ -64,7 +64,7 @@ namespace FFU_Industrial_Capacity {
         /// <c>SetVehicleDriveData(Ids.Vehicles.TreePlanterT1, vehicleDriveData);</c>
         /// </remarks>
         public static void SetVehicleDriveData(DynamicEntityProto.ID refVehicleID, double[] driveData) {
-            if (pReg == null) { ModLog.Warning($"SetVehicleDriveData: the ProtoRegistrator is not referenced!"); return; };
+            if (_pReg == null) { ModLog.Warning($"SetVehicleDriveData: the ProtoRegistrator is not referenced!"); return; };
             DrivingEntityProto refVehicle = TruckRef(refVehicleID);
             if (refVehicle == null) refVehicle = ExcavRef(refVehicleID);
             if (refVehicle == null) refVehicle = TrHarvRef(refVehicleID);
@@ -115,7 +115,7 @@ namespace FFU_Industrial_Capacity {
         /// <c>SetVehicleDescription(Ids.Vehicles.TruckT1.Id, vehicleLocString);</c>
         /// </remarks>
         public static void SetVehicleDescription(DynamicEntityProto.ID refVehicleID, string[] strSet, bool canGoUnder = false, int ceilMin = 2) {
-            if (pReg == null) { ModLog.Warning($"SetVehicleDriveData: the ProtoRegistrator is not referenced!"); return; };
+            if (_pReg == null) { ModLog.Warning($"SetVehicleDriveData: the ProtoRegistrator is not referenced!"); return; };
             DrivingEntityProto refVehicle = TruckRef(refVehicleID);
             if (refVehicle == null) refVehicle = ExcavRef(refVehicleID);
             if (refVehicle == null) { ModLog.Warning($"SetVehicleDescription: can't find DrivingEntityProto reference!"); return; }

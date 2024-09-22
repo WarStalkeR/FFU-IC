@@ -3,11 +3,11 @@ using Mafi.Collections;
 using Mafi.Core.Mods;
 using Mafi.Core.Game;
 using Mafi.Core.Prototypes;
-using Mafi.Localization;
+using FFU_Industrial_Lib;
 
 namespace FFU_Industrial_Capacity {
     public static class FFU_IC_Base {
-        public static string FullVersion = "0.1.3.0";
+        public static string FullVersion = "0.1.4.0";
         public static IMod RefMod;
     }
     public sealed class FFU_IC_Mod : IMod {
@@ -25,6 +25,10 @@ namespace FFU_Industrial_Capacity {
         }
         public void RegisterPrototypes(ProtoRegistrator registrator) {
             ModLog.Info($"Registering Prototypes...");
+            // Industrial Lib Initialization
+            FFU_ILib.ProtoReg = registrator;
+            FFU_ILib.ModReference = FFU_IC_Base.RefMod;
+            FFU_ILib.ModLoggerPrefix = Name;
             // 1st Stage Prototypes: Products
             registrator.RegisterData<FFU_IC_Mod_ProdSolid>();
             registrator.RegisterData<FFU_IC_Mod_ProdLoose>();

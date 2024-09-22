@@ -8,8 +8,8 @@ using Mafi.Core.UnlockingTree;
 using Mafi.Localization;
 using System.Reflection;
 
-namespace FFU_Industrial_Capacity {
-    public static partial class FFU_IC_Lib {
+namespace FFU_Industrial_Lib {
+    public static partial class FFU_ILib {
         /// <remarks>
         /// Modifies vehicle limit bonus of a <b>ResearchNodeProto</b>. Requires <c>integer</c> value.<br/><br/>
         /// 
@@ -22,7 +22,7 @@ namespace FFU_Industrial_Capacity {
         /// <c>SetTechVehicleCapacity(Ids.Research.VehicleCapIncrease5, newStorageCapacity);</c>
         /// </remarks>
         public static void SetTechVehicleCapacity(ResearchNodeProto.ID refResearchID, int newVehCap) {
-            if (pReg == null) { ModLog.Warning($"SetTechVehicleCapacity: the ProtoRegistrator is not referenced!"); return; };
+            if (_pReg == null) { ModLog.Warning($"SetTechVehicleCapacity: the ProtoRegistrator is not referenced!"); return; };
             ResearchNodeProto refResearch = ResearchRef(refResearchID);
             if (refResearch == null) { ModLog.Warning($"SetTechVehicleCapacity: 'refReserach' is undefined!"); return; }
             refResearch.Units.ForEach(refUnit => {
@@ -54,7 +54,7 @@ namespace FFU_Industrial_Capacity {
         /// <br/>Ensure that unlock item <b>type</b> (or class) is chosen correctly!
         /// </remarks>
         public static void SetTechUnitTitle<T>(ResearchNodeProto.ID refResearchID, string[] strSet, int refVal) {
-            if (pReg == null) { ModLog.Warning($"SetTechUnitTitle: the ProtoRegistrator is not referenced!"); return; };
+            if (_pReg == null) { ModLog.Warning($"SetTechUnitTitle: the ProtoRegistrator is not referenced!"); return; };
             ResearchNodeProto refResearch = ResearchRef(refResearchID);
             if (refResearch == null) { ModLog.Warning($"SetTechUnitTitle: 'refReserach' is undefined!"); return; }
             if (strSet == null) { ModLog.Warning($"SetTechUnitTitle: 'strSet' is undefined!"); return; }
@@ -89,7 +89,7 @@ namespace FFU_Industrial_Capacity {
         /// <c>SetTechDescription(Ids.Research.VehicleCapIncrease5, researchString, researchValue);</c>
         /// </remarks>
         public static void SetTechDescription(ResearchNodeProto.ID refResearchID, string[] strSet, int refVal) {
-            if (pReg == null) { ModLog.Warning($"SetTechDescription: the ProtoRegistrator is not referenced!"); return; };
+            if (_pReg == null) { ModLog.Warning($"SetTechDescription: the ProtoRegistrator is not referenced!"); return; };
             ResearchNodeProto refResearch = ResearchRef(refResearchID);
             if (refResearch == null) { ModLog.Warning($"SetTechDescription: 'refReserach' is undefined!"); return; }
             if (strSet == null) { ModLog.Warning($"SetTechDescription: 'strSet' is undefined!"); return; }
@@ -117,7 +117,7 @@ namespace FFU_Industrial_Capacity {
         /// <c>AddTechRecipe(Ids.Research.ArcFurnace2, Ids.Machines.ArcFurnace2, NewRecipeIdentifier);</c>
         /// </remarks>
         public static void AddTechRecipe(ResearchNodeProto.ID refResearchID, MachineProto.ID refMachineID, RecipeProto.ID refNewUnitID, bool hideInUI = false, int index = -1) {
-            if (pReg == null) { ModLog.Warning($"AddTechRecipe: the ProtoRegistrator is not referenced!"); return; };
+            if (_pReg == null) { ModLog.Warning($"AddTechRecipe: the ProtoRegistrator is not referenced!"); return; };
             ResearchNodeProto refResearch = ResearchRef(refResearchID);
             MachineProto refMachine = MachineRef(refMachineID);
             RecipeProto refNewUnit = RecipeRef(refNewUnitID);
@@ -148,7 +148,7 @@ namespace FFU_Industrial_Capacity {
         /// <c>RemoveTechRecipe(Ids.Research.ArcFurnace2, RecipeIdentifierToRemove);</c>
         /// </remarks>
         public static void RemoveTechRecipe(ResearchNodeProto.ID refResearchID, RecipeProto.ID refOldUnitID, bool hideInUI = false) {
-            if (pReg == null) { ModLog.Warning($"RemoveTechRecipe: the ProtoRegistrator is not referenced!"); return; };
+            if (_pReg == null) { ModLog.Warning($"RemoveTechRecipe: the ProtoRegistrator is not referenced!"); return; };
             ResearchNodeProto refResearch = ResearchRef(refResearchID);
             RecipeProto refOldUnit = RecipeRef(refOldUnitID);
             if (refResearch == null) { ModLog.Warning($"RemoveTechRecipe: 'refReserach' is undefined!"); return; }
@@ -175,7 +175,7 @@ namespace FFU_Industrial_Capacity {
         /// <c>SetTechPosition(Ids.Research.ArcFurnace2, new Vector2i(115,25));</c>
         /// </remarks>
         public static void SetTechPosition(ResearchNodeProto.ID refResearchID, Vector2i nodePos) {
-            if (pReg == null) { ModLog.Warning($"SetTechPosition: the ProtoRegistrator is not referenced!"); return; };
+            if (_pReg == null) { ModLog.Warning($"SetTechPosition: the ProtoRegistrator is not referenced!"); return; };
             Option<ResearchNodeProto> optResearch = ResearchRef(refResearchID);
             if (optResearch.IsNone) {
                 ModLog.Warning($"Failed to set position of research node: {refResearchID}");
@@ -193,7 +193,7 @@ namespace FFU_Industrial_Capacity {
         /// <c>SetTechParent(Ids.Research.AdvancedSmelting, Ids.Research.ArcFurnace2);</c>
         /// </remarks>
         public static void SetTechParent(ResearchNodeProto.ID refParentID, ResearchNodeProto.ID refChildID) {
-            if (pReg == null) { ModLog.Warning($"SetTechParent: the ProtoRegistrator is not referenced!"); return; };
+            if (_pReg == null) { ModLog.Warning($"SetTechParent: the ProtoRegistrator is not referenced!"); return; };
             Option<ResearchNodeProto> optParent = ResearchRef(refParentID);
             Option<ResearchNodeProto> optChild = ResearchRef(refChildID);
             if (optParent.IsNone || optChild.IsNone) {

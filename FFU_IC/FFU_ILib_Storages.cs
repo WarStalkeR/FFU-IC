@@ -6,8 +6,8 @@ using Mafi.Core.Buildings.Settlements;
 using Mafi.Core.Buildings.Storages;
 using Mafi.Core.Entities.Static;
 
-namespace FFU_Industrial_Capacity {
-    public static partial class FFU_IC_Lib {
+namespace FFU_Industrial_Lib {
+    public static partial class FFU_ILib {
         /// <remarks>
         /// Modifies storage capacity of a <b>StorageProto</b>. Requires <c>integer</c> value.<br/><br/>
         /// 
@@ -20,7 +20,7 @@ namespace FFU_Industrial_Capacity {
         /// <c>SetStorageCapacity(Ids.Buildings.StorageUnit, newStorageCapacity);</c>
         /// </remarks>
         public static void SetStorageCapacity(StaticEntityProto.ID refStorageID, int newMaterialCap) {
-            if (pReg == null) { ModLog.Warning($"SetStorageCapacity: the ProtoRegistrator is not referenced!"); return; };
+            if (_pReg == null) { ModLog.Warning($"SetStorageCapacity: the ProtoRegistrator is not referenced!"); return; };
             StorageProto refStorage = StorageRef(refStorageID);
             if (refStorage == null) { ModLog.Warning($"SetStorageCapacity: can't find StorageProto reference!"); return; }
             if (newMaterialCap <= 0) { ModLog.Warning($"SetStorageCapacity: 'newMaterialCap' is invalid!"); return; }
@@ -42,7 +42,7 @@ namespace FFU_Industrial_Capacity {
         /// <c>SetThermalCapacity(Ids.Buildings.ThermalStorage, newThermalCapacity);</c>
         /// </remarks>
         public static void SetThermalCapacity(StaticEntityProto.ID refThermalID, int newThermalCap) {
-            if (pReg == null) { ModLog.Warning($"SetThermalCapacity: the ProtoRegistrator is not referenced!"); return; };
+            if (_pReg == null) { ModLog.Warning($"SetThermalCapacity: the ProtoRegistrator is not referenced!"); return; };
             ThermalStorageProto refThermal = ThermalRef(refThermalID);
             if (refThermal == null) { ModLog.Warning($"SetThermalCapacity: can't find ThermalStorageProto reference!"); return; }
             if (newThermalCap <= 0) { ModLog.Warning($"SetThermalCapacity: 'newThermalCap' is invalid!"); return; }
@@ -65,7 +65,7 @@ namespace FFU_Industrial_Capacity {
         /// <c>SetNuclearCapacity(Ids.Buildings.NuclearWasteStorage, newNuclearCapacity, newRetiredCapacity);</c>
         /// </remarks>
         public static void SetNuclearCapacity(StaticEntityProto.ID refNuclearID, int newNuclearCap, int newRetiredCap) {
-            if (pReg == null) { ModLog.Warning($"SetNuclearCapacity: the ProtoRegistrator is not referenced!"); return; };
+            if (_pReg == null) { ModLog.Warning($"SetNuclearCapacity: the ProtoRegistrator is not referenced!"); return; };
             NuclearWasteStorageProto refNuclear = NuclearRef(refNuclearID);
             if (refNuclear == null) { ModLog.Warning($"SetNuclearCapacity: can't find NuclearWasteStorageProto reference!"); return; }
             if (newNuclearCap <= 0) { ModLog.Warning($"SetNuclearCapacity: 'newNuclearCap' is invalid!"); return; }
@@ -90,7 +90,7 @@ namespace FFU_Industrial_Capacity {
         /// <c>SetFoodModuleCapacity(Ids.Buildings.SettlementFoodModule, newFoodModuleCapacity);</c>
         /// </remarks>
         public static void SetFoodModuleCapacity(StaticEntityProto.ID refMarketID, int newFoodCap) {
-            if (pReg == null) { ModLog.Warning($"SetFoodModuleCapacity: the ProtoRegistrator is not referenced!"); return; };
+            if (_pReg == null) { ModLog.Warning($"SetFoodModuleCapacity: the ProtoRegistrator is not referenced!"); return; };
             SettlementFoodModuleProto refMarket = MarketRef(refMarketID);
             if (refMarket == null) { ModLog.Warning($"SetFoodModuleCapacity: can't find SettlementFoodModuleProto reference!"); return; }
             if (newFoodCap <= 0) { ModLog.Warning($"SetFoodModuleCapacity: 'newFoodCap' is invalid!"); return; }
@@ -115,7 +115,7 @@ namespace FFU_Industrial_Capacity {
         /// <c>SetStorageDescription(refVehicle, storageLocString);</c>
         /// </remarks>
         public static void SetStorageDescription(StaticEntityProto.ID refStorageID, string[] strSet) {
-            if (pReg == null) { ModLog.Warning($"SetStorageDescription: the ProtoRegistrator is not referenced!"); return; };
+            if (_pReg == null) { ModLog.Warning($"SetStorageDescription: the ProtoRegistrator is not referenced!"); return; };
             StorageProto refStorage = StorageRef(refStorageID);
             if (refStorage == null) { ModLog.Warning($"SetStorageDescription: can't find StorageProto reference!"); return; }
             if (strSet == null) { ModLog.Warning($"SetStorageDescription: 'strSet' is undefined!"); return; }

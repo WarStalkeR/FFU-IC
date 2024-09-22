@@ -2,12 +2,10 @@
 using Mafi.Core.Mods;
 using Mafi.Localization;
 using System.Collections.Generic;
+using FFU_Industrial_Lib;
 
 namespace FFU_Industrial_Capacity {
 	internal partial class FFU_IC_Mod_Vehicles : IModData {
-        // Modification Variables
-        private ProtoRegistrator pReg = null;
-
         // Modification Definitions
         private readonly Dictionary<string, int> TruckCapacity = 
             new Dictionary<string, int>() {
@@ -65,66 +63,65 @@ namespace FFU_Industrial_Capacity {
         };
 
         public void RegisterData(ProtoRegistrator registrator) {
-            // Variables Initialization
-            FFU_IC_Lib.ProtoReg = registrator;
+            // Registrator Initialization
             LocalizationManager.IgnoreDuplicates();
 
             // Truck Modifications - Capacity
-            FFU_IC_Lib.SetVehicleCapacity(Ids.Vehicles.TruckT1.Id, TruckCapacity["T1"]);
-            FFU_IC_Lib.SetVehicleCapacity(Ids.Vehicles.TruckT2.Id, TruckCapacity["T2"]);
-            FFU_IC_Lib.SetVehicleCapacity(Ids.Vehicles.TruckT3Fluid.Id, TruckCapacity["T3"]);
-            FFU_IC_Lib.SetVehicleCapacity(Ids.Vehicles.TruckT3Loose.Id, TruckCapacity["T3"]);
-            FFU_IC_Lib.SetVehicleCapacity(Ids.Vehicles.TruckT2H.Id, TruckCapacity["T2"]);
-            FFU_IC_Lib.SetVehicleCapacity(Ids.Vehicles.TruckT3FluidH.Id, TruckCapacity["T3"]);
-            FFU_IC_Lib.SetVehicleCapacity(Ids.Vehicles.TruckT3LooseH.Id, TruckCapacity["T3"]);
+            FFU_ILib.SetVehicleCapacity(Ids.Vehicles.TruckT1.Id, TruckCapacity["T1"]);
+            FFU_ILib.SetVehicleCapacity(Ids.Vehicles.TruckT2.Id, TruckCapacity["T2"]);
+            FFU_ILib.SetVehicleCapacity(Ids.Vehicles.TruckT3Fluid.Id, TruckCapacity["T3"]);
+            FFU_ILib.SetVehicleCapacity(Ids.Vehicles.TruckT3Loose.Id, TruckCapacity["T3"]);
+            FFU_ILib.SetVehicleCapacity(Ids.Vehicles.TruckT2H.Id, TruckCapacity["T2"]);
+            FFU_ILib.SetVehicleCapacity(Ids.Vehicles.TruckT3FluidH.Id, TruckCapacity["T3"]);
+            FFU_ILib.SetVehicleCapacity(Ids.Vehicles.TruckT3LooseH.Id, TruckCapacity["T3"]);
 
             // Truck Modifications - Drive Data
-            FFU_IC_Lib.SetVehicleDriveData(Ids.Vehicles.TruckT1.Id, TruckDriveData["T1"]);
-            FFU_IC_Lib.SetVehicleDriveData(Ids.Vehicles.TruckT2.Id, TruckDriveData["T2"]);
-            FFU_IC_Lib.SetVehicleDriveData(Ids.Vehicles.TruckT3Fluid.Id, TruckDriveData["T3"]);
-            FFU_IC_Lib.SetVehicleDriveData(Ids.Vehicles.TruckT3Loose.Id, TruckDriveData["T3"]);
-            FFU_IC_Lib.SetVehicleDriveData(Ids.Vehicles.TruckT2H.Id, TruckDriveData["T2H"]);
-            FFU_IC_Lib.SetVehicleDriveData(Ids.Vehicles.TruckT3FluidH.Id, TruckDriveData["T3H"]);
-            FFU_IC_Lib.SetVehicleDriveData(Ids.Vehicles.TruckT3LooseH.Id, TruckDriveData["T3H"]);
+            FFU_ILib.SetVehicleDriveData(Ids.Vehicles.TruckT1.Id, TruckDriveData["T1"]);
+            FFU_ILib.SetVehicleDriveData(Ids.Vehicles.TruckT2.Id, TruckDriveData["T2"]);
+            FFU_ILib.SetVehicleDriveData(Ids.Vehicles.TruckT3Fluid.Id, TruckDriveData["T3"]);
+            FFU_ILib.SetVehicleDriveData(Ids.Vehicles.TruckT3Loose.Id, TruckDriveData["T3"]);
+            FFU_ILib.SetVehicleDriveData(Ids.Vehicles.TruckT2H.Id, TruckDriveData["T2H"]);
+            FFU_ILib.SetVehicleDriveData(Ids.Vehicles.TruckT3FluidH.Id, TruckDriveData["T3H"]);
+            FFU_ILib.SetVehicleDriveData(Ids.Vehicles.TruckT3LooseH.Id, TruckDriveData["T3H"]);
 
             // Truck Modifications - Localization
-            FFU_IC_Lib.SetVehicleDescription(Ids.Vehicles.TruckT1.Id, TruckLocStrings["T1"], true);
-            FFU_IC_Lib.SetVehicleDescription(Ids.Vehicles.TruckT2.Id, TruckLocStrings["T2"], true);
-            FFU_IC_Lib.SetVehicleDescription(Ids.Vehicles.TruckT3Fluid.Id, TruckLocStrings["T3F"]);
-            FFU_IC_Lib.SetVehicleDescription(Ids.Vehicles.TruckT3Loose.Id, TruckLocStrings["T3L"]);
-            FFU_IC_Lib.SetVehicleDescription(Ids.Vehicles.TruckT2H.Id, TruckLocStrings["T2"], true);
-            FFU_IC_Lib.SetVehicleDescription(Ids.Vehicles.TruckT3FluidH.Id, TruckLocStrings["T3F"]);
-            FFU_IC_Lib.SetVehicleDescription(Ids.Vehicles.TruckT3LooseH.Id, TruckLocStrings["T3L"]);
+            FFU_ILib.SetVehicleDescription(Ids.Vehicles.TruckT1.Id, TruckLocStrings["T1"], true);
+            FFU_ILib.SetVehicleDescription(Ids.Vehicles.TruckT2.Id, TruckLocStrings["T2"], true);
+            FFU_ILib.SetVehicleDescription(Ids.Vehicles.TruckT3Fluid.Id, TruckLocStrings["T3F"]);
+            FFU_ILib.SetVehicleDescription(Ids.Vehicles.TruckT3Loose.Id, TruckLocStrings["T3L"]);
+            FFU_ILib.SetVehicleDescription(Ids.Vehicles.TruckT2H.Id, TruckLocStrings["T2"], true);
+            FFU_ILib.SetVehicleDescription(Ids.Vehicles.TruckT3FluidH.Id, TruckLocStrings["T3F"]);
+            FFU_ILib.SetVehicleDescription(Ids.Vehicles.TruckT3LooseH.Id, TruckLocStrings["T3L"]);
 
             // Excavator Modifications - Capacity
-            FFU_IC_Lib.SetVehicleCapacity(Ids.Vehicles.ExcavatorT1, ExcavCapacity["T1"]);
-            FFU_IC_Lib.SetVehicleCapacity(Ids.Vehicles.ExcavatorT2, ExcavCapacity["T2"]);
-            FFU_IC_Lib.SetVehicleCapacity(Ids.Vehicles.ExcavatorT3, ExcavCapacity["T3"]);
-            FFU_IC_Lib.SetVehicleCapacity(Ids.Vehicles.ExcavatorT2H, ExcavCapacity["T2"]);
-            FFU_IC_Lib.SetVehicleCapacity(Ids.Vehicles.ExcavatorT3H, ExcavCapacity["T3"]);
+            FFU_ILib.SetVehicleCapacity(Ids.Vehicles.ExcavatorT1, ExcavCapacity["T1"]);
+            FFU_ILib.SetVehicleCapacity(Ids.Vehicles.ExcavatorT2, ExcavCapacity["T2"]);
+            FFU_ILib.SetVehicleCapacity(Ids.Vehicles.ExcavatorT3, ExcavCapacity["T3"]);
+            FFU_ILib.SetVehicleCapacity(Ids.Vehicles.ExcavatorT2H, ExcavCapacity["T2"]);
+            FFU_ILib.SetVehicleCapacity(Ids.Vehicles.ExcavatorT3H, ExcavCapacity["T3"]);
 
             // Excavator Modifications - Drive Data
-            FFU_IC_Lib.SetVehicleDriveData(Ids.Vehicles.ExcavatorT1, ExcavDriveData["T1"]);
-            FFU_IC_Lib.SetVehicleDriveData(Ids.Vehicles.ExcavatorT2, ExcavDriveData["T2"]);
-            FFU_IC_Lib.SetVehicleDriveData(Ids.Vehicles.ExcavatorT3, ExcavDriveData["T3"]);
-            FFU_IC_Lib.SetVehicleDriveData(Ids.Vehicles.ExcavatorT2H, ExcavDriveData["T2H"]);
-            FFU_IC_Lib.SetVehicleDriveData(Ids.Vehicles.ExcavatorT3H, ExcavDriveData["T3H"]);
+            FFU_ILib.SetVehicleDriveData(Ids.Vehicles.ExcavatorT1, ExcavDriveData["T1"]);
+            FFU_ILib.SetVehicleDriveData(Ids.Vehicles.ExcavatorT2, ExcavDriveData["T2"]);
+            FFU_ILib.SetVehicleDriveData(Ids.Vehicles.ExcavatorT3, ExcavDriveData["T3"]);
+            FFU_ILib.SetVehicleDriveData(Ids.Vehicles.ExcavatorT2H, ExcavDriveData["T2H"]);
+            FFU_ILib.SetVehicleDriveData(Ids.Vehicles.ExcavatorT3H, ExcavDriveData["T3H"]);
 
             // Excavator Modifications - Localization
-            FFU_IC_Lib.SetVehicleDescription(Ids.Vehicles.ExcavatorT1, ExcavLocStrings["T1"]);
-            FFU_IC_Lib.SetVehicleDescription(Ids.Vehicles.ExcavatorT2, ExcavLocStrings["T2"]);
-            FFU_IC_Lib.SetVehicleDescription(Ids.Vehicles.ExcavatorT3, ExcavLocStrings["T3"]);
-            FFU_IC_Lib.SetVehicleDescription(Ids.Vehicles.ExcavatorT2H, ExcavLocStrings["T2"]);
-            FFU_IC_Lib.SetVehicleDescription(Ids.Vehicles.ExcavatorT3H, ExcavLocStrings["T3"]);
+            FFU_ILib.SetVehicleDescription(Ids.Vehicles.ExcavatorT1, ExcavLocStrings["T1"]);
+            FFU_ILib.SetVehicleDescription(Ids.Vehicles.ExcavatorT2, ExcavLocStrings["T2"]);
+            FFU_ILib.SetVehicleDescription(Ids.Vehicles.ExcavatorT3, ExcavLocStrings["T3"]);
+            FFU_ILib.SetVehicleDescription(Ids.Vehicles.ExcavatorT2H, ExcavLocStrings["T2"]);
+            FFU_ILib.SetVehicleDescription(Ids.Vehicles.ExcavatorT3H, ExcavLocStrings["T3"]);
 
             // Tree Harvester Modifications - Drive Data
-            FFU_IC_Lib.SetVehicleDriveData(Ids.Vehicles.TreeHarvesterT1, TrHarvDriveData["T1"]);
-            FFU_IC_Lib.SetVehicleDriveData(Ids.Vehicles.TreeHarvesterT2, TrHarvDriveData["T2"]);
-            FFU_IC_Lib.SetVehicleDriveData(Ids.Vehicles.TreeHarvesterT2H, TrHarvDriveData["T2H"]);
+            FFU_ILib.SetVehicleDriveData(Ids.Vehicles.TreeHarvesterT1, TrHarvDriveData["T1"]);
+            FFU_ILib.SetVehicleDriveData(Ids.Vehicles.TreeHarvesterT2, TrHarvDriveData["T2"]);
+            FFU_ILib.SetVehicleDriveData(Ids.Vehicles.TreeHarvesterT2H, TrHarvDriveData["T2H"]);
 
             // Tree Planter Modifications - Drive Data
-            FFU_IC_Lib.SetVehicleDriveData(Ids.Vehicles.TreePlanterT1, TrPlantDriveData["T1"]);
-            FFU_IC_Lib.SetVehicleDriveData(Ids.Vehicles.TreePlanterT1H, TrPlantDriveData["T1H"]);
+            FFU_ILib.SetVehicleDriveData(Ids.Vehicles.TreePlanterT1, TrPlantDriveData["T1"]);
+            FFU_ILib.SetVehicleDriveData(Ids.Vehicles.TreePlanterT1H, TrPlantDriveData["T1H"]);
         }
     }
 }

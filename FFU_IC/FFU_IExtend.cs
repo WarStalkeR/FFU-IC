@@ -1,7 +1,12 @@
 ﻿using Mafi.Core.Factory.Recipes;
 
-namespace FFU_Industrial_Capacity {
-    public static class FFU_IC_Tools {
+namespace FFU_Industrial_Lib {
+    public static class FFU_IExtend {
+        /// <remarks>
+        /// Same as <b>BuildAndAdd</b> for <b>RecipeProto</b>, but ignores recipe similarity validation.<br/><br/>
+        /// 
+        /// Required, if you intend to add additional recipe variants with same inputs/outputs, but different throughput.
+        /// </remarks>
         public static RecipeProto BuildAndAddBypass(this RecipeProtoBuilder.State buildState) {
             buildState.verifyRecipeIo();
             RecipeProto recipeProto = buildState.AddToDb(new RecipeProto(buildState.m_protoId, 
