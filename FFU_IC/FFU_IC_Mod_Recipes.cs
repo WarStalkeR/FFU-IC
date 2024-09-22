@@ -113,13 +113,15 @@ namespace FFU_Industrial_Capacity {
             registrator.RecipeProtoBuilder.Start("Ocean vacuum pumping", 
                 FFU_IC_IDs.Recipes.OceanVacuumPumping, Ids.Machines.OceanWaterPumpT1)
             .SetDuration(10.Seconds())
+            .AddInput(1, Ids.Products.MaintenanceT1, "VIRTUAL")
             .AddOutput(36, Ids.Products.Seawater, "X")
-            .BuildAndAddBypass();
+            .BuildAndAdd();
             registrator.RecipeProtoBuilder.Start("Ocean vacuum pumping II", 
                 FFU_IC_IDs.Recipes.OceanVacuumPumpingT2, Ids.Machines.OceanWaterPumpLarge)
             .SetDuration(10.Seconds())
+            .AddInput(1, Ids.Products.MaintenanceT2, "VIRTUAL")
             .AddOutput(36, Ids.Products.Seawater, "X")
-            .BuildAndAddBypass();
+            .BuildAndAdd();
 
             // Vacuum Desalination Advanced Recipes
             registrator.RecipeProtoBuilder.Start("Vacuum desalination", 
@@ -127,25 +129,28 @@ namespace FFU_Industrial_Capacity {
             .SetDuration(10.Seconds())
             .AddInput(54, Ids.Products.Seawater, "A")
             .AddInput(1, Ids.Products.SteamSp, "B")
-            .AddOutput(48, Ids.Products.Water, "W")
+            .AddOutput(46, Ids.Products.Water, "W")
             .AddOutput(7, Ids.Products.Brine, "X")
-            .BuildAndAddBypass();
+            .AddOutput(2, Ids.Products.SteamDepleted, "E")
+            .BuildAndAdd();
             registrator.RecipeProtoBuilder.Start("Vacuum desalination",
                 FFU_IC_IDs.Recipes.DesalinationVacuumHP, Ids.Machines.ThermalDesalinator)
             .SetDuration(10.Seconds())
             .AddInput(36, Ids.Products.Seawater, "A")
             .AddInput(2, Ids.Products.SteamHi, "B")
-            .AddOutput(31, Ids.Products.Water, "W")
+            .AddOutput(29, Ids.Products.Water, "W")
             .AddOutput(7, Ids.Products.Brine, "X")
-            .BuildAndAddBypass();
+            .AddOutput(2, Ids.Products.SteamDepleted, "E")
+            .BuildAndAdd();
             registrator.RecipeProtoBuilder.Start("Vacuum desalination",
                 FFU_IC_IDs.Recipes.DesalinationVacuumLP, Ids.Machines.ThermalDesalinator)
             .SetDuration(10.Seconds())
             .AddInput(24, Ids.Products.Seawater, "A")
             .AddInput(4, Ids.Products.SteamLo, "B")
-            .AddOutput(24, Ids.Products.Water, "W")
+            .AddOutput(22, Ids.Products.Water, "W")
             .AddOutput(4, Ids.Products.Brine, "X")
-            .BuildAndAddBypass();
+            .AddOutput(2, Ids.Products.SteamDepleted, "E")
+            .BuildAndAdd();
 
             // Gas Boiler Super Steam Recipes
             registrator.RecipeProtoBuilder.Start("Super steam generation",

@@ -10,12 +10,14 @@ using System.Reflection;
 
 namespace FFU_Industrial_Lib {
     public static partial class FFU_ILib {
-        public static void SetMachineLayout(MachineProto.ID refMachineID, string[] strLayout, Dictionary<char, char[]> charMap = null) {
+        public static void SetMachineLayout(MachineProto.ID refMachineID, string[] strLayout, Dictionary<char, char[]> charMap = null, EntityLayoutParams layoutParams = null) {
             if (_pReg == null) { ModLog.Warning($"SetMachineLayout: the ProtoRegistrator is not referenced!"); return; };
             MachineProto refMachine = MachineRef(refMachineID);
             if (refMachine == null) { ModLog.Warning($"SetMachineLayout: 'refMachine' is undefined!"); return; }
             if (strLayout == null) { ModLog.Warning($"SetMachineLayout: 'strLayout' is undefined!"); return; }
-            EntityLayout newLayout = _pReg.LayoutParser.ParseLayoutOrThrow(strLayout);
+            EntityLayout newLayout = layoutParams != null ?
+                _pReg.LayoutParser.ParseLayoutOrThrow(layoutParams, strLayout) :
+                _pReg.LayoutParser.ParseLayoutOrThrow(strLayout);
             TypeInfo typeLayout = typeof(LayoutEntityProto).GetTypeInfo();
             FieldInfo fieldLayout = typeLayout.GetDeclaredField("<Layout>k__BackingField");
             if (fieldLayout != null) {

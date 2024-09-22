@@ -4,19 +4,75 @@ using Mafi.Core.Factory.Recipes;
 using Mafi.Core.Mods;
 using System.Collections.Generic;
 using FFU_Industrial_Lib;
+using Mafi.Core.Entities.Static.Layout;
 
 namespace FFU_Industrial_Capacity {
     internal partial class FFU_IC_Mod_Machinery : IModData {
         // Modification Definitions
         private readonly Dictionary<string, string[]> LayoutStrings =
             new Dictionary<string, string[]>() {
+            { "Desalinator", new string[] {
+                "A@>[3][3][3][3][3][3][3][3][3][3][3]>@W", 
+                "   [3][3][3][3][3][3][3][4][3][3][3]   ", 
+                "   [4][4][4][4][4][4][4][4][4][4][3]>@X",
+                "B@>[3][3][3][3][3][3][3][3][3][3][3]>@E",
+            }},
+            { "WaterPumpT1", new string[] {
+                "                                    [2][2]         ", 
+                "-6~-5}-4}-3}-2}-1}-1}{P}{2}{2}{P}{2}[2][2][2][2]>@X", 
+                "-6~-5}-4}-3}-2}-1}-1}{P}{2}{2}{P}{2}[2][2][2][2]   ",
+                "                                 {1}[2][2][2][2]>@E",
+            }},
+            { "WaterPumpT2", new string[] {
+                "                                                         {1}(2)[2][2][2]   ", 
+                "-6~-5}-4}-3}-2}-1}-5}-4}-3}-2}-1}{1}{1}{1}{1}{P}{2}{2}{P}{2}(2)[2][2][2]>@X", 
+                "-6~-5}-4}-3}-2}-1}-5}-4}-3}-2}-1}{1}{1}{1}{1}{P}{2}{2}{P}{2}(2)[2][2][2]   ",
+                "                                                         {1}(2)[2][2][2]>@E",
+            }},
         };
         private readonly Dictionary<string, Dictionary<char, char[]>> LayoutMap =
-            new Dictionary<string, Dictionary<char, char[]>>() { 
+            new Dictionary<string, Dictionary<char, char[]>>() {
+            { "Example", new Dictionary<char, char[]>() {
+                { 'A', new char[] { 'A', 'B', 'I' }},
+                { 'C', new char[] { 'C', 'D' }},
+                { 'Y', new char[] { 'Y', 'Z' }},
+                { 'V', new char[] { 'V', 'W', 'X' }},
+            }},
+        };
+        private readonly Dictionary<string, EntityLayoutParams> LayoutParams =
+            new Dictionary<string, EntityLayoutParams>() {
+            { "WaterPumpT1", new EntityLayoutParams((LayoutTile x) => x.Constraint == LayoutTileConstraint.None || x.Constraint.HasAnyConstraints(LayoutTileConstraint.Ocean), 
+                new CustomLayoutToken[4] {
+                    new CustomLayoutToken("-0~", (EntityLayoutParams p, int h) => new LayoutTokenSpec(-h - 1, -h + 2, LayoutTileConstraint.Ocean)),
+                    new CustomLayoutToken("-0}", (EntityLayoutParams p, int h) => new LayoutTokenSpec(-h - 1, -h + 2)),
+                    new CustomLayoutToken("~~~", (EntityLayoutParams p, int h) => new LayoutTokenSpec(-13, -10, LayoutTileConstraint.Ocean)),
+                    new CustomLayoutToken("{P}", delegate {
+                        int? maxTerrainHeight = 0;
+                        return new LayoutTokenSpec(-5, 2, LayoutTileConstraint.None, null, null, maxTerrainHeight);
+                    })
+                })
+            },
+            { "WaterPumpT2", new EntityLayoutParams((LayoutTile x) => x.Constraint == LayoutTileConstraint.None || x.Constraint.HasAnyConstraints(LayoutTileConstraint.Ocean), 
+                new CustomLayoutToken[4] {
+                    new CustomLayoutToken("-0~", (EntityLayoutParams p, int h) => new LayoutTokenSpec(-h - 6, -h - 3, LayoutTileConstraint.Ocean)),
+                    new CustomLayoutToken("-0}", (EntityLayoutParams p, int h) => new LayoutTokenSpec(-h - 6, -h - 3)),
+                    new CustomLayoutToken("~~~", (EntityLayoutParams p, int h) => new LayoutTokenSpec(-22, -19, LayoutTileConstraint.Ocean)),
+                    new CustomLayoutToken("{P}", delegate
+                    {
+                        int? maxTerrainHeight = 0;
+                        return new LayoutTokenSpec(-9, 2, LayoutTileConstraint.None, null, null, maxTerrainHeight);
+                    })
+                })
+            },
         };
 
         public void RegisterData(ProtoRegistrator registrator) {
-            // ExampleUse(FFU_IC_IDs.Recipes.CopperSmeltingArcHalf);
+            // Thermal Desalinator Exhaust Port
+            FFU_ILib.SetMachineLayout(Ids.Machines.ThermalDesalinator, LayoutStrings["Desalinator"]);
+
+            // Ocean Water Pumps Exhaust Port
+            // FFU_ILib.SetMachineLayout(Ids.Machines.OceanWaterPumpT1, LayoutStrings["WaterPumpT1"], null, LayoutParams["WaterPumpT1"]);
+            // FFU_ILib.SetMachineLayout(Ids.Machines.OceanWaterPumpLarge, LayoutStrings["WaterPumpT2"], null, LayoutParams["WaterPumpT2"]);
         }
 
         public void ExampleUse(ProtoRegistrator registrator, RecipeProto.ID newRecipeID) {
