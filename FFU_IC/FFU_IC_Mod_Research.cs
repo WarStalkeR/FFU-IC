@@ -58,6 +58,17 @@ namespace FFU_Industrial_Capacity {
             // Super Steam Water Desalination Tech
             FFU_ILib.AddTechRecipe(Ids.Research.SuperPressSteam, Ids.Machines.ThermalDesalinator, Ids.Recipes.DesalinationFromSP);
 
+            // Missing T1 Robotics Assembly Recipes
+            FFU_ILib.AddTechRecipe(Ids.Research.UraniumEnrichment, Ids.Machines.AssemblyRoboticT1, FFU_IC_IDs.Recipes.UraniumRodsAssemblyT4, index: 8);
+            FFU_ILib.AddTechRecipe(Ids.Research.NuclearReactor2, Ids.Machines.AssemblyRoboticT1, Ids.Recipes.UraniumEnrichedAssemblyT1);
+            FFU_ILib.AddTechRecipe(Ids.Research.BasicComputing, Ids.Machines.AssemblyRoboticT1, FFU_IC_IDs.Recipes.MechPartsAssemblyT4Iron);
+
+            // Missing T2 Robotics Assembly Recipes
+            FFU_ILib.AddTechRecipe(Ids.Research.UraniumEnrichment, Ids.Machines.AssemblyRoboticT2, FFU_IC_IDs.Recipes.UraniumRodsAssemblyT5, index: 9);
+            FFU_ILib.AddTechRecipe(Ids.Research.NuclearReactor2, Ids.Machines.AssemblyRoboticT2, FFU_IC_IDs.Recipes.UraniumEnrichedAssemblyT5);
+            FFU_ILib.AddTechRecipe(Ids.Research.Assembler3, Ids.Machines.AssemblyRoboticT2, FFU_IC_IDs.Recipes.MechPartsAssemblyT5Iron);
+            FFU_ILib.AddTechRecipe(Ids.Research.Assembler3, Ids.Machines.AssemblyRoboticT2, FFU_IC_IDs.Recipes.MechPartsAssemblyT5Steel);
+
             // Add Half Arc Scrap Smelting Recipes
             FFU_ILib.AddTechRecipe(Ids.Research.PolySiliconProduction, Ids.Machines.ArcFurnace, FFU_IC_IDs.Recipes.IronSmeltingArcHalfScrap, index: 2);
             FFU_ILib.AddTechRecipe(Ids.Research.PolySiliconProduction, Ids.Machines.ArcFurnace, FFU_IC_IDs.Recipes.CopperSmeltingArcHalfScrap, index: 3);
