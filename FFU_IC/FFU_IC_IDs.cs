@@ -25,12 +25,16 @@ namespace FFU_Industrial_Capacity {
             // Missing T1 Robotics Assembly Recipes
             public static readonly RecipeProto.ID UraniumRodsAssemblyT4 = new RecipeProto.ID("UraniumRodsAssemblyT4");
             public static readonly RecipeProto.ID MechPartsAssemblyT4Iron = new RecipeProto.ID("MechPartsAssemblyT4Iron");
+            public static readonly RecipeProto.ID FoodPackAssemblyT4Meat = new RecipeProto.ID("FoodPackAssemblyT4Meat");
+            public static readonly RecipeProto.ID FoodPackAssemblyT4Eggs = new RecipeProto.ID("FoodPackAssemblyT4Eggs");
 
             // Missing T2 Robotics Assembly Recipes
             public static readonly RecipeProto.ID UraniumRodsAssemblyT5 = new RecipeProto.ID("UraniumRodsAssemblyT5");
             public static readonly RecipeProto.ID UraniumEnrichedAssemblyT5 = new RecipeProto.ID("UraniumEnrichedAssemblyT5");
             public static readonly RecipeProto.ID MechPartsAssemblyT5Iron = new RecipeProto.ID("MechPartsAssemblyT5Iron");
             public static readonly RecipeProto.ID MechPartsAssemblyT5Steel = new RecipeProto.ID("MechPartsAssemblyT5Steel");
+            public static readonly RecipeProto.ID FoodPackAssemblyT5Meat = new RecipeProto.ID("FoodPackAssemblyT5Meat");
+            public static readonly RecipeProto.ID FoodPackAssemblyT5Eggs = new RecipeProto.ID("FoodPackAssemblyT5Eggs");
 
             // Arc Furnace Half Scrap Recipes
             public static readonly RecipeProto.ID IronSmeltingArcHalfScrap = new RecipeProto.ID("IronSmeltingArcHalfScrap");

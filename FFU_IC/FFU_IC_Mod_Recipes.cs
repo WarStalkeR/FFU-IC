@@ -49,12 +49,22 @@ namespace FFU_Industrial_Capacity {
             .AddInput(10, Ids.Products.Iron, "*")
             .AddOutput(8, Ids.Products.MechanicalParts, "*")
             .BuildAddAtIndex(5);
-            registrator.RecipeProtoBuilder.Start("",
-                FFU_IC_IDs.Recipes.None, Ids.Machines.AssemblyRoboticT1)
-            ;
-            registrator.RecipeProtoBuilder.Start("",
-                FFU_IC_IDs.Recipes.None, Ids.Machines.AssemblyRoboticT1)
-            ;
+            registrator.RecipeProtoBuilder.Start("Food pack assembly (T4-Meat)",
+                FFU_IC_IDs.Recipes.FoodPackAssemblyT4Meat, Ids.Machines.AssemblyRoboticT1)
+            .SetDuration(10.Seconds())
+            .AddInput(2, Ids.Products.Meat, "*")
+            .AddInput(4, Ids.Products.Bread, "*")
+            .AddInput(6, Ids.Products.Snack, "*")
+            .AddOutput(4, Ids.Products.FoodPack, "*")
+            .BuildAndAdd();
+            registrator.RecipeProtoBuilder.Start("Food pack assembly (T4-Eggs)",
+                FFU_IC_IDs.Recipes.FoodPackAssemblyT4Eggs, Ids.Machines.AssemblyRoboticT1)
+            .SetDuration(10.Seconds())
+            .AddInput(2, Ids.Products.Eggs, "*")
+            .AddInput(4, Ids.Products.Bread, "*")
+            .AddInput(6, Ids.Products.Snack, "*")
+            .AddOutput(4, Ids.Products.FoodPack, "*")
+            .BuildAndAdd();
             registrator.RecipeProtoBuilder.Start("",
                 FFU_IC_IDs.Recipes.None, Ids.Machines.AssemblyRoboticT1)
             ;
@@ -110,12 +120,22 @@ namespace FFU_Industrial_Capacity {
             .AddInput(8, Ids.Products.Steel, "*")
             .AddOutput(16, Ids.Products.MechanicalParts, "*")
             .BuildAddAtIndex(2);
-            registrator.RecipeProtoBuilder.Start("",
-                FFU_IC_IDs.Recipes.None, Ids.Machines.AssemblyRoboticT2)
-            ;
-            registrator.RecipeProtoBuilder.Start("",
-                FFU_IC_IDs.Recipes.None, Ids.Machines.AssemblyRoboticT2)
-            ;
+            registrator.RecipeProtoBuilder.Start("Food pack assembly (T5-Meat)",
+                FFU_IC_IDs.Recipes.FoodPackAssemblyT5Meat, Ids.Machines.AssemblyRoboticT2)
+            .SetDuration(10.Seconds())
+            .AddInput(4, Ids.Products.Meat, "*")
+            .AddInput(8, Ids.Products.Bread, "*")
+            .AddInput(12, Ids.Products.Snack, "*")
+            .AddOutput(8, Ids.Products.FoodPack, "*")
+            .BuildAndAdd();
+            registrator.RecipeProtoBuilder.Start("Food pack assembly (T5-Eggs)",
+                FFU_IC_IDs.Recipes.FoodPackAssemblyT5Eggs, Ids.Machines.AssemblyRoboticT2)
+            .SetDuration(10.Seconds())
+            .AddInput(4, Ids.Products.Eggs, "*")
+            .AddInput(8, Ids.Products.Bread, "*")
+            .AddInput(12, Ids.Products.Snack, "*")
+            .AddOutput(8, Ids.Products.FoodPack, "*")
+            .BuildAndAdd();
             registrator.RecipeProtoBuilder.Start("",
                 FFU_IC_IDs.Recipes.None, Ids.Machines.AssemblyRoboticT2)
             ;

@@ -46,7 +46,7 @@ namespace FFU_Industrial_Lib {
                 buildState.m_minimumUtilization, buildState.m_productsDestroyReason,
                 buildState.m_disableSourceProductsConversionLoss));
             buildState.m_machine.AddRecipe(recipeProto);
-            if (index > 0) {
+            if (index >= 0) {
                 buildState.m_machine.m_recipes.Remove(recipeProto);
                 buildState.m_machine.m_recipes.Insert(index, recipeProto);
             }
