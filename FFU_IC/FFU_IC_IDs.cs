@@ -35,6 +35,10 @@ namespace FFU_Industrial_Capacity {
             public static readonly RecipeProto.ID MechPartsAssemblyT5Steel = new RecipeProto.ID("MechPartsAssemblyT5Steel");
             public static readonly RecipeProto.ID FoodPackAssemblyT5Meat = new RecipeProto.ID("FoodPackAssemblyT5Meat");
             public static readonly RecipeProto.ID FoodPackAssemblyT5Eggs = new RecipeProto.ID("FoodPackAssemblyT5Eggs");
+            public static readonly RecipeProto.ID CpBrAssemblyT5 = new RecipeProto.ID("CpBrAssemblyT5");
+            public static readonly RecipeProto.ID CpSlAssemblyT5 = new RecipeProto.ID("CpSlAssemblyT5");
+            public static readonly RecipeProto.ID Cp2AssemblyT5 = new RecipeProto.ID("Cp2AssemblyT5");
+            public static readonly RecipeProto.ID Cp3AssemblyT5 = new RecipeProto.ID("Cp3AssemblyT5");
 
             // Arc Furnace Half Scrap Recipes
             public static readonly RecipeProto.ID IronSmeltingArcHalfScrap = new RecipeProto.ID("IronSmeltingArcHalfScrap");

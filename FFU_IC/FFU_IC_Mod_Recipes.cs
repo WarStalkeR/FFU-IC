@@ -65,33 +65,6 @@ namespace FFU_Industrial_Capacity {
             .AddInput(6, Ids.Products.Snack, "*")
             .AddOutput(4, Ids.Products.FoodPack, "*")
             .BuildAndAdd();
-            registrator.RecipeProtoBuilder.Start("",
-                FFU_IC_IDs.Recipes.None, Ids.Machines.AssemblyRoboticT1)
-            ;
-            registrator.RecipeProtoBuilder.Start("",
-                FFU_IC_IDs.Recipes.None, Ids.Machines.AssemblyRoboticT1)
-            ;
-            registrator.RecipeProtoBuilder.Start("",
-                FFU_IC_IDs.Recipes.None, Ids.Machines.AssemblyRoboticT1)
-            ;
-            registrator.RecipeProtoBuilder.Start("",
-                FFU_IC_IDs.Recipes.None, Ids.Machines.AssemblyRoboticT1)
-            ;
-            registrator.RecipeProtoBuilder.Start("",
-                FFU_IC_IDs.Recipes.None, Ids.Machines.AssemblyRoboticT1)
-            ;
-            registrator.RecipeProtoBuilder.Start("",
-                FFU_IC_IDs.Recipes.None, Ids.Machines.AssemblyRoboticT1)
-            ;
-            registrator.RecipeProtoBuilder.Start("",
-                FFU_IC_IDs.Recipes.None, Ids.Machines.AssemblyRoboticT1)
-            ;
-            registrator.RecipeProtoBuilder.Start("",
-                FFU_IC_IDs.Recipes.None, Ids.Machines.AssemblyRoboticT1)
-            ;
-            registrator.RecipeProtoBuilder.Start("",
-                FFU_IC_IDs.Recipes.None, Ids.Machines.AssemblyRoboticT1)
-            ;
 
             // Missing T2 Robotics Assembly Recipes
             registrator.RecipeProtoBuilder.Start("Uranium rods (T5)",
@@ -136,6 +109,45 @@ namespace FFU_Industrial_Capacity {
             .AddInput(12, Ids.Products.Snack, "*")
             .AddOutput(8, Ids.Products.FoodPack, "*")
             .BuildAndAdd();
+            registrator.RecipeProtoBuilder.Start("CP assembly (T5-Bricks)",
+                FFU_IC_IDs.Recipes.CpBrAssemblyT5, Ids.Machines.AssemblyRoboticT2)
+            .SetDuration(10.Seconds())
+            .AddInput(12, Ids.Products.Iron, "*")
+            .AddInput(12, Ids.Products.Wood, "*")
+            .AddInput(16, Ids.Products.Bricks, "*")
+            .AddOutput(16, Ids.Products.ConstructionParts, "*")
+            .BuildAddAtIndex(0);
+            registrator.RecipeProtoBuilder.Start("CP assembly (T5-Slabs)",
+                FFU_IC_IDs.Recipes.CpSlAssemblyT5, Ids.Machines.AssemblyRoboticT2)
+            .SetDuration(10.Seconds())
+            .AddInput(12, Ids.Products.Iron, "*")
+            .AddInput(12, Ids.Products.Wood, "*")
+            .AddInput(16, Ids.Products.ConcreteSlab, "*")
+            .AddOutput(16, Ids.Products.ConstructionParts, "*")
+            .BuildAddAtIndex(1);
+            registrator.RecipeProtoBuilder.Start("CP2 assembly (T5)",
+                FFU_IC_IDs.Recipes.Cp2AssemblyT5, Ids.Machines.AssemblyRoboticT2)
+            .SetDuration(10.Seconds())
+            .AddInput(16, Ids.Products.ConstructionParts, "*")
+            .AddInput(8, Ids.Products.Electronics, "*")
+            .AddOutput(8, Ids.Products.ConstructionParts2, "*")
+            .BuildAddAtIndex(2);
+            registrator.RecipeProtoBuilder.Start("CP3 assembly (T5)",
+                FFU_IC_IDs.Recipes.Cp3AssemblyT5, Ids.Machines.AssemblyRoboticT2)
+            .SetDuration(10.Seconds())
+            .AddInput(8, Ids.Products.ConstructionParts2, "*")
+            .AddInput(4, Ids.Products.Steel, "*")
+            .AddOutput(4, Ids.Products.ConstructionParts3, "*")
+            .BuildAddAtIndex(3);
+            registrator.RecipeProtoBuilder.Start("",
+                FFU_IC_IDs.Recipes.None, Ids.Machines.AssemblyRoboticT2)
+            ;
+            registrator.RecipeProtoBuilder.Start("",
+                FFU_IC_IDs.Recipes.None, Ids.Machines.AssemblyRoboticT2)
+            ;
+            registrator.RecipeProtoBuilder.Start("",
+                FFU_IC_IDs.Recipes.None, Ids.Machines.AssemblyRoboticT2)
+            ;
             registrator.RecipeProtoBuilder.Start("",
                 FFU_IC_IDs.Recipes.None, Ids.Machines.AssemblyRoboticT2)
             ;

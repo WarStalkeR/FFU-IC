@@ -127,13 +127,16 @@ namespace FFU_Industrial_Lib {
             ModLog.Info($"Added new unit {refNewUnit.Id} to research {refResearch.Id}.");
             Set<IUnlockNodeUnit> newUnitList = new Set<IUnlockNodeUnit>(0, null);
             int idx = 0;
+            bool wasAdded = false;
             refResearch.Units.ForEach(refUnit => {
-                if (index >= 0 && idx == index)
+                if (index >= 0 && idx == index) {
                     newUnitList.AddAndAssertNew(new RecipeUnlock(refNewUnit, refMachine, hideInUI));
+                    wasAdded = true;
+                }
                 newUnitList.Add(refUnit);
                 idx++;
             });
-            if (index < 0) newUnitList.AddAndAssertNew(new RecipeUnlock(refNewUnit, refMachine, hideInUI));
+            if (index < 0 || !wasAdded) newUnitList.AddAndAssertNew(new RecipeUnlock(refNewUnit, refMachine, hideInUI));
             FieldInfo fieldUnits = typeof(ResearchNodeProto).GetField("Units", BindingFlags.Instance | BindingFlags.Public);
             fieldUnits.SetValue(refResearch, newUnitList.ToImmutableArray());
             SyncProtoMod(refResearch);
