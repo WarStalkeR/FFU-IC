@@ -22,6 +22,13 @@ namespace FFU_Industrial_Capacity {
         public static class Recipes {
             public static readonly RecipeProto.ID None = new RecipeProto.ID("None");
 
+            // Missing Manual Assembly I Recipes
+            public static readonly RecipeProto.ID LabEquipment1AssemblyT0 = new RecipeProto.ID("LabEquipment1AssemblyT0");
+
+            // Missing Manual Assembly II Recipes
+            public static readonly RecipeProto.ID VehicleParts2AssemblyT0 = new RecipeProto.ID("VehicleParts2AssemblyT0");
+            public static readonly RecipeProto.ID LabEquipment2AssemblyT0 = new RecipeProto.ID("LabEquipment2AssemblyT0");
+
             // Missing T1 Robotics Assembly Recipes
             public static readonly RecipeProto.ID UraniumRodsAssemblyT4 = new RecipeProto.ID("UraniumRodsAssemblyT4");
             public static readonly RecipeProto.ID MechPartsAssemblyT4Iron = new RecipeProto.ID("MechPartsAssemblyT4Iron");
@@ -39,6 +46,18 @@ namespace FFU_Industrial_Capacity {
             public static readonly RecipeProto.ID CpSlAssemblyT5 = new RecipeProto.ID("CpSlAssemblyT5");
             public static readonly RecipeProto.ID Cp2AssemblyT5 = new RecipeProto.ID("Cp2AssemblyT5");
             public static readonly RecipeProto.ID Cp3AssemblyT5 = new RecipeProto.ID("Cp3AssemblyT5");
+            public static readonly RecipeProto.ID VehicleParts1AssemblyT5 = new RecipeProto.ID("VehicleParts1AssemblyT5");
+            public static readonly RecipeProto.ID VehicleParts2AssemblyT5 = new RecipeProto.ID("VehicleParts2AssemblyT5");
+            public static readonly RecipeProto.ID VehicleParts3AssemblyT5 = new RecipeProto.ID("VehicleParts3AssemblyT5");
+            public static readonly RecipeProto.ID LabEquipment1AssemblyT5 = new RecipeProto.ID("LabEquipment1AssemblyT5");
+            public static readonly RecipeProto.ID LabEquipment2AssemblyT5 = new RecipeProto.ID("LabEquipment2AssemblyT5");
+            public static readonly RecipeProto.ID LabEquipment3AssemblyT5 = new RecipeProto.ID("LabEquipment3AssemblyT5");
+            public static readonly RecipeProto.ID LabEquipment4AssemblyT5 = new RecipeProto.ID("LabEquipment4AssemblyT5");
+            public static readonly RecipeProto.ID HouseholdGoodsAssemblyT5 = new RecipeProto.ID("HouseholdGoodsAssemblyT5");
+            public static readonly RecipeProto.ID MedicalEquipmentAssemblyT5 = new RecipeProto.ID("MedicalEquipmentAssemblyT5");
+            public static readonly RecipeProto.ID MedicalSuppliesAssemblyT5 = new RecipeProto.ID("MedicalSuppliesAssemblyT5");
+            public static readonly RecipeProto.ID MedicalSupplies2AssemblyT5 = new RecipeProto.ID("MedicalSupplies2AssemblyT5");
+            public static readonly RecipeProto.ID MedicalSupplies3AssemblyT5 = new RecipeProto.ID("MedicalSupplies3AssemblyT5");
 
             // Arc Furnace Half Scrap Recipes
             public static readonly RecipeProto.ID IronSmeltingArcHalfScrap = new RecipeProto.ID("IronSmeltingArcHalfScrap");

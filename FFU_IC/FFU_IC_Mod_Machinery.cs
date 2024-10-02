@@ -67,6 +67,10 @@ namespace FFU_Industrial_Capacity {
         };
 
         public void RegisterData(ProtoRegistrator registrator) {
+            // Rebalanced Robotic Assemblies Computing Use
+            FFU_ILib.SetComputingUse(Ids.Machines.AssemblyRoboticT1, Computing.FromTFlops(2));
+            FFU_ILib.SetComputingUse(Ids.Machines.AssemblyRoboticT2, Computing.FromTFlops(4));
+
             // Thermal Desalinator Exhaust Port
             FFU_ILib.SetMachineLayout(Ids.Machines.ThermalDesalinator, LayoutStrings["Desalinator"]);
 

@@ -55,24 +55,49 @@ namespace FFU_Industrial_Capacity {
             FFU_ILib.SetTechDescription(Ids.Research.VehicleCapIncrease5, TechLocStrings["TechVC"], TechVars["TechVC5"]);
             FFU_ILib.SetTechDescription(Ids.Research.VehicleCapIncrease6, TechLocStrings["TechVC"], TechVars["TechVC6"]);
 
+            // Make All Research Recipes Visible
+            FFU_ILib.UnhideRecipes(Ids.Research.VehicleAssembly2);
+            FFU_ILib.UnhideRecipes(Ids.Research.VehicleAssembly3);
+            FFU_ILib.UnhideRecipes(Ids.Research.Hospital);
+            FFU_ILib.UnhideRecipes(Ids.Research.MedicalSupplies2);
+
             // Super Steam Water Desalination Tech
             FFU_ILib.AddTechRecipe(Ids.Research.SuperPressSteam, Ids.Machines.ThermalDesalinator, Ids.Recipes.DesalinationFromSP);
 
-            // Missing T1 Robotics Assembly Recipes
+            // Missing Manual Assembly Recipes
+            FFU_ILib.AddTechRecipe(Ids.Research.ResearchLab2, Ids.Machines.AssemblyManual, FFU_IC_IDs.Recipes.LabEquipment1AssemblyT0, index: 1);
+
+            // Missing Electric Assembly Recipes
+            FFU_ILib.AddTechRecipe(Ids.Research.VehicleAssembly2, Ids.Machines.AssemblyElectrified, FFU_IC_IDs.Recipes.VehicleParts2AssemblyT0, index: 4);
+            FFU_ILib.AddTechRecipe(Ids.Research.ResearchLab3, Ids.Machines.AssemblyElectrified, FFU_IC_IDs.Recipes.LabEquipment2AssemblyT0, index: 1);
+
+            // Missing Robotic Assembly Recipes
             FFU_ILib.AddTechRecipe(Ids.Research.BasicComputing, Ids.Machines.AssemblyRoboticT1, FFU_IC_IDs.Recipes.MechPartsAssemblyT4Iron, index: 7);
-            FFU_ILib.AddTechRecipe(Ids.Research.FoodPacking, Ids.Machines.AssemblyRoboticT1, FFU_IC_IDs.Recipes.FoodPackAssemblyT4Meat);
+            FFU_ILib.AddTechRecipe(Ids.Research.FoodPacking, Ids.Machines.AssemblyRoboticT1, FFU_IC_IDs.Recipes.FoodPackAssemblyT4Meat, index: 1);
             FFU_ILib.AddTechRecipe(Ids.Research.FoodPacking, Ids.Machines.AssemblyRoboticT1, FFU_IC_IDs.Recipes.FoodPackAssemblyT4Eggs);
             FFU_ILib.AddTechRecipe(Ids.Research.UraniumEnrichment, Ids.Machines.AssemblyRoboticT1, FFU_IC_IDs.Recipes.UraniumRodsAssemblyT4, index: 8);
             FFU_ILib.AddTechRecipe(Ids.Research.NuclearReactor2, Ids.Machines.AssemblyRoboticT1, Ids.Recipes.UraniumEnrichedAssemblyT1);
 
-            // Missing T2 Robotics Assembly Recipes
+            // Missing Adv. Robotic Assembly Recipes
             FFU_ILib.AddTechRecipe(Ids.Research.Assembler3, Ids.Machines.AssemblyRoboticT2, FFU_IC_IDs.Recipes.CpBrAssemblyT5, index: 1);
             FFU_ILib.AddTechRecipe(Ids.Research.Assembler3, Ids.Machines.AssemblyRoboticT2, FFU_IC_IDs.Recipes.CpSlAssemblyT5, index: 2);
             FFU_ILib.AddTechRecipe(Ids.Research.Assembler3, Ids.Machines.AssemblyRoboticT2, FFU_IC_IDs.Recipes.Cp2AssemblyT5, index: 3);
             FFU_ILib.AddTechRecipe(Ids.Research.Assembler3, Ids.Machines.AssemblyRoboticT2, FFU_IC_IDs.Recipes.Cp3AssemblyT5, index: 4);
             FFU_ILib.AddTechRecipe(Ids.Research.Assembler3, Ids.Machines.AssemblyRoboticT2, FFU_IC_IDs.Recipes.MechPartsAssemblyT5Iron, index: 6);
             FFU_ILib.AddTechRecipe(Ids.Research.Assembler3, Ids.Machines.AssemblyRoboticT2, FFU_IC_IDs.Recipes.MechPartsAssemblyT5Steel, index: 7);
-            FFU_ILib.AddTechRecipe(Ids.Research.FoodPacking, Ids.Machines.AssemblyRoboticT2, FFU_IC_IDs.Recipes.FoodPackAssemblyT5Meat);
+            FFU_ILib.AddTechRecipe(Ids.Research.Assembler3, Ids.Machines.AssemblyRoboticT2, FFU_IC_IDs.Recipes.VehicleParts1AssemblyT5, index: 8);
+            FFU_ILib.AddTechRecipe(Ids.Research.Assembler3, Ids.Machines.AssemblyRoboticT2, FFU_IC_IDs.Recipes.LabEquipment1AssemblyT5, index: 9);
+            FFU_ILib.AddTechRecipe(Ids.Research.Assembler3, Ids.Machines.AssemblyRoboticT2, FFU_IC_IDs.Recipes.LabEquipment2AssemblyT5, index: 10);
+            FFU_ILib.AddTechRecipe(Ids.Research.Assembler3, Ids.Machines.AssemblyRoboticT2, FFU_IC_IDs.Recipes.LabEquipment3AssemblyT5, index: 11);
+            FFU_ILib.AddTechRecipe(Ids.Research.Assembler3, Ids.Machines.AssemblyRoboticT2, FFU_IC_IDs.Recipes.LabEquipment4AssemblyT5, index: 12);
+            FFU_ILib.AddTechRecipe(Ids.Research.Assembler3, Ids.Machines.AssemblyRoboticT2, FFU_IC_IDs.Recipes.HouseholdGoodsAssemblyT5, index: 13);
+            FFU_ILib.AddTechRecipe(Ids.Research.VehicleAssembly2, Ids.Machines.AssemblyRoboticT2, FFU_IC_IDs.Recipes.VehicleParts2AssemblyT5);
+            FFU_ILib.AddTechRecipe(Ids.Research.VehicleAssembly3, Ids.Machines.AssemblyRoboticT2, FFU_IC_IDs.Recipes.VehicleParts3AssemblyT5);
+            FFU_ILib.AddTechRecipe(Ids.Research.Hospital, Ids.Machines.AssemblyRoboticT2, FFU_IC_IDs.Recipes.MedicalEquipmentAssemblyT5, index: 3);
+            FFU_ILib.AddTechRecipe(Ids.Research.Hospital, Ids.Machines.AssemblyRoboticT2, FFU_IC_IDs.Recipes.MedicalSuppliesAssemblyT5);
+            FFU_ILib.AddTechRecipe(Ids.Research.MedicalSupplies2, Ids.Machines.AssemblyRoboticT2, FFU_IC_IDs.Recipes.MedicalSupplies2AssemblyT5);
+            FFU_ILib.AddTechRecipe(Ids.Research.MedicalSupplies3, Ids.Machines.AssemblyRoboticT2, FFU_IC_IDs.Recipes.MedicalSupplies3AssemblyT5, index: 5);
+            FFU_ILib.AddTechRecipe(Ids.Research.FoodPacking, Ids.Machines.AssemblyRoboticT2, FFU_IC_IDs.Recipes.FoodPackAssemblyT5Meat, index: 2);
             FFU_ILib.AddTechRecipe(Ids.Research.FoodPacking, Ids.Machines.AssemblyRoboticT2, FFU_IC_IDs.Recipes.FoodPackAssemblyT5Eggs);
             FFU_ILib.AddTechRecipe(Ids.Research.UraniumEnrichment, Ids.Machines.AssemblyRoboticT2, FFU_IC_IDs.Recipes.UraniumRodsAssemblyT5, index: 9);
             FFU_ILib.AddTechRecipe(Ids.Research.NuclearReactor2, Ids.Machines.AssemblyRoboticT2, FFU_IC_IDs.Recipes.UraniumEnrichedAssemblyT5);

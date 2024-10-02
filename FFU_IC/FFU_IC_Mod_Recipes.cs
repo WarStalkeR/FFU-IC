@@ -35,7 +35,34 @@ namespace FFU_Industrial_Capacity {
             FFU_ILib.ModifyRecipeOutput(Ids.Recipes.DesalinationFromDepleted, Ids.Products.Water, 7);
             FFU_ILib.ModifyRecipeOutput(Ids.Recipes.DesalinationFromDepleted, Ids.Products.Brine, 1);
 
-            // Missing T1 Robotics Assembly Recipes
+            // Missing Manual Assembly Recipes
+            registrator.RecipeProtoBuilder.Start("Lab equipment assembly (T0)",
+                FFU_IC_IDs.Recipes.LabEquipment1AssemblyT0, Ids.Machines.AssemblyManual)
+            .SetDuration(40.Seconds())
+            .AddInput(4, Ids.Products.MechanicalParts, "*")
+            .AddInput(4, Ids.Products.Electronics, "*")
+            .AddOutput(8, Ids.Products.LabEquipment, "*")
+            .BuildAddAtIndex(5);
+
+            // Missing Electric Assembly Recipes
+            registrator.RecipeProtoBuilder.Start("Vehicle parts 2 assembly (T0)",
+                FFU_IC_IDs.Recipes.VehicleParts2AssemblyT0, Ids.Machines.AssemblyElectrified)
+            .SetDuration(80.Seconds())
+            .AddInput(4, Ids.Products.VehicleParts, "*")
+            .AddInput(2, Ids.Products.Steel, "*")
+            .AddInput(2, Ids.Products.Glass, "*")
+            .AddOutput(4, Ids.Products.VehicleParts2, "*")
+            .BuildAddAtIndex(6);
+            registrator.RecipeProtoBuilder.Start("Lab equipment 2 assembly (T0)",
+                FFU_IC_IDs.Recipes.LabEquipment2AssemblyT0, Ids.Machines.AssemblyElectrified)
+            .SetDuration(40.Seconds())
+            .AddInput(8, Ids.Products.LabEquipment, "*")
+            .AddInput(2, Ids.Products.Paper, "*")
+            .AddInput(1, Ids.Products.Steel, "*")
+            .AddOutput(4, Ids.Products.LabEquipment2, "*")
+            .BuildAddAtIndex(8);
+
+            // Missing Robotic Assembly Recipes
             registrator.RecipeProtoBuilder.Start("Uranium rods (T4)",
                 FFU_IC_IDs.Recipes.UraniumRodsAssemblyT4, Ids.Machines.AssemblyRoboticT1)
             .SetDuration(40.Seconds())
@@ -66,7 +93,7 @@ namespace FFU_Industrial_Capacity {
             .AddOutput(4, Ids.Products.FoodPack, "*")
             .BuildAndAdd();
 
-            // Missing T2 Robotics Assembly Recipes
+            // Missing Adv. Robotic Assembly Recipes
             registrator.RecipeProtoBuilder.Start("Uranium rods (T5)",
                 FFU_IC_IDs.Recipes.UraniumRodsAssemblyT5, Ids.Machines.AssemblyRoboticT2)
             .SetDuration(20.Seconds())
@@ -139,36 +166,95 @@ namespace FFU_Industrial_Capacity {
             .AddInput(4, Ids.Products.Steel, "*")
             .AddOutput(4, Ids.Products.ConstructionParts3, "*")
             .BuildAddAtIndex(3);
-            registrator.RecipeProtoBuilder.Start("",
-                FFU_IC_IDs.Recipes.None, Ids.Machines.AssemblyRoboticT2)
-            ;
-            registrator.RecipeProtoBuilder.Start("",
-                FFU_IC_IDs.Recipes.None, Ids.Machines.AssemblyRoboticT2)
-            ;
-            registrator.RecipeProtoBuilder.Start("",
-                FFU_IC_IDs.Recipes.None, Ids.Machines.AssemblyRoboticT2)
-            ;
-            registrator.RecipeProtoBuilder.Start("",
-                FFU_IC_IDs.Recipes.None, Ids.Machines.AssemblyRoboticT2)
-            ;
-            registrator.RecipeProtoBuilder.Start("",
-                FFU_IC_IDs.Recipes.None, Ids.Machines.AssemblyRoboticT2)
-            ;
-            registrator.RecipeProtoBuilder.Start("",
-                FFU_IC_IDs.Recipes.None, Ids.Machines.AssemblyRoboticT2)
-            ;
-            registrator.RecipeProtoBuilder.Start("",
-                FFU_IC_IDs.Recipes.None, Ids.Machines.AssemblyRoboticT2)
-            ;
-            registrator.RecipeProtoBuilder.Start("",
-                FFU_IC_IDs.Recipes.None, Ids.Machines.AssemblyRoboticT2)
-            ;
-            registrator.RecipeProtoBuilder.Start("",
-                FFU_IC_IDs.Recipes.None, Ids.Machines.AssemblyRoboticT2)
-            ;
-            registrator.RecipeProtoBuilder.Start("",
-                FFU_IC_IDs.Recipes.None, Ids.Machines.AssemblyRoboticT2)
-            ;
+            registrator.RecipeProtoBuilder.Start("Vehicle parts assembly (T5)",
+                FFU_IC_IDs.Recipes.VehicleParts1AssemblyT5, Ids.Machines.AssemblyRoboticT2)
+            .SetDuration(10.Seconds())
+            .AddInput(8, Ids.Products.Iron, "*")
+            .AddInput(4, Ids.Products.MechanicalParts, "*")
+            .AddInput(4, Ids.Products.Electronics, "*")
+            .AddOutput(8, Ids.Products.VehicleParts, "*")
+            .BuildAddAtIndex(7);
+            registrator.RecipeProtoBuilder.Start("Vehicle parts 2 assembly (T5)",
+                FFU_IC_IDs.Recipes.VehicleParts2AssemblyT5, Ids.Machines.AssemblyRoboticT2)
+            .SetDuration(10.Seconds())
+            .AddInput(4, Ids.Products.VehicleParts, "*")
+            .AddInput(2, Ids.Products.Steel, "*")
+            .AddInput(2, Ids.Products.Glass, "*")
+            .AddOutput(4, Ids.Products.VehicleParts2, "*")
+            .BuildAddAtIndex(8);
+            registrator.RecipeProtoBuilder.Start("Vehicle parts 3 assembly (T5)",
+                FFU_IC_IDs.Recipes.VehicleParts3AssemblyT5, Ids.Machines.AssemblyRoboticT2)
+            .SetDuration(10.Seconds())
+            .AddInput(4, Ids.Products.VehicleParts2, "*")
+            .AddInput(2, Ids.Products.Electronics2, "*")
+            .AddOutput(4, Ids.Products.VehicleParts3, "*")
+            .BuildAddAtIndex(9);
+            registrator.RecipeProtoBuilder.Start("Lab equipment assembly (T5)",
+                FFU_IC_IDs.Recipes.LabEquipment1AssemblyT5, Ids.Machines.AssemblyRoboticT2)
+            .SetDuration(10.Seconds())
+            .AddInput(16, Ids.Products.MechanicalParts, "*")
+            .AddInput(16, Ids.Products.Electronics, "*")
+            .AddOutput(32, Ids.Products.LabEquipment, "*")
+            .BuildAddAtIndex(10);
+            registrator.RecipeProtoBuilder.Start("Lab equipment 2 assembly (T5)",
+                FFU_IC_IDs.Recipes.LabEquipment2AssemblyT5, Ids.Machines.AssemblyRoboticT2)
+            .SetDuration(10.Seconds())
+            .AddInput(16, Ids.Products.LabEquipment, "*")
+            .AddInput(4, Ids.Products.Paper, "*")
+            .AddInput(2, Ids.Products.Steel, "*")
+            .AddOutput(8, Ids.Products.LabEquipment2, "*")
+            .BuildAddAtIndex(11);
+            registrator.RecipeProtoBuilder.Start("Lab equipment 3 assembly (T5)",
+                FFU_IC_IDs.Recipes.LabEquipment3AssemblyT5, Ids.Machines.AssemblyRoboticT2)
+            .SetDuration(10.Seconds())
+            .AddInput(8, Ids.Products.LabEquipment2, "*")
+            .AddInput(2, Ids.Products.Electronics2, "*")
+            .AddOutput(4, Ids.Products.LabEquipment3, "*")
+            .BuildAddAtIndex(12);
+            registrator.RecipeProtoBuilder.Start("Lab equipment 4 assembly (T5)",
+                FFU_IC_IDs.Recipes.LabEquipment4AssemblyT5, Ids.Machines.AssemblyRoboticT2)
+            .SetDuration(20.Seconds())
+            .AddInput(8, Ids.Products.LabEquipment3, "*")
+            .AddInput(2, Ids.Products.Electronics3, "*")
+            .AddOutput(4, Ids.Products.LabEquipment4, "*")
+            .BuildAddAtIndex(13);
+            registrator.RecipeProtoBuilder.Start("Household goods assembly (T5)",
+                FFU_IC_IDs.Recipes.HouseholdGoodsAssemblyT5, Ids.Machines.AssemblyRoboticT2)
+            .SetDuration(15.Seconds())
+            .AddInput(16, Ids.Products.Glass, "*")
+            .AddInput(2, Ids.Products.Steel, "*")
+            .AddInput(8, Ids.Products.Wood, "*")
+            .AddOutput(16, Ids.Products.HouseholdGoods, "*")
+            .BuildAddAtIndex(14);
+            registrator.RecipeProtoBuilder.Start("Medical equipment assembly (T5)",
+                FFU_IC_IDs.Recipes.MedicalEquipmentAssemblyT5, Ids.Machines.AssemblyRoboticT2)
+            .SetDuration(10.Seconds())
+            .AddInput(4, Ids.Products.Steel, "*")
+            .AddInput(4, Ids.Products.Plastic, "*")
+            .AddOutput(4, Ids.Products.MedicalEquipment, "*")
+            .BuildAddAtIndex(26);
+            registrator.RecipeProtoBuilder.Start("Medical supplies assembly (T5)",
+                FFU_IC_IDs.Recipes.MedicalSuppliesAssemblyT5, Ids.Machines.AssemblyRoboticT2)
+            .SetDuration(10.Seconds())
+            .AddInput(8, Ids.Products.MedicalEquipment, "*")
+            .AddInput(8, Ids.Products.Disinfectant, "*")
+            .AddOutput(16, Ids.Products.MedicalSupplies, "*")
+            .BuildAddAtIndex(27);
+            registrator.RecipeProtoBuilder.Start("Medical supplies II assembly (T5)",
+                FFU_IC_IDs.Recipes.MedicalSupplies2AssemblyT5, Ids.Machines.AssemblyRoboticT2)
+            .SetDuration(10.Seconds())
+            .AddInput(16, Ids.Products.MedicalSupplies, "*")
+            .AddInput(8, Ids.Products.Antibiotics, "*")
+            .AddOutput(16, Ids.Products.MedicalSupplies2, "*")
+            .BuildAddAtIndex(28);
+            registrator.RecipeProtoBuilder.Start("Medical supplies III assembly (T5)",
+                FFU_IC_IDs.Recipes.MedicalSupplies3AssemblyT5, Ids.Machines.AssemblyRoboticT2)
+            .SetDuration(10.Seconds())
+            .AddInput(16, Ids.Products.MedicalSupplies2, "*")
+            .AddInput(8, Ids.Products.Anesthetics, "*")
+            .AddInput(8, Ids.Products.Morphine, "*")
+            .AddOutput(16, Ids.Products.MedicalSupplies3, "*")
+            .BuildAddAtIndex(29);
 
             // Arc Furnace Half Scrap Recipes
             registrator.RecipeProtoBuilder.Start("Iron scrap smelting (arc half)",

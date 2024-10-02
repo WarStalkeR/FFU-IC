@@ -170,6 +170,29 @@ namespace FFU_Industrial_Lib {
         }
 
         /// <remarks>
+        /// Make all unlockable recipes visible for a <b>ResearchNodeProto</b>, if they are initially hidden.<br/><br/>
+        /// 
+        /// <br/><u>Usage Example (within 'RegisterData' scope)</u>
+        /// 
+        /// <br/><br/>Make all recipes visible via <b>ResearchNodeProto</b> identifier:<br/>
+        /// <c>UnhideRecipes(Ids.Research.ArcFurnace2);</c>
+        /// </remarks>
+        public static void UnhideRecipes(ResearchNodeProto.ID refResearchID) {
+            if (_pReg == null) { ModLog.Warning($"UnhideRecipes: the ProtoRegistrator is not referenced!"); return; };
+            ResearchNodeProto refResearch = ResearchRef(refResearchID);
+            if (refResearch == null) { ModLog.Warning($"UnhideRecipes: 'refReserach' is undefined!"); return; }
+            refResearch.Units.ForEach(refUnit => {
+                RecipeUnlock refRecipeUnlock = refUnit as RecipeUnlock;
+                if (refRecipeUnlock != null && refRecipeUnlock.m_hideInUi) {
+                    ModLog.Info($"Making recipe {refRecipeUnlock.Proto.Id} visible in the {refResearch.Id} research.");
+                    FieldInfo fieldHideInUi = typeof(ProtoUnlock).GetField("m_hideInUi", BindingFlags.Instance | BindingFlags.NonPublic);
+                    fieldHideInUi.SetValue(refRecipeUnlock, false);
+                }
+            });
+            SyncProtoMod(refResearch);
+        }
+
+        /// <remarks>
         /// Modifies 2D position of the <b>ResearchNodeProto</b> in the UI. Requires use of the <c>Vector2i</c> parameter.<br/><br/>
         /// 
         /// <br/><u>Usage Example (within 'RegisterData' scope)</u>
